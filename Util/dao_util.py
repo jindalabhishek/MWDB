@@ -48,7 +48,7 @@ class DAOUtil:
         return self.image_collection.find_one({'label': image_id})
 
     def get_feature_descriptors_by_subject_id(self, subject_id):
-        regex = 'image-.*-' + subject_id + '-[0-9].png'
+        regex = 'image-.*-' + subject_id + '-[0-9]+.png'
         query_object = {'label': {'$regex': regex}}
         return list(self.get_records(query_object))
 
