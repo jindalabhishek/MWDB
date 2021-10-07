@@ -31,7 +31,7 @@ def main():
         """
            Compute the image pixels for the image
         """
-        image_pixels = vector_util.convert_image_to_matrix(folder_path + '\\' + name)
+        image_pixels = vector_util.convert_image_to_matrix(folder_path + '/' + name)
         print('Image Size:', len(image_pixels), len(image_pixels[0]))
         """
            Normalize the image pixels

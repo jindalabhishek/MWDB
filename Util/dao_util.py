@@ -11,7 +11,7 @@ class DAOUtil:
     """
 
     def __init__(self):
-        client = MongoClient('localhost:27017')
+        client = MongoClient("mongodb+srv://dhruv_agja:test123@cluster0.21lv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
         db = client.mwdb
         server_status = db.command("serverStatus")
         print(server_status)
