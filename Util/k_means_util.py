@@ -67,7 +67,7 @@ def reduce_dimensions_k_means(image_vector_matrix, n_components, n_iterations):
         # print(centroids)
         # print(centroid_vs_points)
     image_vector_matrix_k_dimensions = get_vectors_k_dimensions(image_vector_matrix, centroids)
-    return image_vector_matrix_k_dimensions
+    return np.array(image_vector_matrix_k_dimensions)
     # print(point_vs_centroid)
     centroid_vs_points = {}
     # for data_point in point_vs_centroid.keys():
