@@ -21,7 +21,7 @@ def get_image_vector_matrix(feature_descriptors, feature_model):
 
 def main():
     """
-        Executes Task 2
+        Executes Task 1
         Output Subject - latent semantics matrix, (subject-list of weight matrix)
     """
     """
