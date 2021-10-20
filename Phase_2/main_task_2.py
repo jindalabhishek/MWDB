@@ -9,6 +9,7 @@ from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
 import numpy as np
 
+
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
     for feature_descriptor in feature_descriptors:
