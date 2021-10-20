@@ -1,3 +1,4 @@
+import math
 from math import sqrt
 
 
@@ -46,5 +47,7 @@ def get_skewness(image, mean, standard_deviation):
             temp = pixel - mean
             res += pow(temp, 3)
     cube_stand_dev = pow(standard_deviation, 3)
-    skewness = res / ((total_length-1) * cube_stand_dev)
+    skewness = 0
+    if cube_stand_dev:
+        skewness = res / ((total_length-1) * cube_stand_dev)
     return skewness

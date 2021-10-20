@@ -3,6 +3,7 @@ import feature_descriptor_util
 import image_comparison_util
 import vector_util
 from Util.dao_util import DAOUtil
+import numpy as np
 
 grey_scale_max = 256
 
@@ -15,12 +16,12 @@ def main():
         Connection to MongoDB using PyMongo
     """
     dao_util = DAOUtil()
+
+    folder_path = input('Welcome to Task 2 Demo. Enter Full Path of the folder containing the images:')
     """
         Clear the MongoDB for fresh run
     """
     dao_util.delete_records()
-
-    folder_path = input('Welcome to Task 2 Demo. Enter Full Path of the folder containing the images:')
     """
         Compute Base Path from full path such as set1, set2 or set3
     """
@@ -31,8 +32,8 @@ def main():
         """
            Compute the image pixels for the image
         """
-        image_pixels = vector_util.convert_image_to_matrix(folder_path + '/' + name)
-        print('Image Size:', len(image_pixels), len(image_pixels[0]))
+        image_pixels = vector_util.convert_image_to_matrix(folder_path + '\\' + name)
+        print('Image Size:', len(image_pixels), len(image_pixels[0]), 'Max Pixel Size:', np.amax(image_pixels))
         """
            Normalize the image pixels
         """
