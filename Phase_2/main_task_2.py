@@ -1,10 +1,10 @@
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
+from dimention_reduction_util import *
 from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
 import numpy as np
-
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
