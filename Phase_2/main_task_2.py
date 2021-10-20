@@ -3,6 +3,7 @@ from numpy.linalg import svd
 from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
+import numpy as np
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -26,6 +27,12 @@ def calculate_lda(image_vector_matrix, image_types, components):
     lda = LatentDirichletAllocation(n_components=components)
     image_vector_matrix_lda = lda.fit_transform(image_vector_matrix, image_types)
     return image_vector_matrix_lda
+
+
+def normalize_data_for_lda(image_vector_matrix):
+    normalized_data = (image_vector_matrix - np.min(image_vector_matrix)) \
+                      / (np.max(image_vector_matrix) - np.min(image_vector_matrix))
+    return normalized_data
 
 
 def main():
@@ -54,7 +61,8 @@ def main():
     elif dimension_reduction_technique == 'svd':
         pass
     elif dimension_reduction_technique == 'lda':
-        image_vector_matrix_k_dimensions = calculate_lda(image_vector_matrix, image_types, k)
+        normalized_data = normalize_data_for_lda(np.array(image_vector_matrix))
+        image_vector_matrix_k_dimensions = calculate_lda(normalized_data, image_types, k)
     elif dimension_reduction_technique == 'kmeans':
         image_vector_matrix_k_dimensions = reduce_dimensions_k_means(image_vector_matrix,
                                                                      n_components=k, n_iterations=1000)
