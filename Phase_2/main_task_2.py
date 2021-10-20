@@ -3,6 +3,7 @@ from numpy.linalg import svd
 from sklearn.decomposition import TruncatedSVD
 from dimention_reduction_util import *
 
+
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
     for feature_descriptor in feature_descriptors:
