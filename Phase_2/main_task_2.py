@@ -1,7 +1,10 @@
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
-from dimention_reduction_util import *
 from sklearn.decomposition import TruncatedSVD
+from sklearn.decomposition import LatentDirichletAllocation
+from Util.k_means_util import reduce_dimensions_k_means
+import numpy as np
+
 from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
 import numpy as np
@@ -57,31 +60,18 @@ def main():
     k = min(k, max_n_components)
     image_vector_matrix_k_dimensions = None
     if dimension_reduction_technique == 'pca':
-        image_vector_matrix_k_dimensions = get_reduced_matrix_using_pca(np.array(image_vector_matrix), k)
+        pass
     elif dimension_reduction_technique == 'svd':
-        image_vector_matrix_k_dimensions = get_reduced_matrix_using_svd(np.array(image_vector_matrix), k)
+        pass
     elif dimension_reduction_technique == 'lda':
         normalized_data = normalize_data_for_lda(np.array(image_vector_matrix))
         image_vector_matrix_k_dimensions = calculate_lda(normalized_data, image_types, k)
     elif dimension_reduction_technique == 'kmeans':
         image_vector_matrix_k_dimensions = reduce_dimensions_k_means(image_vector_matrix,
                                                                      n_components=k, n_iterations=1000)
-    # print(image_vector_matrix_k_dimensions.shape)
+    print(image_vector_matrix_k_dimensions.shape)
     # print(len(image_vector_matrix_k_dimensions))
     # print(len(image_vector_matrix_k_dimensions[0]))
 
-    type_weight_pairs = np.zeros((12,k))
-    dict_type = {'cc': 0, 'con': 1, 'emboss': 2, 'jitter': 3, 'neg': 4,\
-	'noise01': 5, 'noise02': 6, 'original': 7, 'poster': 8, 'rot': 9,\
-	'smooth': 10, 'stipple': 11}
-    for latent_feature in range(k):
-      sum_type = np.zeros((12,2))
-      for i in range(len(image_vector_matrix)):
-        sum_type[dict_type[image_types[i]]][0] += image_vector_matrix_k_dimensions[i][latent_feature]
-        sum_type[dict_type[image_types[i]]][1] += 1
-      for i in range(len(sum_type)):
-        type_weight_pairs[i][latent_feature] = sum_type[i][0]/sum_type[i][1]
 
-    return type_weight_pairs, image_vector_matrix_k_dimensions
-
-type_weight_matrix, image_vector_matrix_k_dimensions = main()
+main()
