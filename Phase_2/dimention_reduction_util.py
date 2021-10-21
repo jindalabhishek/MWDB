@@ -72,3 +72,4 @@ def get_reduced_matrix_using_svd(image_vector_matrix,image_label_ids, k):
 
     for i in dict_val:
         print(dict_val[i])
+    return dict_val
