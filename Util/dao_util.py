@@ -52,6 +52,12 @@ class DAOUtil:
         query_object = {'label': {'$regex': regex}}
         return list(self.get_records(query_object))
 
+    def get_feature_descriptors_by_type_id(self, type_id):
+        regex = 'image-'+type_id+'-[0-9]+-[0-9]+.png'
+        query_object = {'label': {'$regex': regex}}
+        # print(query_object)
+        return list(self.get_records(query_object))
+
     def get_records(self, query_object):
         """
         :param query_object:
