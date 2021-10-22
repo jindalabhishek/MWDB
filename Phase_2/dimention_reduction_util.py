@@ -1,4 +1,5 @@
 from sklearn.decomposition import TruncatedSVD, PCA
+import sklearn.decomposition as sk_decomp
 import numpy as np
 
 def get_reduced_matrix_using_pca(data, k, cov_method='np'):
