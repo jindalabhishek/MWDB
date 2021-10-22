@@ -77,7 +77,7 @@ def get_reduced_matrix_using_svd(image_vector_matrix,image_label_ids, k):
         print(dict_val[i])
     return dict_val
 
-def lda_decomposition(data, k):
+def get_reduced_matrix_using_lda(data, k):
   LDA = sk_decomp.LatentDirichletAllocation(n_components = k, random_state=0)
   latent_features = LDA.fit_transform(data)
   return latent_features
