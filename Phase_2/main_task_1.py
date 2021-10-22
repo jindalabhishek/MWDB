@@ -76,7 +76,7 @@ def task1():
       sum_subject = np.zeros((40,2))
       for i in range(len(images)):
         subject_id = int(images[i]['label'].split('-',3)[2])-1
-        sum_subject[subject_id][0] += latent_features_dataset[i][latent_feature]
+        sum_subject[subject_id][0] += subject_weight_matrix[i][latent_feature]
         sum_subject[subject_id][1] += 1
       for i in range(40):
         subject_weight_pairs[i][latent_feature] = sum_subject[i][0]/sum_subject[i][1]
