@@ -1,3 +1,12 @@
+from Util.dao_util import DAOUtil
+from numpy.linalg import svd
+from dimention_reduction_util import *
+from sklearn.decomposition import TruncatedSVD
+from sklearn.decomposition import LatentDirichletAllocation
+from Util.k_means_util import reduce_dimensions_k_means
+import numpy as np
+
+
 def similar_matrix(data, method='pearson'):
   data = np.array(data, dtype=np.float128)
   matrix = np.ones((data.shape[0],data.shape[0]))
