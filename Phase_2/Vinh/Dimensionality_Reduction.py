@@ -29,7 +29,7 @@ def pca_decomposition(data, k, cov_method='auto'):
   eig_val, eig_vec = np.linalg.eig(COV)
 
   if(k > eig_val.shape[0]):
-    print("ERROR - k is larger than available latent semantics")
+    print("ERROR - k is larger than available latent semantics = " + str(eig_val.shape[0]))
     exit()
 
   # Sort eig_vec by eig_val in descending order
