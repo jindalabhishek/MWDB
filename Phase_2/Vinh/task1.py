@@ -1,5 +1,5 @@
 import numpy as np
-from DAOutil import DAOUtil
+from Util.dao_util import DAOUtil
 from FeatureExtractions import extract_feature
 from Dimensionality_Reduction import dimensionality_reduction
 
