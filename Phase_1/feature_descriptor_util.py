@@ -8,7 +8,7 @@ from Constants import SKEWNESS_WEIGHT
 
 
 def get_reshaped_color_moment_vector(color_moment_feature_descriptor):
-    return color_moment_feature_descriptor.reshape(1, -1)
+    return color_moment_feature_descriptor.flatten()
 
 
 def get_color_moment_feature_descriptor(image_pixels):
