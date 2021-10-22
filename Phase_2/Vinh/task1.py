@@ -1,9 +1,7 @@
 import numpy as np
-import readData
+from DAOutil import DAOUtil
 from FeatureExtractions import extract_feature
 from Dimensionality_Reduction import dimensionality_reduction
-
-database = readData.read_data()
 
 ##### Acquire parameters from user #####
 
@@ -12,8 +10,11 @@ while not (feature in ["color", "lbp", "hog"]):
   print("Invalid input - choose from \"color\", \"lbp\", \"hog\"")
   feature = input("Enter feature model: ")
 
+type_list = ['cc', 'con', 'emboss', 'jitter', 'neg',\
+	'noise01', 'noise02', 'original', 'poster', 'rot',\
+	'smooth', 'stipple']
 img_type = input("Enter image type: ")
-while not (img_type in database):
+while not (img_type in type_list):
   print("Invalid input - choose from \"cc\", \"con\", \"detail\", \
 \"emboss\", \"jitter\", \"neg\", \"noise1\", \"noise2\", \"original\", \
 \"poster\", \"rot\", \"smooth\", \"stipple\"")
@@ -27,39 +28,33 @@ while not (reduction_technique in ["pca", "svd", "lda", "kmean"]):
   reduction_technique = input("Enter dimensionality reduction technique: ")
 
 ##### Extract and preprocess data matrix #####
+db = DAOUtil()
+images = db.get_feature_descriptors_by_type_id(img_type)
 
 if(feature == 'color'):
-  feature_extracted_dataset = np.zeros((40,10,3*64))
+  feature_extracted_dataset = np.zeros((len(images),192))  # TO BE FIXED
+  for i in range(len(images)):
+    feature_extracted_dataset[i] = np.array(images[i]['color_moment_feature_descriptor'])
 elif(feature == 'lbp'):
-  feature_extracted_dataset = np.zeros((40,10,256))
+  feature_extracted_dataset = np.zeros((len(images),26))
+  for i in range(len(images)):
+    feature_extracted_dataset[i] = np.array(images[i]['elbp_feature_descriptor'])
 else:
-  feature_extracted_dataset = np.zeros((40,10,1764))
+  feature_extracted_dataset = np.zeros((len(images),1764))
+  for i in range(len(images)):
+    feature_extracted_dataset[i] = np.array(images[i]['hog_feature_descriptor'])
 
-for x in range(40):
-  for y in range(10):
-    if(type(database[img_type][x][y]) == type(np.zeros(0))):
-      feature_extracted_dataset[x][y] = extract_feature(feature, database[img_type][x][y])    
-    else:
-      print("None Image Fault: Discarding image-"+ str(x) + "-" + str(y))
-
-# Going from 40x10xnxm to 400x(n*m)
-if(feature == 'color'):
-  data_set = feature_extracted_dataset.reshape(400, 3*64)
-elif(feature == 'lbp'):
-  data_set = feature_extracted_dataset.reshape(400, 256)
-elif(feature == 'hog'):
-  data_set = feature_extracted_dataset.reshape(400, 1764)
-
-
-latent_features_dataset = dimensionality_reduction(data_set, k, reduction_technique)
+latent_features_dataset = dimensionality_reduction(feature_extracted_dataset, k, reduction_technique)
 
 # Going from 400xk to 40xk by averaging 10 samples/subject
 subject_weight_pairs = np.zeros((40,k))
-for subject_id in range(40):
-  for feature_i in range(k):
-    sum = 0
-    for sample_id in range(10):
-      sum += latent_features_dataset[(subject_id*10 + sample_id)][feature_i]
-    subject_weight_pairs[subject_id][feature_i] = sum/10
+for latent_feature in range(k):
+  sum_subject = np.zeros((40,2))
+  for i in range(len(images)):
+    subject_id = int(images[i]['label'].split('-',3)[2])-1
+    sum_subject[subject_id][0] += latent_features_dataset[i][latent_feature]
+    sum_subject[subject_id][1] += 1
+  for i in range(40):
+    subject_weight_pairs[i][latent_feature] = sum_subject[i][0]/sum_subject[i][1]
 
 # -> OUTPUT = subject_weight_pairs (40 x k)
