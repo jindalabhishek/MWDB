@@ -87,4 +87,4 @@ for i in range(len(subject_weight_pairs)):
   print("Subject " + str(i+1) + ":", end=' ')
   for j in range(len(subject_weight_pairs[i])):
     print(str(subject_weight_pairs[i][j]), end=', ')
-  print("")
+  print("\n")
