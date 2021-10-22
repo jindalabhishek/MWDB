@@ -7,15 +7,21 @@ from Constants import STAND_DEV_WEIGHT
 from Constants import SKEWNESS_WEIGHT
 
 
-def get_weighted_color_moment_vector(color_moment_feature_descriptor):
-    weighted_color_moment_vector = []
+def get_reshaped_color_moment_vector(color_moment_feature_descriptor):
+    mean_vector = []
+    sd_vector = []
+    skewness_vector = []
+    aggregated_vector = []
     for i in range(0, len(color_moment_feature_descriptor)):
         for j in range(0, len(color_moment_feature_descriptor[i])):
-            weighted_average = MEAN_WEIGHT * color_moment_feature_descriptor[i][j][0] \
-                               + STAND_DEV_WEIGHT * color_moment_feature_descriptor[i][j][1] \
-                               + SKEWNESS_WEIGHT * color_moment_feature_descriptor[i][j][2]
-            weighted_color_moment_vector.append(weighted_average)
-    return weighted_color_moment_vector
+            mean_vector.append(color_moment_feature_descriptor[i][j][0])
+            sd_vector.append(color_moment_feature_descriptor[i][j][1])
+            skewness_vector.append(color_moment_feature_descriptor[i][j][2])
+    aggregated_vector.append(mean_vector)
+    aggregated_vector.append(sd_vector)
+    aggregated_vector.append(skewness_vector)
+    return aggregated_vector
+
 
 def get_color_moment_feature_descriptor(image_pixels):
     """

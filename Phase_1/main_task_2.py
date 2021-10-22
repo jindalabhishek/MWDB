@@ -43,7 +43,8 @@ def main():
         """
         color_moment_feature_descriptor = feature_descriptor_util.get_color_moment_feature_descriptor(image_pixels)
         color_moment_feature_descriptor = feature_descriptor_util\
-            .get_weighted_color_moment_vector(color_moment_feature_descriptor)
+            .get_reshaped_color_moment_vector(color_moment_feature_descriptor)
+
         elbp_feature_descriptor = feature_descriptor_util.get_elbp_feature_descriptor(image_pixels)
         elbp_feature_descriptor = image_comparison_util.get_elbp_histogram(elbp_feature_descriptor)
         hog_feature_descriptor = feature_descriptor_util.get_hog_feature_descriptor(image_pixels)
