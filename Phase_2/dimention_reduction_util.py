@@ -18,7 +18,11 @@ def get_reduced_matrix_using_pca(data, k, cov_method='auto'):
                     sum += (data[object, feature_i] - feature_i_ave) * (data[object, feature_j] - feature_j_ave)
                 COV[feature_i, feature_j] = sum / n_objects
     elif (cov_method == 'auto'):
-        COV = np.dot(data.T, data) / (n_features - 1)  # Feature x Feature COV matrix
+        Mean = np.mean(data.T, axis=1)
+        # center columns by subtracting column means
+        C = data - Mean
+        # calculate covariance matrix of centered matrix
+        COV = np.cov(np.array(C.T,dtype=np.float64))
 
     # Find eigenvalues and eigenvectors
     print("Finding eigenvalues and eigenvectors")
