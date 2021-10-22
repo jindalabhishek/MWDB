@@ -1,7 +1,5 @@
 import numpy as np
 import math
-import os
-from Dimensionality_Reduction import dimensionality_reduction
 
 def get_similarity_matrix():
   ret = np.zeros((10,10))
