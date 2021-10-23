@@ -3,7 +3,7 @@ import numpy
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
 from dimention_reduction_util import *
-
+from k_means_util import reduce_dimensions_k_means
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
@@ -68,7 +68,7 @@ def task1():
     elif reduction_technique == 'lda':
         subject_weight_matrix = get_reduced_matrix_using_lda(feature_extracted_dataset, k)
     elif reduction_technique == 'kmeans':
-        subject_weight_matrix = get_reduced_matrix_using_kmeans(feature_extracted_dataset, k)
+        subject_weight_matrix = reduce_dimensions_k_means(feature_extracted_dataset, n_components=k, n_iterations=1000)
         
     subject_weight_pairs = np.zeros((40,k))
 
