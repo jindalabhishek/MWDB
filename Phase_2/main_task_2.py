@@ -59,7 +59,7 @@ def main():
     if dimension_reduction_technique == 'pca':
         image_vector_matrix_k_dimensions = get_reduced_matrix_using_pca(np.array(image_vector_matrix), k)
     elif dimension_reduction_technique == 'svd':
-        image_vector_matrix_k_dimensions = get_reduced_matrix_using_svd(np.array(image_vector_matrix), image_types, k)
+        image_vector_matrix_k_dimensions = get_reduced_matrix_using_svd(np.array(image_vector_matrix), k)
     elif dimension_reduction_technique == 'lda':
         normalized_data = normalize_data_for_lda(np.array(image_vector_matrix))
         image_vector_matrix_k_dimensions = calculate_lda(normalized_data, image_types, k)
