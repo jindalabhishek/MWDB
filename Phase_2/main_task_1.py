@@ -8,7 +8,6 @@ from Util.dao_util import DAOUtil
 from numpy.linalg import svd
 
 from Util.json_util import LatentSemanticFile
-from dimention_reduction_util import *
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
