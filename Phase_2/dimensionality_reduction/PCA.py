@@ -55,5 +55,5 @@ class PCA:
         self.latent_features = eig_vec
         # Transform data
         # print("Transforming data")
-        return np.matmul(data, eig_val)
 
+        return np.matmul(data, eig_val).real

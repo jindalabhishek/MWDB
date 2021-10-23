@@ -14,7 +14,7 @@ class SVD:
             *np.linalg.eig(np.dot(image_vector_matrix, image_vector_matrix.T)), k)
         self.power_val = right_eig_val
         self.latent_features = right_eig_vec
-        return left_eig_vec
+        return left_eig_vec.real
 
     def serialize(self):
         return {SVD.LATENT_FEATURES:self.latent_features.real.tolist(),SVD.LATENT_FEATURE_POWERS:self.power_val.real.tolist()}
