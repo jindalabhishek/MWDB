@@ -6,7 +6,7 @@ from Phase_2.dimensionality_reduction.PCA import PCA
 from Phase_2.dimensionality_reduction.SVD import SVD
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
-
+import numpy as np
 from Util.json_util import LatentSemanticFile
 
 
