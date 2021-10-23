@@ -1,18 +1,20 @@
 from matrix_util import *
 
 
-def transform_1xm_to_1xk(matrix_1xm, all_latent_semantics, feature_model):
+def transform_1xm_to_1xk(matrix_1xm, all_latent_semantics):
     matrix_1xk = []
-    if feature_model == 'pca':
-        matrix_1xk = multiply_matrices(matrix_1xm, all_latent_semantics['matrix_mxk'])
-        matrix_1xk = multiply_matrices(matrix_1xk, inverse_matrix(all_latent_semantics['matrix_kxk']))
-    elif feature_model == 'svd':
-        matrix_1xk = multiply_matrices(transpose_matrix(all_latent_semantics['matrix_kxm']))
-        matrix_1xk = multiply_matrices(matrix_1xk, inverse_matrix(all_latent_semantics['matrix_kxk']))
-    elif feature_model == 'lda':
+    method_dimension_reduction = all_latent_semantics['reduction_technique']
+    latent_semantics = all_latent_semantics['latent_features']
+    if method_dimension_reduction == 'PCA':
+        matrix_1xk = multiply_matrices(matrix_1xm, latent_semantics['matrix_mxk'])
+        matrix_1xk = multiply_matrices(matrix_1xk, inverse_matrix(latent_semantics['matrix_kxk']))
+    elif method_dimension_reduction == 'SVD':
+        matrix_1xk = multiply_matrices(matrix_1xm, latent_semantics['matrix_mxk'])
+        matrix_1xk = multiply_matrices(matrix_1xk, inverse_matrix(np.diagflat(latent_semantics['matrix_kxk'])))
+    elif method_dimension_reduction == 'LDA':
         pass
-    elif feature_model == 'k-means':
-        matrix_kxm = all_latent_semantics['centroids_kxm']
+    elif method_dimension_reduction == 'k-means':
+        matrix_kxm = latent_semantics['centroids_kxm']
         # Euclidean distance between query and all centroids
         for each in matrix_kxm:
             matrix_1xk.append(np.linalg.norm(matrix_1xm - each))
@@ -20,9 +22,10 @@ def transform_1xm_to_1xk(matrix_1xm, all_latent_semantics, feature_model):
     return matrix_1xk
 
 
-def get_reduced_dimension_nxk_using_latent_semantics(data_matrix_nxm, all_latent_semantics, feature_model):
+def get_reduced_dimension_nxk_using_latent_semantics(all_data, all_latent_semantics, feature_model):
     reduced_matrix_nxk = []
-    for each in data_matrix_nxm:
-        reduced_matrix_nxk.append(transform_1xm_to_1xk(each, all_latent_semantics, feature_model))
+    for each in all_data:
+        reduced_matrix_nxk.append({feature_model: transform_1xm_to_1xk(each[feature_model], all_latent_semantics),
+                                   'label': each['label']})
 
     return reduced_matrix_nxk

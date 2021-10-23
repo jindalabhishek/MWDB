@@ -17,6 +17,7 @@ def get_similar_images_based_on_model(model_name, input_image_descriptor_object,
     """
         Compare the distance between images based upon input model. 'All' denotes combination of all models
     """
+    label_vs_sorted_distances = None
     if model_name == 'color_moment':
         label_vs_sorted_distances = compare_color_moment(input_image_descriptor_object, db_descriptor_objects)
     elif model_name == 'elbp':
@@ -123,12 +124,11 @@ def compare_hog_values(input_image_descriptor_object, db_descriptor_objects):
     for db_descriptor_object in db_descriptor_objects:
         image_label = db_descriptor_object['label']
         hog_feature_descriptor = np.array(db_descriptor_object['hog_feature_descriptor'])
-        emd_distance = 0
-        for i in range(0, NUMBER_OF_BINS):
-            input_bin_vector = input_hog_feature_descriptor[:, :, :, :, i]
-            compare_bin_vector = hog_feature_descriptor[:, :, :, :, i]
-            eucledian_distance_between_bins = np.linalg.norm(input_bin_vector - compare_bin_vector)
-            emd_distance += eucledian_distance_between_bins
+        # for i in range(0, NUMBER_OF_BINS):
+        input_bin_vector = input_hog_feature_descriptor
+        compare_bin_vector = hog_feature_descriptor
+        eucledian_distance_between_bins = np.linalg.norm(input_bin_vector - compare_bin_vector)
+        emd_distance = eucledian_distance_between_bins
         label_vs_emd_distance[image_label] = emd_distance
     return label_vs_emd_distance
 

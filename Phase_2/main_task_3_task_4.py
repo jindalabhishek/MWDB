@@ -5,7 +5,9 @@ from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
 import numpy as np
 
-
+#
+# lsf = LatentSemanticFile()
+# all_latent_semantics = lsf.deserialize('out.json')
 def similar_matrix(data, method='pearson'):
   data = np.array(data, dtype=np.float128)
   matrix = np.ones((data.shape[0],data.shape[0]))

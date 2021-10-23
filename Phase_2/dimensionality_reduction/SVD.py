@@ -1,7 +1,7 @@
 import numpy as np
 class SVD:
-    LATENT_FEATURES = "latent_features"
-    LATENT_FEATURE_POWERS = "powers"
+    LATENT_FEATURES = "matrix_mxk"
+    LATENT_FEATURE_POWERS = "matrix_kxk"
 
     @staticmethod
     def top_eigen_vectors(eigen_value, eigen_vec, k):

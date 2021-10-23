@@ -3,7 +3,7 @@ import sklearn.decomposition as sk_decomp
 
 
 class LDA:
-    LATENT_FEATURES = "latent_features"
+    LATENT_FEATURES = "features_in_k_dimensions"
     LATENT_FEATURE_POWERS = "powers"
 
     def serialize(self):
