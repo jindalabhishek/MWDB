@@ -7,12 +7,12 @@ class KMeans:
     CENTROIDS = "CENTROIDS"
 
     def serialize(self):
-        return {KMeans.CENTROIDS:self.centroids}
+        return {KMeans.CENTROIDS:[lst.tolist() for lst in self.centroids]}
 
     @staticmethod
     def deserialize(dict):
         obj = KMeans()
-        obj.centroids = np.array(dict[KMeans.CENTROIDS])
+        obj.centroids = [np.array(lst) for lst in dict[KMeans.CENTROIDS]]
         return obj
 
     def __init__(self, n_iterations) -> None:
@@ -85,4 +85,6 @@ class KMeans:
         self.centroids = centroids
         image_vector_matrix_k_dimensions = KMeans.get_vectors_k_dimensions(image_vector_matrix, centroids)
         return np.array(image_vector_matrix_k_dimensions)
+
+
 
