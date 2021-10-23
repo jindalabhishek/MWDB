@@ -6,8 +6,9 @@ from Phase_2.dimensionality_reduction.PCA import PCA
 from Phase_2.dimensionality_reduction.SVD import SVD
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
-import numpy as np
+
 from Util.json_util import LatentSemanticFile
+from dimention_reduction_util import *
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -21,7 +22,7 @@ def get_image_vector_matrix(feature_descriptors, feature_model):
 
 def main():
     """
-        Executes Task 1
+        Executes Task 2
         Output Subject - latent semantics matrix, (subject-list of weight matrix)
     """
     """
