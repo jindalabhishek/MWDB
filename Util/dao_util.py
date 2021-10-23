@@ -1,5 +1,3 @@
-import ssl
-
 from pymongo import MongoClient
 
 """
