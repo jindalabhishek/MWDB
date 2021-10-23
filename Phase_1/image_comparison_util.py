@@ -7,6 +7,28 @@ from Constants import ELBP_WEIGHT
 from Constants import HOG_WEIGHT
 from Constants import NUMBER_OF_BINS
 
+def get_similar_images_based_on_model(model_name, input_image_descriptor_object, db_descriptor_objects):
+    """
+    Computes the similar images based upon the input model
+    :return List of similar images based upon the input model
+    :rtype: List
+    """
+
+    """
+        Compare the distance between images based upon input model. 'All' denotes combination of all models
+    """
+    if model_name == 'color_moment':
+        label_vs_sorted_distances = compare_color_moment(input_image_descriptor_object, db_descriptor_objects)
+    elif model_name == 'elbp':
+        label_vs_sorted_distances = compare_elbp_values(input_image_descriptor_object, db_descriptor_objects)
+    elif model_name == 'hog':
+        label_vs_sorted_distances = compare_hog_values(input_image_descriptor_object, db_descriptor_objects)
+    elif model_name == 'all':
+        label_vs_sorted_distances = compare_all_models(input_image_descriptor_object, db_descriptor_objects)
+    output_list = list(label_vs_sorted_distances.items())
+    output_list.sort(key=lambda x: x[1])
+    return output_list
+
 
 def get_euclidean_distance_between_color_moments(input_color_moment_feature_descriptor,
                                                  color_moment_feature_descriptor):
