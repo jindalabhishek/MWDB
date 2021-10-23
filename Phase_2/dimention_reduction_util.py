@@ -85,5 +85,6 @@ def normalize_data_for_lda(image_vector_matrix):
   
 def get_reduced_matrix_using_lda(data, k):
     LDA = sk_decomp.LatentDirichletAllocation(n_components = k, random_state=0)
-    latent_features = LDA.fit_transform(data)
+    normalized_data = normalize_data_for_lda(data)
+    latent_features = LDA.fit_transform(normalized_data)
     return latent_features
