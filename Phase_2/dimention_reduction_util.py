@@ -61,22 +61,10 @@ def top_eigen_vectors(eigen_value,eigen_vec, k):
     eigen_vec = eigen_vec.T
     return np.array([i[0] for i in eigen_value]),eigen_vec
 
-def get_reduced_matrix_using_svd(image_vector_matrix,image_label_ids, k):
+def get_reduced_matrix_using_svd(image_vector_matrix, k):
     right_eig_val, right_eig_vec = top_eigen_vectors(*np.linalg.eig(np.dot(image_vector_matrix.T, image_vector_matrix)),k)
     left_eig_val, left_eig_vec = top_eigen_vectors(*np.linalg.eig(np.dot(image_vector_matrix, image_vector_matrix.T)),k)
-    dict_val = {}
-    for i in range(len(image_label_ids)):
-        image_label = image_label_ids[i]
-        if image_label not in dict_val:
-            dict_val[image_label] = []
-        dict_val[image_label].append(left_eig_vec[i])
-
-    for i in dict_val:
-        dict_val[i] = np.average(np.array(dict_val[i]),axis=0)
-
-    for i in dict_val:
-        print(dict_val[i])
-    return dict_val
+    return left_eig_val
 
 def normalize_data_for_lda(image_vector_matrix):
     normalized_data = (image_vector_matrix - np.min(image_vector_matrix)) \
