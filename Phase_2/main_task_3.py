@@ -1,9 +1,9 @@
-from dao_util import DAOUtil
+from Util.dao_util import DAOUtil
 from numpy.linalg import svd
 from dimention_reduction_util import *
 from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import LatentDirichletAllocation
-from k_means_util import reduce_dimensions_k_means
+from Util.k_means_util import reduce_dimensions_k_means
 import numpy as np
 
 #def write_to_file(data):
