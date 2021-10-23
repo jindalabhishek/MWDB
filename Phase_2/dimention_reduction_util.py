@@ -64,7 +64,7 @@ def top_eigen_vectors(eigen_value,eigen_vec, k):
 def get_reduced_matrix_using_svd(image_vector_matrix, k):
     right_eig_val, right_eig_vec = top_eigen_vectors(*np.linalg.eig(np.dot(image_vector_matrix.T, image_vector_matrix)),k)
     left_eig_val, left_eig_vec = top_eigen_vectors(*np.linalg.eig(np.dot(image_vector_matrix, image_vector_matrix.T)),k)
-    return left_eig_val
+    return left_eig_vec
 
 def normalize_data_for_lda(image_vector_matrix):
     normalized_data = (image_vector_matrix - np.min(image_vector_matrix)) \
