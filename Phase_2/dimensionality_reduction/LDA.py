@@ -20,4 +20,4 @@ class LDA:
         lda = sk_decomp.LatentDirichletAllocation(n_components=k, random_state=0)
         latent_features = lda.fit_transform(data)
         self.latent_features = latent_features
-        return latent_features
+        return latent_features.real
