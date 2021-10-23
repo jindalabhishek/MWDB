@@ -3,7 +3,7 @@ import numpy
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
 from dimention_reduction_util import *
-from k_means_util import reduce_dimensions_k_means
+from Util.k_means_util import reduce_dimensions_k_means
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
