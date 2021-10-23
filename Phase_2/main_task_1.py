@@ -4,6 +4,7 @@ from Phase_2.dimensionality_reduction.KMeans import KMeans
 from Phase_2.dimensionality_reduction.LDA import LDA
 from Phase_2.dimensionality_reduction.PCA import PCA
 from Phase_2.dimensionality_reduction.SVD import SVD
+from Util.Utils import get_output_file_path
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
 import numpy as np
@@ -53,9 +54,9 @@ def main():
         subject_weight_pairs[i] = np.average(np.array(subject_weight_pairs[i]),axis=0).tolist()
 
 
-    LatentSemanticFile(feature_model,reductionTechniqueDict[dimension_reduction_technique],subject_weight_pairs).serialize("out.json")
+    LatentSemanticFile(feature_model,reductionTechniqueDict[dimension_reduction_technique],subject_weight_pairs)\
+        .serialize(get_output_file_path(1,feature_model,type_id,dimension_reduction_technique))
     # print('Subject_weight_matrix dimension', len(subject_weight_matrix), len(subject_weight_matrix[0]))
     print('Entire Subject weight matrix: \n', subject_weight_matrix)
-
 
 main()
