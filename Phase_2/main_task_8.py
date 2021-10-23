@@ -37,7 +37,11 @@ def update_ASCOS_similarity(processed, adjacency, c, i, j):
   return s
 
 def convergence_test(S, S_new):
-  return False # To be implemented
+  if np.isclose(S,Snew):
+    return True
+  else:
+    return False
+   # implemented but not tested
 
 def ASCOS_similarity(adjacency, c, iterations = 10):
   # Initialize S (nxn) with diagnal = 1 
