@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+import ssl
 """
 Data Access Object (DAO) Util Class
 """
@@ -11,8 +11,7 @@ class DAOUtil:
     """
 
     def __init__(self):
-        client = MongoClient(
-            "mongodb+srv://dhruv_agja:test123@cluster0.21lv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+        client = MongoClient("mongodb+srv://dhruv_agja:test123@cluster0.21lv7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", ssl_cert_reqs=ssl.CERT_NONE)
         db = client.mwdb
         server_status = db.command("serverStatus")
         print(server_status)
