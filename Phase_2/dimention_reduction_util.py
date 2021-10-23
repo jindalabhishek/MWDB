@@ -9,7 +9,6 @@ def get_reduced_matrix_using_pca(data, k, cov_method='np'):
   COV = np.zeros((n_features,n_features))
   
   # Calculate COV matrix
-  print("Calculating COV matrix")
   if(cov_method == 'manual'):
     for feature_i in range(n_features):
      feature_i_ave = np.mean(data[:,feature_i])
@@ -25,7 +24,6 @@ def get_reduced_matrix_using_pca(data, k, cov_method='np'):
     COV = np.cov(data, rowvar=False)
 
   #Find eigenvalues and eigenvectors
-  print("Finding eigenvalues and eigenvectors")
   eig_val, eig_vec = np.linalg.eig(COV)
 
   if(k > eig_val.shape[0]):
@@ -33,7 +31,6 @@ def get_reduced_matrix_using_pca(data, k, cov_method='np'):
     exit()
 
   # Sort eig_vec by eig_val in descending order
-  print("Sorting and selecting " + str(k) + " latent semantics")
   sorted_eig_val = sorted(eig_val, reverse=True)
   eig_val_list = eig_val.tolist()
   sorted_eig_val_index = [eig_val_list.index(i) for i in sorted_eig_val]  # 0 is highest
@@ -45,7 +42,6 @@ def get_reduced_matrix_using_pca(data, k, cov_method='np'):
   selected_eig_vec = np.transpose(np.array(selected_eig_vec))
   
   # Transform data
-  print("Transforming data")
   latent_features = np.matmul(data,selected_eig_vec)
   return latent_features
 
