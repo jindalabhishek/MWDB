@@ -78,7 +78,12 @@ def get_reduced_matrix_using_svd(image_vector_matrix,image_label_ids, k):
         print(dict_val[i])
     return dict_val
 
+def normalize_data_for_lda(image_vector_matrix):
+    normalized_data = (image_vector_matrix - np.min(image_vector_matrix)) \
+                      / (np.max(image_vector_matrix) - np.min(image_vector_matrix))
+    return normalized_data
+  
 def get_reduced_matrix_using_lda(data, k):
-  LDA = sk_decomp.LatentDirichletAllocation(n_components = k, random_state=0)
-  latent_features = LDA.fit_transform(data)
-  return latent_features
+    LDA = sk_decomp.LatentDirichletAllocation(n_components = k, random_state=0)
+    latent_features = LDA.fit_transform(data)
+    return latent_features
