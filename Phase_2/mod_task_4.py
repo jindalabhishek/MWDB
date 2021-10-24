@@ -58,7 +58,7 @@ def main():
         .serialize(
         get_output_file_path(4, "", "input_path", type(reductionTechniqueDict[dimension_reduction_technique]).__name__))
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
-    print('Entire Type-Type similarity weight matrix: \n', latent_subject_features_dataset)
+    print('Entire Subject-Subject similarity weight matrix: \n', latent_subject_features_dataset)
 
     return latent_subject_features_dataset, k
 main()
