@@ -42,7 +42,7 @@ def main():
     print("Calculating Similarity Matrix")
 
     k = int(input("Enter k value: "))
-    dimension_reduction_technique = input("Enter dimensionality reduction technique: ")
+    dimension_reduction_technique = input("Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): ")
 
     technique_number_vs_reduction_object = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}
     dimension_reduction_object = technique_number_vs_reduction_object[dimension_reduction_technique]
