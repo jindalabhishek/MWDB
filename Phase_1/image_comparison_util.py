@@ -42,21 +42,21 @@ def get_euclidean_distance_between_color_moments(input_color_moment_feature_desc
     input_color_moment_feature_descriptor = np.array(input_color_moment_feature_descriptor)
     color_moment_feature_descriptor = np.array(color_moment_feature_descriptor)
 
-    input_mean_vector = input_color_moment_feature_descriptor[:, :, 0]
-    given_mean_vector = color_moment_feature_descriptor[:, :, 0]
+    # input_mean_vector = input_color_moment_feature_descriptor[:, :, 0]
+    # given_mean_vector = color_moment_feature_descriptor[:, :, 0]
 
-    input_stand_dev_vector = input_color_moment_feature_descriptor[:, :, 1]
-    given_stand_dev_vector = color_moment_feature_descriptor[:, :, 1]
+    # input_stand_dev_vector = input_color_moment_feature_descriptor[:, :, 1]
+    # given_stand_dev_vector = color_moment_feature_descriptor[:, :, 1]
+    #
+    # input_skewness_vector = input_color_moment_feature_descriptor[:, :, 2]
+    # given_skewness_vector = color_moment_feature_descriptor[:, :, 2]
 
-    input_skewness_vector = input_color_moment_feature_descriptor[:, :, 2]
-    given_skewness_vector = color_moment_feature_descriptor[:, :, 2]
+    distance_between_means = np.linalg.norm(input_color_moment_feature_descriptor - color_moment_feature_descriptor)
+    # distance_between_stand_dev = np.linalg.norm(input_stand_dev_vector - given_stand_dev_vector)
+    # distance_between_skewness = np.linalg.norm(input_skewness_vector - given_skewness_vector)
 
-    distance_between_means = np.linalg.norm(input_mean_vector - given_mean_vector)
-    distance_between_stand_dev = np.linalg.norm(input_stand_dev_vector - given_stand_dev_vector)
-    distance_between_skewness = np.linalg.norm(input_skewness_vector - given_skewness_vector)
-
-    total_distance = MEAN_WEIGHT * distance_between_means + STAND_DEV_WEIGHT * distance_between_stand_dev + SKEWNESS_WEIGHT * distance_between_skewness
-    return total_distance
+    # total_distance = MEAN_WEIGHT * distance_between_means + STAND_DEV_WEIGHT * distance_between_stand_dev + SKEWNESS_WEIGHT * distance_between_skewness
+    return distance_between_means
 
 
 def compare_color_moment(input_image_descriptor_object, db_descriptor_objects):
@@ -101,13 +101,13 @@ def compare_elbp_values(input_image_descriptor_object, db_descriptor_objects):
     """
     label_vs_euclidean_distance = {}
     input_elbp_feature_descriptor = np.array(input_image_descriptor_object['elbp_feature_descriptor'])
-    input_histogram_distance = get_elbp_histogram(input_elbp_feature_descriptor)
+    # input_histogram_distance = get_elbp_histogram(input_elbp_feature_descriptor)
     for db_descriptor_object in db_descriptor_objects:
         image_label = db_descriptor_object['label']
         elbp_feature_descriptor = np.array(db_descriptor_object['elbp_feature_descriptor'])
-        histogram_distance = get_elbp_histogram(elbp_feature_descriptor)
-        dist = 0.5 * np.sum(((input_histogram_distance - histogram_distance) ** 2) /
-                            (input_histogram_distance + histogram_distance + 1e-10))
+        # histogram_distance = get_elbp_histogram(elbp_feature_descriptor)
+        dist = 0.5 * np.sum(((input_elbp_feature_descriptor - elbp_feature_descriptor) ** 2) /
+                            (input_elbp_feature_descriptor + elbp_feature_descriptor + 1e-10))
         label_vs_euclidean_distance[image_label] = dist
     return label_vs_euclidean_distance
 

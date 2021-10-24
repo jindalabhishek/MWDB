@@ -23,7 +23,7 @@ feature_model = input()
 
 daoUtil = DAOUtil()
 
-output1_fd = open('../Outputs/task_1_hog_LDA_cc.json')
+output1_fd = open('../Outputs/task_1_color_moment_SVD_cc.json')
 all_latent_semantics = json.load(output1_fd)
 
 query_matrix_1xm = []
