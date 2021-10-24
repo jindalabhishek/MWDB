@@ -36,7 +36,7 @@ def main():
         """
            Normalize the image pixels
         """
-        image_pixels = image_pixels / Constants.GREY_SCALE_MAXS
+        image_pixels = image_pixels / Constants.GREY_SCALE_MAX
         """
             Compute All the feature descriptors
         """

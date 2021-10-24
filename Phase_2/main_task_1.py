@@ -4,11 +4,9 @@ from Phase_2.dimensionality_reduction.KMeans import KMeans
 from Phase_2.dimensionality_reduction.LDA import LDA
 from Phase_2.dimensionality_reduction.PCA import PCA
 from Phase_2.dimensionality_reduction.SVD import SVD
-from Util.Utils import get_output_file_path
 from Util.dao_util import DAOUtil
-from numpy.linalg import svd
 import numpy as np
-from Util.json_util import LatentSemanticFile
+from Util.Utils import save_task_data
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -44,10 +42,10 @@ def main():
     print('Image_vector_matrix dimension: ', len(image_vector_matrix), len(image_vector_matrix[0]))
     image_vector_matrix = numpy.array(image_vector_matrix)
     k = int(input("Enter K Value for Dimensionality Reduction:"))
-    reductionTechniqueDictMap = {'1': 'PCA', '2': 'SVD', '3': 'LDA', '4': 'KMeans'}
-    reductionTechniqueDict = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}
-    subject_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,k,
-                                                                                          image_types)
+    technique_number_vs_reduction_object = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}
+    dimension_reduction_object = technique_number_vs_reduction_object[dimension_reduction_technique]
+    subject_weight_matrix = dimension_reduction_object.compute(image_vector_matrix, k, image_types)
+
     subject_weight_pairs = {}
     for i in range(len(image_types)):
         image_label = image_types[i]
@@ -58,9 +56,8 @@ def main():
     for i in subject_weight_pairs:
         subject_weight_pairs[i] = np.average(np.array(subject_weight_pairs[i]), axis=0).tolist()
 
-    LatentSemanticFile(feature_model, reductionTechniqueDict[dimension_reduction_technique], subject_weight_pairs) \
-        .serialize(get_output_file_path('../Outputs/task_1', feature_model_name, type_id,
-                                        reductionTechniqueDictMap[dimension_reduction_technique]))
+    save_task_data('task_1', dimension_reduction_object, task_output=subject_weight_pairs, topic=type_id,
+                   feature_model=feature_model_name)
     # print('Subject_weight_matrix dimension', len(subject_weight_matrix), len(subject_weight_matrix[0]))
     print('Entire Subject weight matrix: \n', subject_weight_matrix)
 

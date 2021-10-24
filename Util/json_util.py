@@ -13,10 +13,10 @@ class LatentSemanticFile:
     TASK_OUTPUT = "task_output"
     REDUCTION_TECHNIQUE = "reduction_technique"
 
-    def __init__(self, model, dimensionRecution, task_output):
+    def __init__(self, model, dimension_reduction, task_output):
         self.latent_features = []
         self.model = model
-        self.dimensionReduction = dimensionRecution
+        self.dimensionReduction = dimension_reduction
         self.task_output = task_output
 
     def serialize(self, outputPath):
@@ -30,8 +30,14 @@ class LatentSemanticFile:
     @staticmethod
     def deserialize(inputPath):
         val = json.load(open(inputPath))
-        dimensionReductionDict = {KMeans.__name__: KMeans, LDA.__name__: LDA, PCA.__name__: PCA, SVD.__name__: SVD}
-        return LatentSemanticFile(val[LatentSemanticFile.MODEL],
-                                  dimensionReductionDict[val[LatentSemanticFile.REDUCTION_TECHNIQUE]].deserialize(
-                                      val[LatentSemanticFile.LATENT_FEATURES]),
-                                  val[LatentSemanticFile.TASK_OUTPUT])
+        dimensionReductionDict = {KMeans.__name__: KMeans,
+                                  LDA.__name__: LDA,
+                                  PCA.__name__: PCA,
+                                  SVD.__name__: SVD}
+        model_object = val[LatentSemanticFile.MODEL]
+        reduction_technique = val[LatentSemanticFile.REDUCTION_TECHNIQUE]
+        reduction_technique_object = dimensionReductionDict[reduction_technique]
+        latent_features_object = val[LatentSemanticFile.LATENT_FEATURES]
+        dimension_reduction_data = reduction_technique_object.deserialize(latent_features_object)
+        task_output_data = val[LatentSemanticFile.TASK_OUTPUT]
+        return LatentSemanticFile(model_object, dimension_reduction_data, task_output_data)

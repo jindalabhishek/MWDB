@@ -2,7 +2,7 @@ import numpy as np
 from numpy.linalg import svd
 
 
-def convert_similarity_matrix_to_graph(similarity_matrix, n, m):
+def convert_similarity_matrix_to_graph(similarity_matrix, n):
     adjacency_matrix = np.zeros((len(similarity_matrix), len(similarity_matrix)))
     for i in range(0, len(similarity_matrix)):
         sorted_indexes = np.argsort(-similarity_matrix[i])

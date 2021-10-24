@@ -1,9 +1,13 @@
+import json
+
 from Util.dao_util import DAOUtil
 from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
 from Util.graph_util import *
 import numpy as np
-
+from Util.json_util import LatentSemanticFile
+from dimensionality_reduction import LDA
+from Util.Utils import *
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
     image_vector_matrix = []
@@ -36,13 +40,15 @@ def normalize_data_for_lda(image_vector_matrix):
 
 def main():
     """
-        Executes Task 2
+        Executes Task 9
         Output Subject - latent semantics matrix, (subject-list of weight matrix)
     """
     """
         Connection to MongoDB using PyMongo
     """
-    similarity_matrix = input('Welcome to Task 9 Demo. Enter the similarity matrix:')
+    input_path = input('Welcome to Task 9 Demo. Enter the file which contains similarity matrix:')
+    similarity_matrix = get_similarity_matrix(input_path)
+    similarity_matrix = np.array(similarity_matrix)
     n = int(input('Enter value of n:'))
     m = int(input('Enter value of m:'))
     subject_id_1 = int(input('Subject Id1:'))

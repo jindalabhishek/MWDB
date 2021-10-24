@@ -3,16 +3,20 @@ import numpy as np
 import pandas as pd
 import numpy as np
 
+
 class KMeans:
     CENTROIDS = "centroids_kxm"
+    INPUT_MATRIX = "matrix_nxm"
 
     def serialize(self):
-        return {KMeans.CENTROIDS:[lst.tolist() for lst in self.centroids]}
+        return {KMeans.CENTROIDS: [lst.tolist() for lst in self.centroids],
+                KMeans.INPUT_MATRIX: self.input_matrix}
 
     @staticmethod
-    def deserialize(dict):
+    def deserialize(latent_feature_json_object):
         obj = KMeans()
-        obj.centroids = [np.array(lst) for lst in dict[KMeans.CENTROIDS]]
+        obj.centroids = [np.array(lst) for lst in latent_feature_json_object[KMeans.CENTROIDS]]
+        obj.input_matrix = latent_feature_json_object[KMeans.INPUT_MATRIX]
         return obj
 
     def __init__(self, n_iterations) -> None:
@@ -68,8 +72,7 @@ class KMeans:
             image_vector_matrix_k_dimensions.append(euclidean_distance_from_clusters)
         return image_vector_matrix_k_dimensions
 
-
-    def compute(self,image_vector_matrix,n_components,*args):
+    def compute(self, image_vector_matrix, n_components, *args):
         image_vector_matrix = np.array(image_vector_matrix)
         df = pd.DataFrame(image_vector_matrix)
         df.to_clipboard(index=False, header=False)
@@ -83,6 +86,6 @@ class KMeans:
             # print(centroids)
             # print(centroid_vs_points)
         self.centroids = centroids
+        self.input_matrix = image_vector_matrix
         image_vector_matrix_k_dimensions = KMeans.get_vectors_k_dimensions(image_vector_matrix, centroids)
         return np.array(image_vector_matrix_k_dimensions).real
-

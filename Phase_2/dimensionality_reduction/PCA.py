@@ -1,17 +1,22 @@
 import numpy as np
 
+
 class PCA:
     LATENT_FEATURES = "matrix_mxk"
-    LATENT_FEATURE_POWERS = "powers"
+    LATENT_FEATURE_POWERS = "matrix_kxk"
+    INPUT_MATRIX = "matrix_nxm"
 
     def serialize(self):
-        return {PCA.LATENT_FEATURES:self.latent_features.real.tolist(),PCA.LATENT_FEATURE_POWERS:self.power_val.real.tolist()}
+        return {PCA.LATENT_FEATURES: self.latent_features.real.tolist(),
+                PCA.LATENT_FEATURE_POWERS: self.power_val.real.tolist(),
+                PCA.INPUT_MATRIX: self.input_matrix.tolist()}
 
     @staticmethod
-    def deserialize(dict):
+    def deserialize(latent_feature_json_object):
         obj = PCA()
-        obj.latent_features = np.array(dict[PCA.LATENT_FEATURES])
-        obj.power_val = np.array(dict[PCA.LATENT_FEATURE_POWERS])
+        obj.latent_features = np.array(latent_feature_json_object[PCA.LATENT_FEATURES])
+        obj.power_val = np.array(latent_feature_json_object[PCA.LATENT_FEATURE_POWERS])
+        obj.input_matrix = np.array(latent_feature_json_object[PCA.INPUT_MATRIX])
         return obj
 
     @staticmethod
@@ -27,16 +32,16 @@ class PCA:
         eigen_vec = eigen_vec.T
         return np.array([i[0] for i in eigen_value]), eigen_vec
 
-    def __init__(self,cov_method='np') -> None:
+    def __init__(self, cov_method='np') -> None:
         self.cov_method = cov_method
 
-    def compute(self,data,k,*args):
+    def compute(self, data, k, *args):
         n_objects, n_features = data.shape
         COV = np.zeros((n_features, n_features))
 
         # Calculate COV matrix
         print("Calculating COV matrix")
-        if (self.cov_method == 'manual'):
+        if self.cov_method == 'manual':
             for feature_i in range(n_features):
                 feature_i_ave = np.mean(data[:, feature_i])
                 for feature_j in range(n_features):
@@ -45,17 +50,18 @@ class PCA:
                     for object in range(n_objects):
                         sum += (data[object, feature_i] - feature_i_ave) * (data[object, feature_j] - feature_j_ave)
                     COV[feature_i, feature_j] = sum / n_objects
-        elif (self.cov_method == 'auto'):
+        elif self.cov_method == 'auto':
             COV = np.dot(data.T, data) / (n_features - 1)  # Feature x Feature COV matrix -> Incorrect!
-        elif (self.cov_method == 'np'):
+        elif self.cov_method == 'np':
             COV = np.cov(data, rowvar=False)
 
         # Find eigenvalues and eigenvectors
         print("Finding eigenvalues and eigenvectors")
 
-        eig_val, eig_vec = PCA.top_eigen_vectors(*np.linalg.eig(COV),k)
+        eig_val, eig_vec = PCA.top_eigen_vectors(*np.linalg.eig(COV), k)
         self.power_val = eig_val
         self.latent_features = eig_vec
+        self.input_matrix = data
         # Transform data
         # print("Transforming data")
         return np.matmul(data, eig_vec).real
