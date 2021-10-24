@@ -12,18 +12,18 @@ from Constants import GREY_SCALE_MAX
 from Phase_1.image_comparison_util import get_similar_images_based_on_model
 from Util.dao_util import *
 from task567_util import *
-from Util.json_util import LatentSemanticFile
-image_path = '/Users/dhruv/Desktop/Sem1/MWDB/project2/all/image-cc-1-2.png'
+# from Util.json_util import LatentSemanticFile
+# from Util.json_util import LatentSemanticFile
+image_path = '/Users/dhruv/Desktop/Sem1/MWDB/project2/all/image-neg-1-2.png'
     # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
 print('Select your feature descriptor! (color_moment, elbp, hog): ')
-feature_model = 'hog'
-    # input()
+feature_model = input()
 # feature_model += 'feature_descriptor'
 # /Users/dhruv/Desktop/Sem1/MWDB/project2/query/cc-image-2.png
 
 daoUtil = DAOUtil()
 
-output1_fd = open('out.json')
+output1_fd = open('../Outputs/task_1_hog_LDA_cc.json')
 all_latent_semantics = json.load(output1_fd)
 
 # lsf = LatentSemanticFile()
@@ -78,4 +78,3 @@ n_value = int(input('Enter n, for top n similar images'))
 output_list_n = output_list[:n_value]
 
 print(output_list_n)
-

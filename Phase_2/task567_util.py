@@ -12,12 +12,13 @@ def transform_1xm_to_1xk(matrix_1xm, all_latent_semantics):
         matrix_1xk = multiply_matrices(matrix_1xm, latent_semantics['matrix_mxk'])
         matrix_1xk = multiply_matrices(matrix_1xk, inverse_matrix(np.diagflat(latent_semantics['matrix_kxk'])))
     elif method_dimension_reduction == 'LDA':
-        pass
-    elif method_dimension_reduction == 'k-means':
+        matrix_mxk = multiply_matrices(transpose_matrix(latent_semantics['matrix_nxm']), latent_semantics['matrix_nxk'])
+        matrix_1xk = multiply_matrices(matrix_1xm, matrix_mxk)
+    elif method_dimension_reduction == 'KMeans':
         matrix_kxm = latent_semantics['centroids_kxm']
         # Euclidean distance between query and all centroids
         for each in matrix_kxm:
-            matrix_1xk.append(np.linalg.norm(matrix_1xm - each))
+            matrix_1xk.append(np.linalg.norm(np.array(matrix_1xm) - np.array(each)))
 
     return matrix_1xk
 

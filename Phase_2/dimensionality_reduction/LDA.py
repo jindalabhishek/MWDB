@@ -3,11 +3,12 @@ import sklearn.decomposition as sk_decomp
 
 
 class LDA:
-    LATENT_FEATURES = "features_in_k_dimensions"
-    LATENT_FEATURE_POWERS = "powers"
+    LATENT_FEATURES = "matrix_nxk"
+    INPUT_MATRIX = "matrix_nxm"
 
     def serialize(self):
-        return {LDA.LATENT_FEATURES:self.latent_features.real.tolist()}
+        return {LDA.LATENT_FEATURES:self.latent_features.real.tolist(),
+                LDA.INPUT_MATRIX:self.input_matrix.tolist()}
 
     @staticmethod
     def deserialize(dict):
@@ -26,4 +27,5 @@ class LDA:
         lda = sk_decomp.LatentDirichletAllocation(n_components=k, random_state=0)
         latent_features = lda.fit_transform(LDA.normalize_data_for_lda(data),imageTypes)
         self.latent_features = latent_features
+        self.input_matrix = data
         return latent_features.real

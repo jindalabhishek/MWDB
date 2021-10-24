@@ -61,9 +61,9 @@ def main():
     k = min(k, max_n_components)
     image_vector_matrix_k_dimensions = None
     if dimension_reduction_technique == 'pca':
-        pass
+
     elif dimension_reduction_technique == 'svd':
-        pass
+
     elif dimension_reduction_technique == 'lda':
         normalized_data = normalize_data_for_lda(np.array(image_vector_matrix))
         image_vector_matrix_k_dimensions = calculate_lda(normalized_data, image_types, k)
