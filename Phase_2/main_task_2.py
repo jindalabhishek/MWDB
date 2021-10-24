@@ -29,7 +29,7 @@ def main():
         Connection to MongoDB using PyMongo
     """
     dao_util = DAOUtil()
-    feature_model = input('Welcome to Task 2 Demo. Enter the feature model:')
+    feature_model = input('Welcome to Task 2 Demo. Enter the feature model (color_moment, elbp, hog):')
     feature_model_name = feature_model
     feature_model += '_feature_descriptor'
     subject_id = input('Enter Subject Id:')
