@@ -1,24 +1,8 @@
 import numpy as np
 import math
 import os
-
-def get_similarity_matrix(file_dir):
-  ret = np.zeros((10,10))
-  for i in range(10):
-    for j in range(10):
-      ret[i][j] = np.random.random()
-  #print(ret)
-  return ret
-
-def convert_similarity_matrix_to_graph(similarity_matrix, n):
-    adjacency_matrix = np.zeros((len(similarity_matrix), len(similarity_matrix)))
-    for i in range(0, len(similarity_matrix)):
-        sorted_indexes = np.argsort(-similarity_matrix[i])
-        #print(sorted_indexes)
-        for j in range(0, min(n, len(sorted_indexes))):
-            adjacency_matrix[i][sorted_indexes[j]] = 1
-    #print(adjacency_matrix)
-    return adjacency_matrix
+from Util.Utils import get_similarity_matrix
+from Util.graph_util import convert_similarity_matrix_to_graph
 
 def update_ASCOS_similarity(processed, adjacency, c, i, j):
   #print("   Updating " + str(i) + ", " + str(j))
