@@ -27,7 +27,7 @@ class PCA:
         eigen_vec = eigen_vec.T
         return np.array([i[0] for i in eigen_value]), eigen_vec
 
-    def compute(self,data,k,cov_method='np'):
+    def compute(self,data,k,cov_method='np',*args):
         n_objects, n_features = data.shape
         COV = np.zeros((n_features, n_features))
 
@@ -55,5 +55,5 @@ class PCA:
         self.latent_features = eig_vec
         # Transform data
         # print("Transforming data")
-        return np.matmul(data, eig_val)
+        return np.matmul(data, eig_vec).real
 
