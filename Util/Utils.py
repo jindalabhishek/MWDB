@@ -19,7 +19,7 @@ def save_task_data(task_id, dimension_reduction_object, task_output=None, topic=
     technique_name = type(dimension_reduction_object).__name__
     output_path = get_output_file_path(task_id, feature_model, topic, technique_name)
     print(output_path)
-    LatentSemanticFile(feature_model, dimension_reduction_object, task_output.tolist()).serialize(output_path)
+    LatentSemanticFile(feature_model, dimension_reduction_object, task_output).serialize(output_path)
 
 
 def get_task_output_data(input_path):
