@@ -27,13 +27,16 @@ class PCA:
         eigen_vec = eigen_vec.T
         return np.array([i[0] for i in eigen_value]), eigen_vec
 
-    def compute(self,data,k,cov_method='np',*args):
+    def __init__(self,cov_method='np') -> None:
+        self.cov_method = cov_method
+
+    def compute(self,data,k,*args):
         n_objects, n_features = data.shape
         COV = np.zeros((n_features, n_features))
 
         # Calculate COV matrix
         print("Calculating COV matrix")
-        if (cov_method == 'manual'):
+        if (self.cov_method == 'manual'):
             for feature_i in range(n_features):
                 feature_i_ave = np.mean(data[:, feature_i])
                 for feature_j in range(n_features):
@@ -42,9 +45,9 @@ class PCA:
                     for object in range(n_objects):
                         sum += (data[object, feature_i] - feature_i_ave) * (data[object, feature_j] - feature_j_ave)
                     COV[feature_i, feature_j] = sum / n_objects
-        elif (cov_method == 'auto'):
+        elif (self.cov_method == 'auto'):
             COV = np.dot(data.T, data) / (n_features - 1)  # Feature x Feature COV matrix -> Incorrect!
-        elif (cov_method == 'np'):
+        elif (self.cov_method == 'np'):
             COV = np.cov(data, rowvar=False)
 
         # Find eigenvalues and eigenvectors
