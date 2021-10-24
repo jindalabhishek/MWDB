@@ -56,4 +56,3 @@ class PCA:
         # Transform data
         # print("Transforming data")
         return np.matmul(data, eig_vec).real
-

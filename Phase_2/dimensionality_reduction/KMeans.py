@@ -86,5 +86,3 @@ class KMeans:
         image_vector_matrix_k_dimensions = KMeans.get_vectors_k_dimensions(image_vector_matrix, centroids)
         return np.array(image_vector_matrix_k_dimensions).real
 
-
-
