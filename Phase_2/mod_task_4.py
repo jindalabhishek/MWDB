@@ -33,7 +33,7 @@ def similar_matrix(data, method='pearson'):
 def main():
     input_path = input("Enter type weight features path: ")
     # input_path = "1_color_moment_feature_descriptor_PCA_1.json"
-    subject_weights = LatentSemanticFile.deserialize(input_path).task_output
+    subject_weights = {i[0]: i[1] for i in LatentSemanticFile.deserialize(input_path).task_output}
     subjects = [ss for ss in subject_weights]
 
     subject_weights = numpy.array([subject_weights[ss] for ss in subject_weights])
@@ -52,7 +52,7 @@ def main():
 
     latent_subject_features_dataset = dimension_reduction_object.compute(similarity, k, subjects)
 
-    save_task_data('task_4', dimension_reduction_object, task_output=latent_subject_features_dataset)
+    save_task_data('task_4', dimension_reduction_object, task_output=latent_subject_features_dataset.tolist())
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Subject-Subject similarity weight matrix: \n', latent_subject_features_dataset)
 

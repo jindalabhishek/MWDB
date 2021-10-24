@@ -29,6 +29,9 @@ def get_task_output_data(input_path):
 def get_json_data(input_path):
     return LatentSemanticFile.deserialize(input_path)
 
+def sort_feature_weight_pair(feature_weight_pair_dict):
+    feature_weight_pair = [[t,feature_weight_pair_dict[t]] for t in feature_weight_pair_dict]
+    return sorted(feature_weight_pair,key=lambda x: sum([i*i for i in x[1]]))
 
 def get_similarity_matrix(input_path):
     file_object = open(input_path)

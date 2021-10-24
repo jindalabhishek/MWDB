@@ -58,7 +58,7 @@ def main():
     for i in type_weight_pairs:
         type_weight_pairs[i] = np.average(np.array(type_weight_pairs[i]), axis=0).tolist()
 
-    save_task_data('task_2', dimension_reduction_object, task_output=type_weight_pairs, topic=subject_id,
+    save_task_data('task_2', dimension_reduction_object, task_output=sort_feature_weight_pair(type_weight_pairs), topic=subject_id,
                    feature_model=feature_model_name)
     print('Entire type weight matrix: \n', type_weight_matrix)
 
