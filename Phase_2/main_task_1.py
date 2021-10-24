@@ -6,7 +6,7 @@ from Phase_2.dimensionality_reduction.PCA import PCA
 from Phase_2.dimensionality_reduction.SVD import SVD
 from Util.dao_util import DAOUtil
 import numpy as np
-from Util.Utils import save_task_data
+from Util.Utils import save_task_data, sort_feature_weight_pair
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -56,7 +56,7 @@ def main():
     for i in subject_weight_pairs:
         subject_weight_pairs[i] = np.average(np.array(subject_weight_pairs[i]), axis=0).tolist()
 
-    save_task_data('task_1', dimension_reduction_object, task_output=subject_weight_pairs, topic=type_id,
+    save_task_data('task_1', dimension_reduction_object, task_output=sort_feature_weight_pair(subject_weight_pairs), topic=type_id,
                    feature_model=feature_model_name)
     # print('Subject_weight_matrix dimension', len(subject_weight_matrix), len(subject_weight_matrix[0]))
     print('Entire Subject weight matrix: \n', subject_weight_matrix)

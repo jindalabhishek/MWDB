@@ -33,7 +33,7 @@ def similar_matrix(data, method='pearson'):
 def main():
     latent_semantic_file_path = input("Enter latent semantic path: ")
     #     input_path = "2_color_moment_feature_descriptor_PCA_1.json"
-    type_weights = get_task_output_data(latent_semantic_file_path)
+    type_weights = {i[0]:i[1] for i in get_task_output_data(latent_semantic_file_path)}
     types = [tt for tt in type_weights]
 
     type_weights = numpy.array([type_weights[tt] for tt in type_weights])
@@ -49,7 +49,7 @@ def main():
 
     #     dimension_reduction_technique = '3'
     latent_type_features_dataset = dimension_reduction_object.compute(similarity, k, types)
-    save_task_data('task_3', dimension_reduction_object, task_output=latent_type_features_dataset)
+    save_task_data('task_3', dimension_reduction_object, task_output=latent_type_features_dataset.tolist())
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Type-Type similarity weight matrix: \n', latent_type_features_dataset)
 
