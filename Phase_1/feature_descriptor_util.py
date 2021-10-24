@@ -1,4 +1,5 @@
 import numpy as np
+# import color_moment
 import color_moment
 from skimage.feature import hog
 from skimage.feature import local_binary_pattern

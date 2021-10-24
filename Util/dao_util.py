@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+import ssl
 """
 Data Access Object (DAO) Util Class
 """
@@ -50,17 +50,25 @@ class DAOUtil:
     def get_feature_descriptors_by_subject_id(self, subject_id):
         regex = 'image-.*-' + subject_id + '-[0-9]+.png'
         query_object = {'label': {'$regex': regex}}
-        return list(self.get_records(query_object))
+        return self.get_records(query_object)
 
     def get_feature_descriptors_by_type_id(self, type_id):
-        regex = 'image-'+type_id+'-[0-9]+-[0-9]+.png'
+        regex = 'image-' + type_id + '-[0-9]+-[0-9]+.png'
         query_object = {'label': {'$regex': regex}}
         # print(query_object)
-        return list(self.get_records(query_object))
+        return self.get_records(query_object)
+
+    def get_feature_descriptors_for_all_images(self):
+        regex = 'image-.*.png'
+        query_object = {'label': {'$regex': regex}}
+        # print(query_object)
+        return self.get_records(query_object)
 
     def get_records(self, query_object):
         """
         :param query_object:
         :return: queries the database based on query object (dictionary)
         """
-        return self.image_collection.find(query_object).sort([('label', 1)])
+        images = list(self.image_collection.find(query_object))
+        images.sort(key=lambda x: x['label'])
+        return images

@@ -1,5 +1,5 @@
 from Util.dao_util import DAOUtil
-from image_comparison_util import compare_all_models
+from image_comparison_util import *
 from image_comparison_util import compare_color_moment
 from image_comparison_util import compare_elbp_values
 from image_comparison_util import compare_hog_values
@@ -24,29 +24,6 @@ def get_index_of_input_object(image_label, db_descriptor_objects):
             res_index = i
             break
     return res_index
-
-
-def get_similar_images_based_on_model(model_name, input_image_descriptor_object, db_descriptor_objects):
-    """
-    Computes the similar images based upon the input model
-    :return List of similar images based upon the input model
-    :rtype: List
-    """
-
-    """
-        Compare the distance between images based upon input model. 'All' denotes combination of all models
-    """
-    if model_name == COLOR_MOMENT:
-        label_vs_sorted_distances = compare_color_moment(input_image_descriptor_object, db_descriptor_objects)
-    elif model_name == ELBP:
-        label_vs_sorted_distances = compare_elbp_values(input_image_descriptor_object, db_descriptor_objects)
-    elif model_name == HOG:
-        label_vs_sorted_distances = compare_hog_values(input_image_descriptor_object, db_descriptor_objects)
-    elif model_name == ALL:
-        label_vs_sorted_distances = compare_all_models(input_image_descriptor_object, db_descriptor_objects)
-    output_list = list(label_vs_sorted_distances.items())
-    output_list.sort(key=lambda x: x[1])
-    return output_list
 
 
 def main():

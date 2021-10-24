@@ -4,8 +4,8 @@ from Phase_2.dimensionality_reduction.PCA import PCA
 
 
 class SVD:
-    LATENT_FEATURES = "latent_features"
-    LATENT_FEATURE_POWERS = "powers"
+    LATENT_FEATURES = "matrix_mxk"
+    LATENT_FEATURE_POWERS = "matrix_kxk"
 
     def compute(self,image_vector_matrix, k,*args):
         right_eig_val, right_eig_vec = PCA.top_eigen_vectors(

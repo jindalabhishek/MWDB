@@ -1,6 +1,5 @@
 from Util.dao_util import DAOUtil
 from numpy.linalg import svd
-from dimention_reduction_util import *
 from sklearn.decomposition import TruncatedSVD
 from sklearn.decomposition import LatentDirichletAllocation
 from Util.k_means_util import reduce_dimensions_k_means
@@ -105,6 +104,8 @@ for subject_id in range(1,41):
   reduced, sim = find_reduced_type_similarity_matrix(dao_util, subject_id, feature, reduction_technique, k)
   Similarity_Matrix.append(sim)
   Reduced_Matrix.append(reduced)
+
+
 
 
 

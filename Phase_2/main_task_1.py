@@ -30,18 +30,24 @@ def main():
     """
     dao_util = DAOUtil()
     # feature_model = input('Welcome to Task 1 Demo. Enter the feature model:')
-    feature_model = 'color_moment'
+
+    feature_model = 'hog'
+    feature_model_name = feature_model
     feature_model += '_feature_descriptor'
+
     # type_id = input('Enter Type Id:')
     type_id = 'cc'
     feature_descriptors = dao_util.get_feature_descriptors_by_type_id(type_id)
     image_vector_matrix, image_types = get_image_vector_matrix(feature_descriptors, feature_model)
     # dimension_reduction_technique = input('Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): ')
-    dimension_reduction_technique = '4'
+    dimension_reduction_technique = '1'
     print('Image_vector_matrix dimension: ', len(image_vector_matrix), len(image_vector_matrix[0]))
     image_vector_matrix = numpy.array(image_vector_matrix)
-    reductionTechniqueDict = {'1':PCA(),'2':SVD(),'3':LDA(),'4':KMeans(1000)}
-    subject_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,13,image_types)
+
+    reductionTechniqueDictMap = {'1': 'PCA', '2': 'SVD', '3': 'LDA', '4': 'KMeans'}
+    reductionTechniqueDict = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}
+    subject_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix, 13,
+                                                                                          image_types)
     subject_weight_pairs = {}
     for i in range(len(image_types)):
         image_label = image_types[i]
@@ -50,12 +56,13 @@ def main():
         subject_weight_pairs[image_label].append(subject_weight_matrix[i])
 
     for i in subject_weight_pairs:
-        subject_weight_pairs[i] = np.average(np.array(subject_weight_pairs[i]),axis=0).tolist()
+        subject_weight_pairs[i] = np.average(np.array(subject_weight_pairs[i]), axis=0).tolist()
 
-
-    LatentSemanticFile(feature_model,reductionTechniqueDict[dimension_reduction_technique],subject_weight_pairs)\
-        .serialize(get_output_file_path(1,feature_model,type_id,dimension_reduction_technique))
+    LatentSemanticFile(feature_model, reductionTechniqueDict[dimension_reduction_technique], subject_weight_pairs) \
+        .serialize(get_output_file_path('../Outputs/task_1', feature_model_name, type_id,
+                                        reductionTechniqueDictMap[dimension_reduction_technique]))
     # print('Subject_weight_matrix dimension', len(subject_weight_matrix), len(subject_weight_matrix[0]))
     print('Entire Subject weight matrix: \n', subject_weight_matrix)
+
 
 main()

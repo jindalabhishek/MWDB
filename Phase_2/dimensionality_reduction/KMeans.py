@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 class KMeans:
-    CENTROIDS = "CENTROIDS"
+    CENTROIDS = "centroids_kxm"
 
     def serialize(self):
         return {KMeans.CENTROIDS:[lst.tolist() for lst in self.centroids]}

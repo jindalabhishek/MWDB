@@ -4,8 +4,7 @@ import image_comparison_util
 import vector_util
 from Util.dao_util import DAOUtil
 import numpy as np
-
-grey_scale_max = 256
+import Constants
 
 
 def main():
@@ -37,12 +36,12 @@ def main():
         """
            Normalize the image pixels
         """
-        image_pixels = image_pixels / grey_scale_max
+        image_pixels = image_pixels / Constants.GREY_SCALE_MAXS
         """
             Compute All the feature descriptors
         """
         color_moment_feature_descriptor = feature_descriptor_util.get_color_moment_feature_descriptor(image_pixels)
-        color_moment_feature_descriptor = feature_descriptor_util\
+        color_moment_feature_descriptor = feature_descriptor_util \
             .get_reshaped_color_moment_vector(color_moment_feature_descriptor)
 
         elbp_feature_descriptor = feature_descriptor_util.get_elbp_feature_descriptor(image_pixels)

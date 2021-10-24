@@ -1,7 +1,7 @@
 import numpy as np
 
 class PCA:
-    LATENT_FEATURES = "latent_features"
+    LATENT_FEATURES = "matrix_mxk"
     LATENT_FEATURE_POWERS = "powers"
 
     def serialize(self):
