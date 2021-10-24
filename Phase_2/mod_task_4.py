@@ -31,7 +31,7 @@ def similar_matrix(data, method='pearson'):
 
 
 def main():
-    input_path = input("Enter type weight features path: ")
+    input_path = input("Enter subject weight features path: ")
     # input_path = "1_color_moment_feature_descriptor_PCA_1.json"
 
     subject_weights = {i[0]: i[1] for i in LatentSemanticFile.deserialize(input_path).task_output}
