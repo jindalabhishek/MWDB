@@ -33,18 +33,18 @@ def similar_matrix(data, method='pearson'):
 def main():
     input_path = input("Enter type weight features path: ")
     # input_path = "1_color_moment_feature_descriptor_PCA_1.json"
-    subject_weights = {i[0]: i[1] for i in LatentSemanticFile.deserialize(input_path).task_output}
-    subjects = [ss for ss in subject_weights]
 
-    subject_weights = numpy.array([subject_weights[ss] for ss in subject_weights])
+    subject_weights = {i[0]: i[1] for i in LatentSemanticFile.deserialize(input_path).task_output}
+    subjects = [str(i) for i in range(1, 41)]
+
+    subject_weights_array = numpy.array([subject_weights[key] for key in subjects])
     ##### Acquire parameters from user #####
 
     print("Calculating Similarity Matrix")
 
-    similarity = similar_matrix(subject_weights)
+    similarity = similar_matrix(subject_weights_array)
     k = int(input("Enter k value: "))
 
-    subjects = [subject for subject in {str(i) for i in range(1, 41)}]
     dimension_reduction_technique = input("Enter dimensionality reduction technique: ")
     #     dimension_reduction_technique = '3'
     technique_number_vs_reduction_object = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}

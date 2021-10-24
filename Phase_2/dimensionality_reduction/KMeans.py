@@ -10,7 +10,7 @@ class KMeans:
 
     def serialize(self):
         return {KMeans.CENTROIDS: [lst.tolist() for lst in self.centroids],
-                KMeans.INPUT_MATRIX: self.input_matrix}
+                KMeans.INPUT_MATRIX: self.input_matrix.tolist()}
 
     @staticmethod
     def deserialize(latent_feature_json_object):
