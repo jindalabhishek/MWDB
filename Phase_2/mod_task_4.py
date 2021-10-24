@@ -42,6 +42,9 @@ def main():
     print("Calculating Similarity Matrix")
 
     similarity = similar_matrix(subject_weights)
+    k= 'similarity_matrix.json'
+    with open (k, 'w') as outfile:
+        json.dump(similarity, outfile)
 
     k = int(input("Enter k value: "))
 
