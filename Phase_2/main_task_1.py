@@ -22,7 +22,7 @@ def get_image_vector_matrix(feature_descriptors, feature_model):
 
 def main():
     """
-        Executes Task 2
+        Executes Task 1
         Output Subject - latent semantics matrix, (subject-list of weight matrix)
     """
     """
@@ -30,19 +30,18 @@ def main():
     """
     dao_util = DAOUtil()
     # feature_model = input('Welcome to Task 1 Demo. Enter the feature model:')
-    feature_model = 'hog'
+    feature_model = 'color_moment'
     feature_model += '_feature_descriptor'
     # type_id = input('Enter Type Id:')
     type_id = 'cc'
     feature_descriptors = dao_util.get_feature_descriptors_by_type_id(type_id)
     image_vector_matrix, image_types = get_image_vector_matrix(feature_descriptors, feature_model)
     # dimension_reduction_technique = input('Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): ')
-    dimension_reduction_technique = '2'
+    dimension_reduction_technique = '4'
     print('Image_vector_matrix dimension: ', len(image_vector_matrix), len(image_vector_matrix[0]))
     image_vector_matrix = numpy.array(image_vector_matrix)
-
     reductionTechniqueDict = {'1':PCA(),'2':SVD(),'3':LDA(),'4':KMeans(1000)}
-    subject_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,13)
+    subject_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,13,image_types)
     subject_weight_pairs = {}
     for i in range(len(image_types)):
         image_label = image_types[i]

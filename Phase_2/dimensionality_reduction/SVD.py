@@ -7,7 +7,7 @@ class SVD:
     LATENT_FEATURES = "matrix_mxk"
     LATENT_FEATURE_POWERS = "matrix_kxk"
 
-    def compute(self,image_vector_matrix, k):
+    def compute(self,image_vector_matrix, k,*args):
         right_eig_val, right_eig_vec = PCA.top_eigen_vectors(
             *np.linalg.eig(np.dot(image_vector_matrix.T, image_vector_matrix)), k)
         left_eig_val, left_eig_vec = PCA.top_eigen_vectors(
