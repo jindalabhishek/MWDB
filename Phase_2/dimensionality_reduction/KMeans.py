@@ -69,7 +69,7 @@ class KMeans:
         return image_vector_matrix_k_dimensions
 
 
-    def compute(self,image_vector_matrix,n_components):
+    def compute(self,image_vector_matrix,n_components,*args):
         image_vector_matrix = np.array(image_vector_matrix)
         df = pd.DataFrame(image_vector_matrix)
         df.to_clipboard(index=False, header=False)
@@ -85,8 +85,4 @@ class KMeans:
         self.centroids = centroids
         image_vector_matrix_k_dimensions = KMeans.get_vectors_k_dimensions(image_vector_matrix, centroids)
         return np.array(image_vector_matrix_k_dimensions).real
-
-
-
-
 
