@@ -32,16 +32,17 @@ def main():
     # feature_model = input('Welcome to Task 1 Demo. Enter the feature model:')
     feature_model = 'color_moment'
     feature_model += '_feature_descriptor'
-    # subject_id = input('Enter Subject Id:')
-    subject_id = '1'
+    subject_id = input('Enter Subject Id:')
+    # subject_id = '1'
     feature_descriptors = dao_util.get_feature_descriptors_by_subject_id(subject_id)
     image_vector_matrix, image_subjects = get_image_vector_matrix(feature_descriptors, feature_model)
-    # dimension_reduction_technique = input('Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): ')
-    dimension_reduction_technique = '4'
+    dimension_reduction_technique = input('Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): ')
+    # dimension_reduction_technique = '4'
     print('Image_vector_matrix dimension: ', len(image_vector_matrix), len(image_vector_matrix[0]))
     image_vector_matrix = numpy.array(image_vector_matrix)
     reductionTechniqueDict = {'1':PCA(),'2':SVD(),'3':LDA(),'4':KMeans(1000)}
-    type_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,13,image_subjects)
+    k = int(input("Enter K Value for Dimensionality Reduction:"))
+    type_weight_matrix = reductionTechniqueDict[dimension_reduction_technique].compute(image_vector_matrix,k,image_subjects)
     type_weight_pairs = {}
     for i in range(len(image_subjects)):
         image_label = image_subjects[i]
