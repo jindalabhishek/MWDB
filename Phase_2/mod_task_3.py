@@ -49,7 +49,7 @@ def main():
 
     #     dimension_reduction_technique = '3'
     latent_type_features_dataset = dimension_reduction_object.compute(similarity, k, types)
-    save_task_data('task_3', dimension_reduction_object)
+    save_task_data('task_3', dimension_reduction_object, task_output=latent_type_features_dataset)
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Type-Type similarity weight matrix: \n', latent_type_features_dataset)
 

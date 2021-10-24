@@ -52,7 +52,7 @@ def main():
 
     latent_subject_features_dataset = dimension_reduction_object.compute(similarity, k, subjects)
 
-    save_task_data('task_4', dimension_reduction_object)
+    save_task_data('task_4', dimension_reduction_object, task_output=latent_subject_features_dataset)
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Subject-Subject similarity weight matrix: \n', latent_subject_features_dataset)
 
