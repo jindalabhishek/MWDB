@@ -14,7 +14,7 @@ class KMeans:
 
     @staticmethod
     def deserialize(latent_feature_json_object):
-        obj = KMeans()
+        obj = KMeans(1000)
         obj.centroids = [np.array(lst) for lst in latent_feature_json_object[KMeans.CENTROIDS]]
         obj.input_matrix = latent_feature_json_object[KMeans.INPUT_MATRIX]
         return obj
