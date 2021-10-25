@@ -52,7 +52,7 @@ def ASCOS_PageRank(similarity_graph):
   for i in range(n_subjects):
     for j in range(n_subjects):
       PR[i] += similarity_graph[i][j]
-  return PR
+  return PR/n_subjects
 
 sim_matrix_dir = input("Enter similarity matrix name: ")
 n = int(input("Enter value n: "))
