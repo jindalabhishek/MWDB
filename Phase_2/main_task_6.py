@@ -83,7 +83,7 @@ output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk
 # print(output_list)
 
 truncated_output_list = output_list[:TaskConstants.RANK_THRESHOLD]
-print(truncated_output_list)
+print('Truncated output list using Rank_Threshold = %s' % {TaskConstants.RANK_THRESHOLD}, truncated_output_list)
 
 dict_of_types = {}
 for i in range(len(truncated_output_list)):
@@ -102,7 +102,7 @@ for i in range(len(truncated_output_list)):
         dict_of_types[curr_type] += (TaskConstants.RANK_THRESHOLD-i)
 
 query_type = max(zip(dict_of_types.values(), dict_of_types.keys()))[1]
-print(query_type)
+print('Predicted TYPE of this query image is: ', query_type)
 
 
 

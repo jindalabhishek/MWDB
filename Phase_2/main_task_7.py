@@ -15,11 +15,8 @@ from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
 import re
-# image_path = input('Enter path to query image: ')
-
-image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
-# input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
-# '/Users/dhruv/Desktop/dhruv_gray.jpeg'
+image_path = input('Enter path to query image: ')
+# image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
 
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
@@ -88,10 +85,6 @@ print(truncated_output_list)
 dict_of_types = {}
 for i in range(len(truncated_output_list)):
     curr_label = truncated_output_list[i][0]
-
-    # regex = re.compile(r'image-\w*-\d-\d.png')
-    # matching = regex.search(curr_label)
-    # curr_type = matching.group(1)
     split_curr_label = curr_label.split('-')
     curr_type = split_curr_label[2]
 
@@ -102,7 +95,7 @@ for i in range(len(truncated_output_list)):
         dict_of_types[curr_type] += (TaskConstants.RANK_THRESHOLD-i)
 
 query_type = max(zip(dict_of_types.values(), dict_of_types.keys()))[1]
-print(query_type)
+print('Predicted SUBJECT of this query image is: ', query_type)
 
 
 
