@@ -1,1 +1,119 @@
 # MWDB
+
+Table of Contents
+        About The Project
+            Built With
+        Getting Started
+            Prerequisites
+            Installation
+        Usage
+        Contributing
+        License
+        Contact
+
+
+About The Project
+The project has been done as a part of Phase 2 of CSE 515: Multimedia and Web Database.
+In this project, you will experiment with
+• image features,
+• vector models, 
+• dimensionality curse,
+• graph analysis
+
+
+Prerequisites:
+* Numpy
+* Opencv
+* Sklearn
+* Skimage
+* Json
+* Python3.5 or later
+* PIL 
+
+
+Installation:
+
+
+On ubuntu/linux:
+* Pip install -r requirement.txt
+
+
+Usage:
+To run:
+
+Task1:
+▪ Input: Feature model (HOG, ELBP...), Image Type (cc, con), k value (total semantic features), and dimensionality reduction technique (PCA, LDA...)  
+▪ Output: Retrieves type weights latent semantic features. 
+
+For Example:	
+
+Task1:
+	Input:-
+	   Enter latent semantic path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_2_SVD_color_moment_4.json
+       Enter Subject Id:4
+       Enter K Value for Dimensionality Reduction:10
+       Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): 2
+
+
+Task2: 
+▪ Give Feature model (HOG, ELBP...), Subject Image ID (1, 2), k value (total semantic features), and dimensionality reduction technique (PCA, LDA...) as input accordingly.
+▪ Run Command  python main_task_2.py 
+
+
+For Example:
+
+Task2: 
+	Input:-
+	  Enter the feature model (color_moment, elbp, hog):color_moment
+	  Enter Subject Id:4
+      Enter K Value for Dimensionality Reduction:10
+      Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): 2
+      Image_vector_matrix dimension:  120 192
+
+
+Task 3 
+▪ Type feature latent semantic path, k value (total semantic features), dimensionality reduction technique (PCA, LDA...), and similarity function method as input accordingly.
+▪ Run Command  python main_task_3.py 
+
+For Example:
+	Input:-
+		Enter latent semantic path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_2_SVD_color_moment_4.json
+		Calculating Similarity Matrix
+		Enter k value: 10
+		Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): 1
+		Calculating COV matrix
+		Finding eigenvalues and eigenvectors
+		../Outputs/task_3_PCA.json
+
+
+Task 4 
+▪ Subject feature latent semantic path, k value (total semantic features), dimensionality reduction technique (PCA, LDA...), and similarity function method as input accordingly.
+▪ Run Command  python main_task_4.py 
+
+For Example:
+	Input:-
+		Enter subject weight features path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_1_PCA_color_moment_cc.json
+		Calculating Similarity Matrix
+		Enter k value: 10
+		Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): 1
+		Calculating COV matrix
+		Finding eigenvalues and eigenvectors
+		../Outputs/task_4_PCA.json
+
+
+
+
+
+
+
+
+
+
+
+
+License
+Distributed under the MIT License. 
+Contact
+Your Name: Mohd Zaid
+email id: mzaid1@asu.edu
+ASU ID: 1222301444
