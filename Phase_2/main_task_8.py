@@ -21,7 +21,7 @@ def update_ASCOS_similarity(processed, adjacency, c, i, j):
   return s
 
 def convergence_test(S, S_new):
-  if np.isclose(S,Snew):
+  if np.isclose(S,S_new):
     return True
   else:
     return False
