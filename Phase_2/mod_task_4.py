@@ -61,5 +61,13 @@ def main():
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Subject-Subject similarity weight matrix: \n', latent_subject_features_dataset)
 
+    k_subjects = np.transpose(latent_subject_features_dataset)
+    for k in range(0, len(k_subjects)):
+        print(k, 'th Semantic in Subject Weight Pairs')
+        subject_weight_pairs = k_subjects[k]
+        indexes = np.argsort(-subject_weight_pairs)
+        for index in indexes:
+            print(subjects[index], ':', subject_weight_pairs[index])
+
 
 main()

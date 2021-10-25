@@ -59,5 +59,13 @@ def main():
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
     print('Entire Type-Type similarity weight matrix: \n', latent_type_features_dataset)
 
+    k_types = np.transpose(latent_type_features_dataset)
+    for k in range(0, len(k_types)):
+        print(k,'th Semantic in Type Weight Pairs')
+        type_weight_pairs = k_types[k]
+        indexes = np.argsort(-type_weight_pairs)
+        for index in indexes:
+            print(types[index], ':', type_weight_pairs[index])
+
 
 main()
