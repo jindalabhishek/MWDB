@@ -59,7 +59,7 @@ def main():
 
     save_task_data('task_4', dimension_reduction_object, task_output=latent_subject_features_dataset.tolist())
     # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
-    print('Entire Subject-Subject similarity weight matrix: \n', latent_subject_features_dataset)
+    print('Entire Subject latent weight matrix: \n', latent_subject_features_dataset)
 
     k_subjects = np.transpose(latent_subject_features_dataset)
     for k in range(0, len(k_subjects)):
