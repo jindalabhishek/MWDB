@@ -49,68 +49,29 @@ def transform_1xm_to_1xk(matrix_1xm, all_latent_semantics, task_number,matrix_mx
 
     return matrix_1xk
 
-
-def get_reduced_dimension_nxk_using_latent_semantics(all_data, dimension_reduction, feature_model, task_number):
+def getTransformMatrix(all_data,feature_model,task_number):
     multiplier = None
-    if task_number == 'task_3':
-        all_data.sort(key=lambda x: x['label'].split('-')[1])
-        curr_label = all_data[0]['label'].split('-')[1]
-        curr_temp_list = []
-        averaged_nxm_to_txm = []
-        for each in all_data:
-            if curr_label == each['label'].split('-')[1]:
-                curr_temp_list.append(each[feature_model])
-            else:
-                averaged_nxm_to_txm.append(np.mean(np.array(curr_temp_list), axis=0).tolist())
-                curr_label = each['label'].split('-')[1]
-                curr_temp_list = []
-        averaged_nxm_to_txm.append(np.mean(np.array(curr_temp_list), axis=0).tolist())
-        multiplier = transpose_matrix(averaged_nxm_to_txm)
-        # Transformations
-        # TODO I need nxm from all possible outputs of task 3 and 4
-        # if method_dimension_reduction == 'PCA' or 'SVD':
-        #     matrix_txk = latent_semantics['matrix_mxk']
-        #     matrix_nxm = latent_semantics['matrix_nxm']
-        #
-        #     matrix_mxk = multiply_matrices(matrix_mxt, matrix_txk).tolist()
-        #
-        # elif method_dimension_reduction == 'LDA':
-        #     matrix_txk = latent_semantics['matrix_nxk']
-        #     matrix_nxm = latent_semantics['matrix_nxm']
-        #     matrix_mxt = transpose_matrix(averaged_nxm_to_txm)
-        #     matrix_nxk = multiply_matrices(matrix_nxm, matrix_mxk)
-
-    if task_number == 'task_4':
-        all_data.sort(key=lambda x: x['label'].split('-')[2])
-        curr_label = all_data[0]['label'].split('-')[2]
+    idx = 1 if task_number=='task_3' else 2
+    if task_number=='task_3' or task_number == 'task_4':
+        all_data.sort(key=lambda x: x['label'].split('-')[idx])
+        curr_label = all_data[0]['label'].split('-')[idx]
         curr_temp_list = []
         averaged_nxm_to_sxm = []
         for each in all_data:
-            if curr_label == each['label'].split('-')[2]:
+            if curr_label == each['label'].split('-')[idx]:
                 curr_temp_list.append(each[feature_model])
             else:
                 averaged_nxm_to_sxm.append(np.mean(np.array(curr_temp_list), axis=0).tolist())
-                curr_label = each['label'].split('-')[2]
+                curr_label = each['label'].split('-')[idx]
                 curr_temp_list = []
-        averaged_nxm_to_sxm.append(curr_temp_list)
+        averaged_nxm_to_sxm.append(np.mean(np.array(curr_temp_list), axis=0).tolist())
         multiplier = transpose_matrix(averaged_nxm_to_sxm)
-        # Transformations
-        # # TODO I need nxm from all possible outputs of task 3 and 4
-        # if method_dimension_reduction == 'PCA' or 'SVD':
-        #     matrix_sxk = latent_semantics['matrix_nxk']
-        #     matrix_nxm = latent_semantics['matrix_nxm']
-        #
-        #     matrix_mxk = multiply_matrices(matrix_mxs, matrix_sxk)
-        #
-        # elif method_dimension_reduction == 'LDA':
-        #     matrix_sxk = latent_semantics['matrix_sxk']
-        #     matrix_nxm = latent_semantics['matrix_nxm']
-        #     matrix_mxs = transpose_matrix(averaged_nxm_to_sxm)
-        #     matrix_mxk = multiply_matrices(matrix_mxs, matrix_sxk)
+    return multiplier
+
+def get_reduced_dimension_nxk_using_latent_semantics(all_data, dimension_reduction, feature_model, multiplier=None,flag=None):
     reduced_matrix_nxk = []
     for each in all_data:
-        reduced_matrix_nxk.append({feature_model: dimension_reduction.transform(np.matmul(np.array(each[feature_model]),multiplier) if multiplier else np.array(each[feature_model])),
+        reduced_matrix_nxk.append({feature_model: dimension_reduction.transform(np.matmul(np.array(each[feature_model]),multiplier) if flag else np.array(each[feature_model])),
                                    'label': each['label']})
-
     return reduced_matrix_nxk
 

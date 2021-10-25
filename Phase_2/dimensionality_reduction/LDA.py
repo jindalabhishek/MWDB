@@ -31,6 +31,6 @@ class LDA:
         return latent_features.real
 
     def transform(self, image_vector_matrix):
-        matrix_mxk = np.matmul(image_vector_matrix.transpose(), self.latent_features)
+        matrix_mxk = np.matmul(self.input_matrix.transpose(), self.latent_features)
         return np.matmul(image_vector_matrix, matrix_mxk)
 

@@ -21,8 +21,8 @@ image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-ima
 # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
 # '/Users/dhruv/Desktop/dhruv_gray.jpeg'
 
-# input_file = input('Enter path to latent semantic file: ')
-input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_1_PCA_hog_cc.json"
+input_file = input('Enter path to latent semantic file: ')
+# input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
 latentSemanticFile = LatentSemanticFile.deserialize(input_file)
 
 task_number = latentSemanticFile.task_id
@@ -32,9 +32,6 @@ feature_model = input('Select your feature descriptor! (color_moment, elbp, hog)
 # /Users/dhruv/Desktop/Sem1/MWDB/project2/query/cc-image-2.png
 
 daoUtil = DAOUtil()
-
-output1_fd = open('/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_PCA.json')
-all_latent_semantics = json.load(output1_fd)
 
 query_matrix_1xm = []
 
@@ -73,11 +70,14 @@ all_data = daoUtil.get_feature_descriptors_for_all_images()
 
 feature_model_name = feature_model + '_feature_descriptor'
 # Converted all data nxm to nxk
-reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data, latentSemanticFile.dimensionReduction, feature_model_name,task_number)
+flag = task_number=='task_3' or task_number=='task_4'
+transformation_multiplier = getTransformMatrix(all_data,feature_model_name,task_number)
+
+reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data, latentSemanticFile.dimensionReduction, feature_model_name,transformation_multiplier,flag)
 
 # Converted query 1xm to 1xk
 
-reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.transform(query_matrix_1xm)}
+reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.transform(np.matmul(query_matrix_1xm,transformation_multiplier) if flag else query_matrix_1xm)}
 
 output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk, reduced_all_data_matrix_nxk)
 # print(output_list)
