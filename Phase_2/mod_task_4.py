@@ -10,6 +10,10 @@ import numpy as np
 from Util.json_util import LatentSemanticFile
 
 
+def normal_dist(x):
+    normal_x = (np.pi*np.std(x)) * np.exp(-0.5*((x-np.mean(x))/np.std(x))**2)
+    return normal_x
+
 def similar_matrix(data, method='pearson'):
     data = np.array(data)
     matrix = np.ones((data.shape[0], data.shape[0]))
@@ -24,11 +28,12 @@ def similar_matrix(data, method='pearson'):
         matrix = np.ones((data.shape[0], data.shape[0]))
         L = (data.T - data.mean(axis=1)).T
         for i in range(0, data.shape[0]):
+            a=normal_dist(data[i])
             for j in range(0, data.shape[0]):
-                d = np.sum(L[i] * L[j]) / np.sqrt(np.sum(np.square(L[i])) * np.sum(np.square(L[j])))
+                b=normal_dist(data[j])
+                d = np.sum(a * b) / np.sqrt(np.sum(np.square(a)) * np.sum(np.square(b)))
                 matrix[i][j] = d
         return np.array(matrix)
-
 
 def main():
     input_path = input("Enter subject weight features path: ")
