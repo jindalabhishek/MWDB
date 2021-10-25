@@ -1,4 +1,6 @@
 import numpy as np
+from scipy import linalg
+
 
 
 class PCA:
@@ -65,3 +67,7 @@ class PCA:
         # Transform data
         # print("Transforming data")
         return np.matmul(data, eig_vec).real
+
+    def transform(self, image_vector_matrix):
+        matrix_nxk = np.matmul(image_vector_matrix, self.latent_features)
+        return np.matmul(matrix_nxk, linalg.inv(np.diagflat(self.power_val)))

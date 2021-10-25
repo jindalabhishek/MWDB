@@ -12,9 +12,11 @@ class LatentSemanticFile:
     LATENT_FEATURES = "latent_features"
     TASK_OUTPUT = "task_output"
     REDUCTION_TECHNIQUE = "reduction_technique"
+    TASK_ID = "task_id"
 
-    def __init__(self, model, dimension_reduction, task_output):
+    def __init__(self,model, dimension_reduction, task_output,task_id):
         self.latent_features = []
+        self.task_id = task_id
         self.model = model
         self.dimensionReduction = dimension_reduction
         self.task_output = task_output
@@ -23,8 +25,8 @@ class LatentSemanticFile:
         val = {LatentSemanticFile.MODEL: self.model,
                LatentSemanticFile.REDUCTION_TECHNIQUE: type(self.dimensionReduction).__name__,
                LatentSemanticFile.LATENT_FEATURES: self.dimensionReduction.serialize(),
+               LatentSemanticFile.TASK_ID:self.task_id,
                LatentSemanticFile.TASK_OUTPUT: self.task_output}
-        print(val)
         return json.dump(val, open(outputPath, "w"))
 
     @staticmethod
@@ -40,4 +42,5 @@ class LatentSemanticFile:
         latent_features_object = val[LatentSemanticFile.LATENT_FEATURES]
         dimension_reduction_data = reduction_technique_object.deserialize(latent_features_object)
         task_output_data = val[LatentSemanticFile.TASK_OUTPUT]
-        return LatentSemanticFile(model_object, dimension_reduction_data, task_output_data)
+        task_id = val.get(LatentSemanticFile.TASK_ID,None)
+        return LatentSemanticFile(model_object, dimension_reduction_data, task_output_data,task_id)

@@ -64,7 +64,7 @@ all_data = daoUtil.get_feature_descriptors_for_all_images()
 # all_labels =[each['label'] for each in all_data]
 feature_model_name = feature_model + '_feature_descriptor'
 # Converted all data nxm to nxk
-reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data, all_latent_semantics, feature_model_name)
+reduced_all_data_matrix_nxk, matrices = get_reduced_dimension_nxk_using_latent_semantics(all_data, all_latent_semantics, feature_model_name)
 
 # Converted query 1xm to 1xk
 reduced_query_1xk = {feature_model_name: transform_1xm_to_1xk(query_matrix_1xm, all_latent_semantics)}

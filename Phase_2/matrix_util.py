@@ -3,6 +3,10 @@ from scipy import linalg
 
 
 # Return a numpy array
+def make_matrix(a):
+    return np.array([np.array(x) for x in a])
+
+
 def multiply_matrices(a, b):
     c = np.array(a)
     d = np.array(b)
@@ -11,9 +15,8 @@ def multiply_matrices(a, b):
 
 def inverse_matrix(a):
     b = np.array(a)
-    return np.array(linalg.inv(b))
+    return linalg.inv(b)
 
 
 def transpose_matrix(a):
-    b = np.array(a)
-    return b.transpose()
+    return np.array(a).transpose()

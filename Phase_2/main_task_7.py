@@ -14,16 +14,22 @@ from Util.dao_util import *
 from task567_util import *
 import re
 
-image_path = '/Users/dhruv/Desktop/dhruv_gray.jpeg'
-    # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
-print('Select your feature descriptor! (color_moment, elbp, hog): ')
-feature_model = input()
+image_path = input('Enter path to query image: ')
+# input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
+# '/Users/dhruv/Desktop/dhruv_gray.jpeg'
+
+input_file = input('Enter path to latent semantic file: ')
+
+
+task_number = input_file.split('/')[-1][:6]
+
+feature_model = input('Select your feature descriptor! (color_moment, elbp, hog), if task 1 or 2 input file, input correspondingly: ')
 # feature_model += 'feature_descriptor'
 # /Users/dhruv/Desktop/Sem1/MWDB/project2/query/cc-image-2.png
 
 daoUtil = DAOUtil()
 
-output1_fd = open('../Outputs/task_1_color_moment_SVD_cc.json')
+output1_fd = open(input_file)
 all_latent_semantics = json.load(output1_fd)
 
 query_matrix_1xm = []
@@ -63,16 +69,16 @@ all_data = daoUtil.get_feature_descriptors_for_all_images()
 feature_model_name = feature_model + '_feature_descriptor'
 
 # Converted all data nxm to nxk
-reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data, all_latent_semantics, feature_model_name)
+reduced_all_data_matrix_nxk,matrices = get_reduced_dimension_nxk_using_latent_semantics(all_data, all_latent_semantics, feature_model_name, task_number)
 
 # Converted query 1xm to 1xk
-reduced_query_1xk = {feature_model_name: transform_1xm_to_1xk(query_matrix_1xm, all_latent_semantics)}
+reduced_query_1xk = {feature_model_name: transform_1xm_to_1xk(query_matrix_1xm, all_latent_semantics, task_number)}
 
 output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk, reduced_all_data_matrix_nxk)
-print(output_list)
+# print(output_list)
 
 truncated_output_list = output_list[:10]
-
+print(truncated_output_list)
 dict_of_types = {}
 for i in range(10):
     curr_label = truncated_output_list[i][0]

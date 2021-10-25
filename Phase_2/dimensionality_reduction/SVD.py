@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import linalg
 
 from Phase_2.dimensionality_reduction.PCA import PCA
 
@@ -30,3 +31,8 @@ class SVD:
         obj.power_val = np.array(latent_feature_json_object[SVD.LATENT_FEATURE_POWERS])
         obj.input_matrix = np.array(latent_feature_json_object[PCA.INPUT_MATRIX])
         return obj
+
+
+    def transform(self,image_vector_matrix):
+        matrix_nxk = np.matmul(image_vector_matrix, self.latent_features)
+        return np.matmul(matrix_nxk, linalg.inv(np.diagflat(self.power_val)))
