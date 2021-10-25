@@ -15,11 +15,11 @@ from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
 import re
+
 # image_path = input('Enter path to query image: ')
 
 image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
 # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
-# '/Users/dhruv/Desktop/dhruv_gray.jpeg'
 
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
@@ -27,7 +27,8 @@ latentSemanticFile = LatentSemanticFile.deserialize(input_file)
 
 task_number = latentSemanticFile.task_id
 
-feature_model = input('Select your feature descriptor! (color_moment, elbp, hog), if task 1 or 2 input file, input correspondingly: ')
+feature_model = input(
+    'Select your feature descriptor! (color_moment, elbp, hog), if task 1 or 2 input file, input correspondingly: ')
 # feature_model += 'feature_descriptor'
 # /Users/dhruv/Desktop/Sem1/MWDB/project2/query/cc-image-2.png
 
@@ -64,20 +65,23 @@ elif feature_model == 'hog':
 # Fetching all data.
 all_data = daoUtil.get_feature_descriptors_for_all_images()
 
-
 # # Extracting nxm
 # all_data_matrix_nxm = [each[str(feature_model) + '_feature_descriptor'] for each in all_data]
 
 feature_model_name = feature_model + '_feature_descriptor'
 # Converted all data nxm to nxk
-flag = task_number=='task_3' or task_number=='task_4'
-transformation_multiplier = getTransformMatrix(all_data,feature_model_name,task_number)
+flag = task_number == 'task_3' or task_number == 'task_4'
+transformation_multiplier = getTransformMatrix(all_data, feature_model_name, task_number)
 
-reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data, latentSemanticFile.dimensionReduction, feature_model_name,transformation_multiplier,flag)
+reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data,
+                                                                               latentSemanticFile.dimensionReduction,
+                                                                               feature_model_name,
+                                                                               transformation_multiplier, flag)
 
 # Converted query 1xm to 1xk
 
-reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.transform(np.matmul(query_matrix_1xm,transformation_multiplier) if flag else query_matrix_1xm)}
+reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.transform(
+    np.matmul(query_matrix_1xm, transformation_multiplier) if flag else query_matrix_1xm)}
 
 output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk, reduced_all_data_matrix_nxk)
 # print(output_list)
@@ -86,4 +90,4 @@ n_value = int(input('Enter n, for top n similar images'))
 
 output_list_n = output_list[:n_value]
 
-print(output_list_n)
+print('Top %d similar images are: ' % n_value, output_list_n)
