@@ -30,7 +30,7 @@ In this project, you will experiment with
 * Python3.5 or later
 * PIL 
 * PyMongo Library (Mongo Client) 
-• Mongo DB 
+* Mongo DB 
 
 
 **Installation:**
@@ -99,8 +99,25 @@ For Example:
 		Finding eigenvalues and eigenvectors
 		../Outputs/task_4_PCA.json
 		
+**Task 5: **
 
-		
+▪ Latent Semantic File path(.JSON) and query image are given as inputs accordingly
+▪ Run Command  python main_task_5.py 
+
+For Example:
+	Input:-
+		Input image used for all outputs : sample_images/jitter-image-184.png
+
+**Task 6 & 7:**
+
+▪ Latent Semantic File path(.JSON) and query image are given as inputs accordingly
+▪ Run Command python main_task_6.py and  main_task_7.py accordingly.
+
+For Example:
+	Input:-
+		Input image used for all outputs : sample_images/jitter-image-184.png
+
+			
 **Task 8:**
 
 ▪ Similarity Matrix retrieved from task 4, n value, m value as inputs accordingly

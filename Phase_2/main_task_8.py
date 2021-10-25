@@ -40,7 +40,7 @@ def ASCOS_similarity(adjacency, c, iterations = 10):
         #print("Updating " + str(i) + ", " + str(j))
         S_new[i][j] = update_ASCOS_similarity([i], adjacency, c, i, j)
     
-    if(iter_i >= iterations or convergence_test(S, S_new)):
+    if(iter_i >= iterations):
       return S_new
     S = S_new
     iter_i += 1
