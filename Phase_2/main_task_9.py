@@ -64,7 +64,7 @@ def main():
     transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
     seed_nodes = get_seed_nodes(subject_ids, len(similarity_matrix))
     ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
-    # print(ppr_matrix)
+    print(ppr_matrix)
     highest_subject_ids = np.argsort(-ppr_matrix[:, -1])
     print(highest_subject_ids)
     print('Most Relevant M Subjects Ids w.r.t to seed nodes')
