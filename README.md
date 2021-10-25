@@ -29,6 +29,8 @@ Prerequisites:
 * Json
 * Python3.5 or later
 * PIL 
+* PyMongo Library (Mongo Client) 
+• Mongo DB 
 
 
 Installation:
@@ -49,11 +51,11 @@ For Example:
 
 Task1:
 	Input:-
-	   Enter latent semantic path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_2_SVD_color_moment_4.json
-       Enter Subject Id:4
-       Enter K Value for Dimensionality Reduction:10
-       Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): 2
-
+	   Welcome to Task 1 Demo. Enter the feature model (color_moment, elbp, hog):color_moment
+	   Enter Type Id:cc
+	   Select Dimension reduction technique: (1. PCA 2.SVD 3.LDA 4.k-means): 1
+	   Image_vector_matrix dimension:  399 192
+	   Enter K Value for Dimensionality Reduction:10
 
 Task2: 
 ▪ Give Feature model (HOG, ELBP...), Subject Image ID (1, 2), k value (total semantic features), and dimensionality reduction technique (PCA, LDA...) as input accordingly.
@@ -77,7 +79,7 @@ Task 3
 
 For Example:
 	Input:-
-		Enter latent semantic path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_2_SVD_color_moment_4.json
+		Enter latent semantic path: ../Outputs/task_2_SVD_color_moment_4.json
 		Calculating Similarity Matrix
 		Enter k value: 10
 		Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): 1
@@ -92,7 +94,7 @@ Task 4
 
 For Example:
 	Input:-
-		Enter subject weight features path: /home/zaid/Documents/ASU/First_Semester/MWBD/ass_3/MWDB/Outputs/task_1_PCA_color_moment_cc.json
+		Enter subject weight features path: ../Outputs/task_1_PCA_color_moment_cc.json
 		Calculating Similarity Matrix
 		Enter k value: 10
 		Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): 1
@@ -114,6 +116,3 @@ For Example:
 License
 Distributed under the MIT License. 
 Contact
-Your Name: Mohd Zaid
-email id: mzaid1@asu.edu
-ASU ID: 1222301444
