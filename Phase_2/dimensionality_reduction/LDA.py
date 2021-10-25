@@ -29,3 +29,8 @@ class LDA:
         self.latent_features = latent_features
         self.input_matrix = data
         return latent_features.real
+
+    def transform(self, image_vector_matrix):
+        matrix_mxk = np.matmul(self.input_matrix.transpose(), self.latent_features)
+        return np.matmul(image_vector_matrix, matrix_mxk)
+
