@@ -29,12 +29,38 @@ def get_task_output_data(input_path):
 def get_json_data(input_path):
     return LatentSemanticFile.deserialize(input_path)
 
+
 def sort_feature_weight_pair(feature_weight_pair_dict):
-    feature_weight_pair = [[t,feature_weight_pair_dict[t]] for t in feature_weight_pair_dict]
-    return sorted(feature_weight_pair,key=lambda x: sum([i*i for i in x[1]]))
+    feature_weight_pair = [[t, feature_weight_pair_dict[t]] for t in feature_weight_pair_dict]
+    return sorted(feature_weight_pair, key=lambda x: sum([i * i for i in x[1]]))
+
 
 def get_similarity_matrix(input_path):
     file_object = open(input_path)
     json_data = json.load(file_object)
     latent_feature_json_object = json_data[LatentSemanticFile.LATENT_FEATURES]
     return latent_feature_json_object['matrix_nxm']
+
+
+def print_k_latent_semantics_in_sorted_weight_pairs(sorted_weight_pair):
+    latent_semantic_vs_subject_weights = {}
+    for subject_id_vs_latent_semantics in sorted_weight_pair:
+        subject_id = subject_id_vs_latent_semantics[0]
+        latent_semantics = subject_id_vs_latent_semantics[1]
+        for i in range(0, len(latent_semantics)):
+            latent_semantic = latent_semantics[i]
+            if latent_semantic_vs_subject_weights.get(i):
+                latent_semantic_vs_subject_weights.get(i).append([subject_id, latent_semantic])
+            else:
+                latent_semantic_vs_subject_weights[i] = [[subject_id, latent_semantic]]
+    # print(latent_semantic_vs_subject_weights)
+    latent_semantic_vs_subject_weights = list(latent_semantic_vs_subject_weights.items())
+
+    def function(x):
+        return x[1]
+
+    for k in range(0, len(latent_semantic_vs_subject_weights)):
+        latent_semantic_vs_subject_weights[k][1].sort(key=function, reverse=True)
+
+    print('Sorted K latent Semantic File ')
+    print(latent_semantic_vs_subject_weights)

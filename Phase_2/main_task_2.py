@@ -58,9 +58,11 @@ def main():
     for i in type_weight_pairs:
         type_weight_pairs[i] = np.average(np.array(type_weight_pairs[i]), axis=0).tolist()
 
-    save_task_data('task_2', dimension_reduction_object, task_output=sort_feature_weight_pair(type_weight_pairs), topic=subject_id,
+    sorted_type_weight_pairs = sort_feature_weight_pair(type_weight_pairs)
+    save_task_data('task_2', dimension_reduction_object, task_output=sorted_type_weight_pairs, topic=subject_id,
                    feature_model=feature_model_name)
-    print('Entire type weight matrix: \n', type_weight_matrix)
+    # print('Entire type weight matrix: \n', type_weight_matrix)
+    print_k_latent_semantics_in_sorted_weight_pairs(sorted_type_weight_pairs)
 
 
 main()
