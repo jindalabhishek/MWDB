@@ -64,8 +64,8 @@ while(m > 40):
   print("m must be <= 40")
   m = int(input("Enter value m: "))
 
-similarity_matrix = get_similarity_matrix(sim_matrix_dir)
-adjacency_matrix = convert_similarity_matrix_to_graph(np.array(similarity_matrix), n)
+similarity_matrix = np.array(get_similarity_matrix(sim_matrix_dir))
+adjacency_matrix = convert_similarity_matrix_to_graph(similarity_matrix, n)
 print("\nSimilarity Graph:")
 print(adjacency_matrix)
 
