@@ -67,6 +67,7 @@ def main():
     print(ppr_matrix)
     highest_subject_ids = np.argsort(-ppr_matrix[:, -1])
     print(highest_subject_ids)
+    print('Most Relevant M Subjects Ids w.r.t to seed nodes')
     print(highest_subject_ids[:m]+1)
 
 
