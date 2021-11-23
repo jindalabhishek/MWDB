@@ -10,7 +10,9 @@ from VA_Files import VA_Approx, VA_SSA
 
 # TODO: account for the case when returned samples are all relevant in initial query and suceeding feedbacks
 # TODO: returned samples should be shown in corresponding names to user to label
+# TODO: function currently returns a new set of results that are not labeled before, it might be desired to consider previously labeled results as well
 def SVM_RF(X, query, k=10):
+  # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
   # Initial query: uses VA technique to get initial set for first classification
   # Suceeding feedbacks: 
   # Reconstruct support vectors when not all returned samples are labeled relevant
