@@ -87,8 +87,8 @@ def DT_RF(X, query, k=10):
 
     # Append new train_set to current train_set and do binary train
     train_set.extend(new_train_set)
-    for i in new_train_set_id:
-      test_set_id.remove(i) 	# And remove elements from the test_set
+    for i in new_train_set:
+      test_set.remove(i) 	# And remove elements from the test_set
     tree = build_tree(np.concatenate((np.array(train_set),np.array([labels]).T), axis=1),1000)
 
   return new_train_set_id
