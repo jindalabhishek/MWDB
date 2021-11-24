@@ -20,6 +20,7 @@ import re
 
 image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
 # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
+# image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-1-2.png'
 
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
@@ -88,6 +89,9 @@ output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk
 
 n_value = int(input('Enter n, for top n similar images'))
 
-output_list_n = output_list[:n_value]
+# output_list = abs(output_list)
+new_output_list = [(each[0], abs(each[1])) for each in output_list]
+new_output_list.sort(key=lambda x: x[1])
+output_list_n = new_output_list[:n_value]
 
 print('Top %d similar images are: ' % n_value, output_list_n)

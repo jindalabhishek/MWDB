@@ -16,6 +16,8 @@ def normal_dist(x):
 
 def similar_matrix(data, method='pearson'):
     data = np.array(data)
+    data[np.isnan(data)] = 0
+
     matrix = np.ones((data.shape[0], data.shape[0]))
     if method == 'euclidean':
         for i in range(0, data.shape[0]):

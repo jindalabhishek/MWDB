@@ -15,8 +15,9 @@ from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
 import re
-image_path = input('Enter path to query image: ')
+# image_path = input('Enter path to query image: ')
 # image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
+image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
 
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
@@ -79,8 +80,18 @@ reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.t
 output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk, reduced_all_data_matrix_nxk)
 # print(output_list)
 
-truncated_output_list = output_list[:TaskConstants.RANK_THRESHOLD]
-print(truncated_output_list)
+# new_output_list = [if each[1] >= 0:  for each in output_list]
+
+new_output_list = []
+for i in range(len(output_list)):
+    if output_list[i][1] >= 0:
+        new_output_list = output_list[i:]
+        break
+
+
+new_output_list.sort(key=lambda x: x[1])
+truncated_output_list = new_output_list[:TaskConstants.RANK_THRESHOLD]
+# print(truncated_output_list)
 
 dict_of_types = {}
 for i in range(len(truncated_output_list)):
