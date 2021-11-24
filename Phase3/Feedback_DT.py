@@ -5,6 +5,8 @@ import numpy as np
 import random
 from sklearn import preprocessing
 from matplotlib import pyplot as plt
+from Deision_Tree import build_tree
+from Feedback_DT import LSHash, classify, print_leaf
 
 def DT_RF(X, query, k=10):
   # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
@@ -20,20 +22,22 @@ def DT_RF(X, query, k=10):
   train_set_id = [] 	# Indices of samples that are in train_set
   test_set = []		# Set of samples to be classified and returned to user (NOT USED)
   test_set_id = []	# Indices of samples that are in test_set
-
   # Initial query
-  LSH = LSHash(n_features, k_bit_hash, num_hashtables)
-  X = np.random.randn(130, 3)
+  LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+  # X = np.random.randn(130, 3)
   # inps = input array
   for inp in X:
     LSH.index(inp)
 
-  train_set = LSH.query(query_point, k)
+  train_set = LSH.query(query, k)
   train_set = train_set.tolist()
   test_set = X.tolist()
   for x in train_set:
     test_set.remove(x)
-  train_set.append(query_point.tolist())
+
+  if isinstance(query, np.ndarray):
+    query = query.tolist()
+  train_set.append(query)
 
   # Get first feedback and train with DT binary
 
@@ -69,18 +73,17 @@ def DT_RF(X, query, k=10):
       if int(list(print_leaf(classify(inp, tree)).keys())[0])==1:
         test_set_dst.append(inp)
 
-    LSH = LSHash(n_features, k_bit_hash, num_hashtables)
+    LSH1 = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
     X = np.array(test_set_dst)
     # inps = input array
     for inp in X:
-      LSH.index(inp)
+      LSH1.index(inp)
 
-    new_train_set = LSH.query(query_point, k)
+    new_train_set = LSH1.query(query, k)
+    print(new_train_set,'==============================')
     new_train_set = new_train_set.tolist()
-
-    print("Learned train set: " + str(new_train_set))
     user_ip = input("Enter feedback for corresponding sample above, separated by ',', or enter 'all' for all relevant in the train set, or 'stop' to stop training: ")
-    if(user_ip == 'stop' or user_ip == 'all'): return
+    if(user_ip == 'stop' or user_ip == 'all'): return np.array(new_train_set)
     feedbacks = user_ip.split(',')
     labels.extend([int(i) for i in feedbacks])
     print("Labels = " + str(labels))
@@ -91,4 +94,4 @@ def DT_RF(X, query, k=10):
       test_set.remove(i) 	# And remove elements from the test_set
     tree = build_tree(np.concatenate((np.array(train_set),np.array([labels]).T), axis=1),1000)
 
-  return new_train_set
+  return np.array(new_train_set)
