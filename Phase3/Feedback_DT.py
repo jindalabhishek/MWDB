@@ -91,4 +91,4 @@ def DT_RF(X, query, k=10):
       test_set.remove(i) 	# And remove elements from the test_set
     tree = build_tree(np.concatenate((np.array(train_set),np.array([labels]).T), axis=1),1000)
 
-  return new_train_set_id
+  return new_train_set
