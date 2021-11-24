@@ -5,8 +5,8 @@ import numpy as np
 import random
 from sklearn import preprocessing
 from matplotlib import pyplot as plt
-from Deision_Tree import build_tree
-from Feedback_DT import LSHash, classify, print_leaf
+from Deision_Tree import build_tree, classify, print_leaf
+from LSH import LSHash
 
 def DT_RF(X, query, k=10):
   # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
