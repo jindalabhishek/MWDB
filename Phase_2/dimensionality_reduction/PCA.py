@@ -7,11 +7,13 @@ class PCA:
     LATENT_FEATURES = "matrix_mxk"
     LATENT_FEATURE_POWERS = "matrix_kxk"
     INPUT_MATRIX = "matrix_nxm"
+    OBJECTS_IN_K_DIMENSIONS = "matrix_nxk"
 
     def serialize(self):
         return {PCA.LATENT_FEATURES: self.latent_features.real.tolist(),
                 PCA.LATENT_FEATURE_POWERS: self.power_val.real.tolist(),
-                PCA.INPUT_MATRIX: self.input_matrix.tolist()}
+                PCA.INPUT_MATRIX: self.input_matrix.tolist(),
+                PCA.OBJECTS_IN_K_DIMENSIONS: self.objects_in_k_dimensions.tolist()}
 
     @staticmethod
     def deserialize(latent_feature_json_object):
@@ -19,6 +21,7 @@ class PCA:
         obj.latent_features = np.array(latent_feature_json_object[PCA.LATENT_FEATURES])
         obj.power_val = np.array(latent_feature_json_object[PCA.LATENT_FEATURE_POWERS])
         obj.input_matrix = np.array(latent_feature_json_object[PCA.INPUT_MATRIX])
+        obj.objects_in_k_dimensions = np.array(latent_feature_json_object[PCA.OBJECTS_IN_K_DIMENSIONS])
         return obj
 
     @staticmethod
@@ -64,9 +67,10 @@ class PCA:
         self.power_val = eig_val
         self.latent_features = eig_vec
         self.input_matrix = data
+        self.objects_in_k_dimensions = np.matmul(data, eig_vec).real
         # Transform data
         # print("Transforming data")
-        return np.matmul(data, eig_vec).real
+        return self.objects_in_k_dimensions
 
     def transform(self, image_vector_matrix):
 
