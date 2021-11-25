@@ -33,7 +33,7 @@ elif(classifier == 'DT'):
   data = X_train.copy()
 
   type2num={'cc':1, 'con':2, 'emboss':3, 'jitter':4, 'neg':5, 'noise01':6, 'noise02':7, 'original':8, 'poster':9, 'rot':10, 'smooth':11, 'stipple':12}
-  num2type={1:'cc', 2:'con', 3:'emboss', 4:'jitter', 5:'neg', 6:'noise01', 7:'noise02', 8:'original', :9:'poster', 10:'rot', 11:'smooth', 12'stipple'}
+  num2type={1:'cc', 2:'con', 3:'emboss', 4:'jitter', 5:'neg', 6:'noise01', 7:'noise02', 8:'original', :9:'poster', 10:'rot', 11:'smooth', 12:'stipple'}
 
   labels = list(map(lambda x: type2num[x], Y_train))
 
