@@ -97,6 +97,8 @@ def SMO(X, Y, C, eps = 1e-3, max_iteration=40): # PUT args into class member
 def binary_train(X, Y):
     # Compute support vectors (bounds) on binary classes
 
+    X = np.array(X)
+    Y = np.array(Y)
     classes = np.unique(Y)
     n_features = X.shape[1]
     n_samples = X.shape[0]
@@ -117,6 +119,8 @@ def multiclass_train(X, Y):
     # Compute bounds on multiple classes with OVR approach
     # Return a list of n_classes, each with alpha, b and W
 
+    X = np.array(X)
+    Y = np.array(Y)
     classes = np.unique(Y)
     n_classes = len(classes)
     n_samples = len(X)
@@ -143,11 +147,6 @@ def binary_classifier(alpha, threshold, W, X_i, X, Y, plot=False):
 
     predictor = np.inner(W, X_i) + threshold
 
-    if(plot):
-      ret = -1 if predictor<=0 else 1
-      print("Class = " + str(ret))
-      plotLinearClassifier(X_i, W, alpha, threshold, X, Y)
-
     if(predictor <= 0): return -1
     else: return 1
     
@@ -169,6 +168,8 @@ def multiclass_classifier(X, train_set, tie_mode = 0):
     # X = set of points to be classified
     # train_set = Already classified dataset (output from multiclass_train())
 
+    X = np.array(X)
+    Y = np.array(Y)
     classifiers = train_set['classifiers']
     classes = train_set['classes']
     n_classes = len(classes)
@@ -192,55 +193,19 @@ def multiclass_classifier(X, train_set, tie_mode = 0):
             if(ret[closest] == classes[j]):
               classified[0] = j
               break
-        else: print("Tie cannot be resolved!")
+        else: 
+          print("ERROR: Tie cannot be resolved!")
+          classified[0] = 0
 
       if(len(classified) == 0): 
         print("WARNING: sample " + str(i) + " is rejected by all classes")
-        print("Assigned by finding the nearest bound - to be implemented")
-        classified = np.array([0]) # Hard coding for now
+        closest_bound = math.inf
+        classified = [0]
+        for class_i in range(0,n_classes):
+          dist2bound = abs(np.inner(classifiers[class_i]['W'], X[i]) + classifiers[class_i]['threshold'])
+          if(closest_bound >= dist2bound):
+            closest_bound = dist2bound 
+            classified[0] = class_i
 
       ret[i] = classes[classified[0]]
     return ret
-
-# TO BE IMPLEMENTED
-def compute_classifier_stats(Y, classifies):
-    n_misses = 0
-    n_fp = 0       # false positives
-
-    for i in range(0, len(Y)):
-      if(Y[i] != classifies[i]): n_misses += 1
-    return n_misses
-
-########################################
-# Sample driver
-
-X1 = np.array([[1,3],[2,2],[4,3],[6,1],[5,4]]) - np.array([2,2])
-X2 = np.array([[13,6],[15,8],[16,7],[12,9],[17,10]]) + np.array([2,2])
-X3 = np.array([[2,7],[6,10],[3,8],[1,9],[7,8]]) + np.array([-2,2]) 
-X4 = np.array([[12,3],[13,2],[16,4],[15,1],[11,3]]) + np.array([2,-2])
-dataset = np.concatenate((X1, X2, X3, X4), axis = 0)
-Y = np.array(['LL','LL','LL','LL','LL','UR','UR','UR','UR','UR','UL','UL','UL','UL','UL','LR','LR','LR','LR','LR'])
-X = np.array([[5,2],[-1,4],[1,8],[4,11],[15,-2],[16,0],[18,11],[12,10]])
-
-train_set = multiclass_train(dataset, Y)
-Y_classified = np.array(multiclass_classifier(X, train_set))
-
-print("Labeled dataset: " + str(Y))
-print("Classified dataset: " + str(Y_classified))
-
-XLL = np.array([X[i] for i in np.where(Y_classified == 'LL')[0]])
-XUR = np.array([X[i] for i in np.where(Y_classified == 'UR')[0]])
-XUL = np.array([X[i] for i in np.where(Y_classified == 'UL')[0]])
-XLR = np.array([X[i] for i in np.where(Y_classified == 'LR')[0]])
-
-plt.scatter(X1[:,0],X1[:,1],color='green',label='LL')
-plt.scatter(X2[:,0],X2[:,1],color='blue',label='UR')
-plt.scatter(X3[:,0],X3[:,1],color='red',label='UL')
-plt.scatter(X4[:,0],X4[:,1],color='orange',label='LR')
-plt.scatter(XLL[:,0],XLL[:,1],color='cyan',label='classified LL',marker='*')
-plt.scatter(XLR[:,0],XLR[:,1],color='magenta',label='classified LR',marker='*')
-plt.scatter(XUL[:,0],XUL[:,1],color='black',label='classified UL',marker='*')
-plt.scatter(XUR[:,0],XUR[:,1],color='brown',label='classified UR',marker='*')
-plt.title("Label dataset (dot) vs classified dataset (*)")
-plt.legend()
-plt.show()
