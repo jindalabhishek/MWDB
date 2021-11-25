@@ -83,8 +83,8 @@ def retrive_data(path,model_name,k_d):
 	 	a=cv2.imread(path+file,0)
 	 	all_image.append(a)
 	 	all_labels[0].append(file[:-4].split('-')[1])
-	 	all_labels[1].append(int(file[:-4].split('-')[2]))
-	 	all_labels[2].append(int(file[:-4].split('-')[3]))
+	 	all_labels[1].append(file[:-4].split('-')[2])
+	 	all_labels[2].append(file[:-4].split('-')[3])
 	 	all_labels[3].append(file)
 
 
