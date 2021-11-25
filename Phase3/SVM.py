@@ -209,3 +209,17 @@ def multiclass_classifier(X, train_set, tie_mode = 0):
 
       ret[i] = classes[classified[0]]
     return ret
+
+X1 = np.array([[1,3],[2,2],[4,3],[6,1],[5,4]]) - np.array([2,2])
+X2 = np.array([[13,6],[15,8],[16,7],[12,9],[17,10]]) + np.array([2,2])
+X3 = np.array([[2,7],[6,10],[3,8],[1,9],[7,8]]) + np.array([-2,2]) 
+X4 = np.array([[12,3],[13,2],[16,4],[15,1],[11,3]]) + np.array([2,-2])
+dataset = np.concatenate((X1, X2, X3, X4), axis = 0)
+Y = np.array(['LL','LL','LL','LL','LL','UR','UR','UR','UR','UR','UL','UL','UL','UL','UL','LR','LR','LR','LR','LR'])
+X = np.array([[5,2],[-1,4],[1,8],[4,11],[15,-2],[16,0],[18,11],[12,10]])
+
+train_set = multiclass_train(dataset, Y)
+Y_classified = np.array(multiclass_classifier(X, train_set))
+
+print("Labeled dataset: " + str(Y))
+print("Classified dataset: " + str(Y_classified))
