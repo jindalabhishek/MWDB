@@ -1,5 +1,5 @@
 import numpy as np
-from readData import *
+from file import *
 from SVM import *
 from DecisionTree import *
 from Dimensionality_Reduction import *
