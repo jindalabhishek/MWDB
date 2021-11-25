@@ -5,8 +5,6 @@ import numpy as np
 import random
 from sklearn import preprocessing
 from matplotlib import pyplot as plt
-from Deision_Tree import build_tree, classify, print_leaf
-from LSH import LSHash
 
 def DT_RF(X, query, k=10):
   # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
@@ -23,7 +21,7 @@ def DT_RF(X, query, k=10):
   test_set = []		# Set of samples to be classified and returned to user (NOT USED)
   test_set_id = []	# Indices of samples that are in test_set
   # Initial query
-  LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+  LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=2)
   # X = np.random.randn(130, 3)
   # inps = input array
   for inp in X:
@@ -32,8 +30,8 @@ def DT_RF(X, query, k=10):
   train_set = LSH.query(query, k)
   train_set = train_set.tolist()
   test_set = X.tolist()
-  for x in train_set:
-    test_set.remove(x)
+  # for x in train_set:
+  #   test_set.remove(x)
 
   if isinstance(query, np.ndarray):
     query = query.tolist()
@@ -90,8 +88,8 @@ def DT_RF(X, query, k=10):
 
     # Append new train_set to current train_set and do binary train
     train_set.extend(new_train_set)
-    for i in new_train_set:
-      test_set.remove(i) 	# And remove elements from the test_set
+    # for i in new_train_set:
+    #   test_set.remove(i) 	# And remove elements from the test_set
     tree = build_tree(np.concatenate((np.array(train_set),np.array([labels]).T), axis=1),1000)
 
   return np.array(new_train_set)
