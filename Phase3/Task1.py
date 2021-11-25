@@ -7,14 +7,16 @@ import skimage.feature as skf
 from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 
 train_path = input("Enter the image folder path for training: ")
-feature_model =  input("Enter feature model technique ('color', 'elbp', 'hog') : ")
-dimensions = input("Total reduced Dimensions: ")
+feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
+dimensions = int(input("Total reduced Dimensions: "))
+
+X_train, labels_train = retrive_data(train_path, feature_model, dimensions)
 
 classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 
 test_path = input("Enter the image folder path for testing: ")
 
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions)
+
 Y_train = labels_train[0] # types labels
 
 X_test, labels_test = retrive_data(train_path, feature_model, dimensions)
@@ -48,7 +50,7 @@ elif(classifier == 'DT'):
   Y_hat = list(map(lambda x: num2type[x], la))
 
 elif (classifier == 'PPR'):
-  # Dhruv code
+  k=1
 
 else:
   print('wrong classifier')
@@ -56,18 +58,18 @@ else:
 
 
 
-cm=multilabel_confusion_matrix(yhat, ok,labels=list(num2type.values()),)
+cm=multilabel_confusion_matrix(Y_test, Y_hat,labels=list(num2type.values()))
 fp={}
-misses={}
-total_fp, total_misses = 0, 0
-for i in range(len(y.values())):
-  fp[list(y.values())[i]] = cm[i][0][1]
-  misses[list(y.values())[i]] = cm[i][1][0]
+fn={}
+total_fp, total_fn = 0, 0
+for i in range(len(num2type.values())):
+  fp[list(num2type.values())[i]] = cm[i][0][1]
+  misses[list(num2type.values())[i]] = cm[i][1][0]
   total_fp+=cm[i][0][1]
   total_misses+=cm[i][1][0]
 
 fp,misses,total_fp,total_misses
 print('Total false positives = ', total_fp)
 print(fp)
-print('Total false positives = ', total_misses)
+print('Total misses = ', total_misses)
 print(misses)
