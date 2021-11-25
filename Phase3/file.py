@@ -72,7 +72,7 @@ def compute(data, k, image_types, *args):
     return latent_features.real
 
 
-def retrive_data(path,model_name):
+def retrive_data(path,model_name,k_d):
 	os.chdir(path)  
 
 	all_image=[]
@@ -90,27 +90,26 @@ def retrive_data(path,model_name):
 
 
 	all_feature_lbp=[]
-	for img in all_image:
+
+
+	if model_name=='CM':
+		for img in all_image:
+			all_feature_lbp.append(extract_feature("color",img))
+
+	if model_name=='ELBP':
+		for img in all_image:
 			all_feature_lbp.append(extract_feature("lbp",img))
 
+	if model_name=='HOG':
+		for img in all_image:
+			all_feature_lbp.append(extract_feature("hog",img))
 
-	if model_name=='lda':
-		lda=compute(np.asarray(all_feature_lbp),5,all_labels[3])
-
-	if model_name=='pca':
-		pass
-
-	if model_name=='svd':
-		pass
-
-	if model_name=='kmeans':
-		pass
 		
-	return lda, all_labels
+	return compute(np.asarray(all_feature_lbp),k_d,all_labels[3]), all_labels
 
 
-k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
-print(l[3][:15])
+# k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
+# print(l[3][:15])
 
 
 
