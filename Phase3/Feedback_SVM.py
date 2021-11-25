@@ -59,13 +59,13 @@ def SVM_RF(X, Y, query, k=10):
   # Feedback iterations
   while(user_ip != 'stop'):
     # Calculate and find k objects in test_set that are furthest to the support vector
-    print("Test set id = " + str(test_set_id))
+    #print("Test set id = " + str(test_set_id))
     test_set_dst = []
     for i in test_set_id:
       test_set_dst.append((np.inner(W, X[i]) + b))
     sorted_test_id = np.argsort(np.array(test_set_dst)*-1) # id in test_set_id to be sorted
-    print("test_set_dst = " + str(test_set_dst))
-    print("sorted_test_id = " + str(sorted_test_id))
+    #print("test_set_dst = " + str(test_set_dst))
+    #print("sorted_test_id = " + str(sorted_test_id))
 
     # Get train_set and feedback from user
     new_train_set = [X[test_set_id[sorted_test_id[i]]] for i in range(0, k)]
@@ -94,3 +94,4 @@ X3 = np.array([[2,7],[6,10],[3,8],[1,9],[7,8]])
 X4 = np.array([[12,3],[13,2],[16,4],[15,1],[11,3]])
 X = np.concatenate((X1, X2, X3, X4), axis = 0)
 Y = ['LL','LL','LL','LL','LL','UR','UR','UR','UR','UR','UL','UL','UL','UL','UL','LR','LR','LR','LR','LR']
+SVM_RF(X, Y, [10, 5], 2)
