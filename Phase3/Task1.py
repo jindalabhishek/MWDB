@@ -58,8 +58,8 @@ else:
 
 cm=multilabel_confusion_matrix(yhat, ok,labels=list(num2type.values()),)
 fp={}
-fn={}
-total_fp, total_fn = 0, 0
+misses={}
+total_fp, total_misses = 0, 0
 for i in range(len(y.values())):
   fp[list(y.values())[i]] = cm[i][0][1]
   misses[list(y.values())[i]] = cm[i][1][0]
