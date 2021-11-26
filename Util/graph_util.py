@@ -18,7 +18,7 @@ def get_hubs_authorities_from_adjacency_matrix(adjacency_matrix):
 
 def get_transition_matrix_from_hubs_authorities(hubs_vs_authorities):
     column_sum = hubs_vs_authorities.sum(axis=0)
-    print(column_sum)
+    # print(column_sum)
     transition_matrix = hubs_vs_authorities / column_sum
     return transition_matrix
 

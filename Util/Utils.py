@@ -81,3 +81,9 @@ def get_query_image_feature_descriptor(feature_model, query_image_vector):
         hog_feature_descriptor = get_hog_feature_descriptor(query_image_vector)
         query_image_feature_descriptor = hog_feature_descriptor.copy()
     return query_image_feature_descriptor
+
+def getType(fileName):
+    return fileName.split("-")[1]
+
+def getSubject(fileName):
+    return fileName.split("-")[2]
