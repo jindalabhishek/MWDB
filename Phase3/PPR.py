@@ -1,6 +1,9 @@
 import json
 import os
 
+import feature_descriptor_util
+
+import Constants
 import vector_util
 from Util.dao_util import DAOUtil
 from sklearn.decomposition import LatentDirichletAllocation
@@ -38,7 +41,7 @@ from Util.Utils import *
 #     normalized_data = (image_vector_matrix - np.min(image_vector_matrix)) \
 #                       / (np.max(image_vector_matrix) - np.min(image_vector_matrix))
 #     return normalized_data
-
+from image_comparison_util import get_elbp_histogram
 
 
 def main():
@@ -56,17 +59,20 @@ def main():
     folder_1_path = input('Enter folder 1 path: ')
     folder_2_path = input('Enter folder 2 path: ')
 
-    similarity_matrix_txt = create_similarity_matrix_from_images(folder_1_path)
-    similarity_matrix = np.array(similarity_matrix_txt)
+    labels = []
+    for name in os.listdir(folder_1_path):
+        labels.append(name)
 
-    parent_dir = folder_1_path.split('\\')
-    parent_dir = parent_dir[len(parent_dir) - 1]
-    print('Base Path:', parent_dir)
+    feature_model = 'color_moment'
+    # TODO implement this function(assuming latent semantis preserves the order of the folder)
+    training_latent_semantics = get_latent_semantics(folder_1_path, feature_model, k_value)
+
+    # Looping each query and output the 'false positive and miss rates'.
     for name in os.listdir(folder_2_path):
         """
            Compute the image pixels for the image
         """
-        image_pixels = vector_util.convert_image_to_matrix(folder_path + '\\' + name)
+        image_pixels = vector_util.convert_image_to_matrix(folder_2_path + '/' + name)
         print('Image Size:', len(image_pixels), len(image_pixels[0]), 'Max Pixel Size:', np.amax(image_pixels))
         """
            Normalize the image pixels
@@ -75,25 +81,63 @@ def main():
         """
             Compute All the feature descriptors
         """
-        color_moment_feature_descriptor = feature_descriptor_util.get_color_moment_feature_descriptor(image_pixels)
-        color_moment_feature_descriptor = feature_descriptor_util \
-            .get_reshaped_color_moment_vector(color_moment_feature_descriptor)
-    n = int(input('Enter value of n:'))
-    subject_ids = set()
-    subject_ids.add(subject_id_1)
-    subject_ids.add(subject_id_2)
-    subject_ids.add(subject_id_3)
+        query_matrix_1xm = []
 
-    adjacency_matrix = convert_similarity_matrix_to_graph(similarity_matrix, n)
-    hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
-    transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
-    seed_nodes = get_seed_nodes(subject_ids, len(similarity_matrix))
-    ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
-    print(ppr_matrix)
-    highest_subject_ids = np.argsort(-ppr_matrix[:, -1])
-    print(highest_subject_ids)
-    print('Most Relevant M Subjects Ids w.r.t to seed nodes')
-    print(highest_subject_ids[:m]+1)
+        if feature_model == 'color_moment':
+            color_moment_feature_descriptor = feature_descriptor_util.get_color_moment_feature_descriptor(image_pixels)
+            color_moment_feature_descriptor = feature_descriptor_util.get_reshaped_color_moment_vector(color_moment_feature_descriptor)
+            query_matrix_1xm = color_moment_feature_descriptor.copy()
+        elif feature_model == 'elbp':
+            elbp_feature_descriptor = feature_descriptor_util.get_elbp_feature_descriptor(image_pixels)
+            elbp_feature_descriptor = get_elbp_histogram(elbp_feature_descriptor)
+            query_matrix_1xm = elbp_feature_descriptor.copy()
+        elif feature_model == 'hog':
+            hog_feature_descriptor = feature_descriptor_util.get_hog_feature_descriptor(image_pixels)
+            query_matrix_1xm = hog_feature_descriptor.copy()
+
+        query_matrix_1xm = np.array(query_matrix_1xm)
+        query_matrix_1xk = np.matmul(query_matrix_1xm, np.array(training_latent_semantics['mxk']))
+        query_matrix_1xk = np.array(query_matrix_1xk)
+        # Find the Similarity list of query with every image in folder 1
+        similarity_list = []        # it should be 1xn of float values.
+        for each in training_latent_semantics['nxk']:
+            similarity_list.append(np.linalg.norm(np.array(each), query_matrix_1xk))
+
+        count_seeds = 3
+        new_similarity_list = similarity_list.copy()
+        seeds = new_similarity_list.sort(reverse=True)[:count_seeds]
+
+        # TODO not considering 'n' as the limiting factor in no of relavant edges of an edge.
+        # Initializing adjacency matrix.
+
+        # TODO not sure if considering undirected edges will work for PPR.
+        adjacency_matrix = np.empty(shape=(len(labels), len(labels)))
+        adjacency_matrix.fill(0)
+
+        # Adding edges  between same 'type' nodes.
+        for i, label_i in enumerate(labels):
+            for j, label_j in enumerate(labels):
+                if i == j:
+                    continue
+                split_curr_label = label_i.split('-')
+                type_i = split_curr_label[1]
+
+                split_curr_label = label_j.split('-')
+                type_j = split_curr_label[1]
+
+                if type_i == type_j:
+                    adjacency_matrix[]
+
+
+        hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
+        transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
+        seed_nodes = get_seed_nodes(subject_ids, len(similarity_matrix))
+        ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
+        print(ppr_matrix)
+        highest_subject_ids = np.argsort(-ppr_matrix[:, -1])
+        print(highest_subject_ids)
+        print('Most Relevant M Subjects Ids w.r.t to seed nodes')
+        print(highest_subject_ids[:m]+1)
 
 
 main()
