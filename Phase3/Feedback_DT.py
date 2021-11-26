@@ -73,7 +73,7 @@ def DT_RF(X, data_labels, query, k=10):
     #   test_set.remove(x)
     # print(np.concatenate((np.array(train_set),np.array([labels]).T),axis=1))
 
-    tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=0), 1000)
+    tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=1), 1000)
 
     # Feedback iterations
 

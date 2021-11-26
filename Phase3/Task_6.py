@@ -35,7 +35,8 @@ def main():
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model_name, query_image_vector)
 
-    indexes_of_similar_images = DT_RF(image_vector_matrix, query_image_feature_descriptor, number_of_similar_images)
+    indexes_of_similar_images = DT_RF(np.array(image_vector_matrix), image_labels, query_image_feature_descriptor,
+                                      number_of_similar_images)
 
 
 main()
