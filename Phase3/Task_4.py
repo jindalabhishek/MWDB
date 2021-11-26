@@ -46,9 +46,9 @@ def main():
 
     planes = LSH.query(query_image_feature_descriptor, number_of_similar_images)
 
-    if is not(isinstance(image_labels,list)):
+    if  not(isinstance(image_labels,list)):
       image_labels=image_labels.tolist()
-    if is not(isinstance(image_vector_matrix,list)):
+    if  not(isinstance(image_vector_matrix,list)):
       image_vector_matrix = image_vector_matrix.tolist()
 
     labels_of_similar_images = []
