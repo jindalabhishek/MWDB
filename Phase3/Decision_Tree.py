@@ -245,15 +245,15 @@ def classify(row, node):
 #
 # data = data_json['m*k matrix']
 # k = data.shape[1]
-data = data1.copy()
-labels= np.ones((10,1))
-for i in range (2,14):
-	p = i*np.ones((10,1))
-	labels = np.concatenate((labels,p) )
-
-
-
-data = np.concatenate((data,labels),axis=1)
-
-tree = build_tree(data.tolist(),7)
-print(print_leaf(classify([0.3, 0.5, 0.4, 0.1, 0.1, 0.9], tree)))
+# data = data1.copy()
+# labels= np.ones((10,1))
+# for i in range (2,14):
+# 	p = i*np.ones((10,1))
+# 	labels = np.concatenate((labels,p) )
+#
+#
+#
+# data = np.concatenate((data,labels),axis=1)
+#
+# tree = build_tree(data.tolist(),7)
+# print(print_leaf(classify([0.3, 0.5, 0.4, 0.1, 0.1, 0.9], tree)))

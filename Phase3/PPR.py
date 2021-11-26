@@ -43,65 +43,26 @@ from Util.Utils import *
 #     return normalized_data
 from image_comparison_util import get_elbp_histogram
 
+def getAdjecencyMatrix(labels):
+    adjacency_matrix = np.empty(shape=(len(labels), len(labels)))
+    adjacency_matrix.fill(0)
+    for i, label_i in enumerate(labels):
+        for j, label_j in enumerate(labels):
+            if i == j:
+                continue
 
-def main():
-    """
-        Executes Task 9
-        Output Subject - latent semantics matrix, (subject-list of weight matrix)
-    """
-    """
-        Connection to MongoDB using PyMongo
-    """
-    # 1 for type, 2 for subject and 3 for sample
-    # assuming task 1 for now. => type.
+            if label_j == label_i:
+                adjacency_matrix[i][j] = 1
+                adjacency_matrix[j][i] = 1
+    return adjacency_matrix
 
-    # create type-type from folder 1.
-    folder_1_path = input('Enter folder 1 path: ')
-    folder_2_path = input('Enter folder 2 path: ')
-
-    labels = []
-    for name in os.listdir(folder_1_path):
-        labels.append(name)
-
-    feature_model = 'color_moment'
-    # TODO implement this function(assuming latent semantis preserves the order of the folder)
-    training_latent_semantics = get_latent_semantics(folder_1_path, feature_model, k_value)
-
-    # Looping each query and output the 'false positive and miss rates'.
-    for name in os.listdir(folder_2_path):
-        """
-           Compute the image pixels for the image
-        """
-        image_pixels = vector_util.convert_image_to_matrix(folder_2_path + '/' + name)
-        print('Image Size:', len(image_pixels), len(image_pixels[0]), 'Max Pixel Size:', np.amax(image_pixels))
-        """
-           Normalize the image pixels
-        """
-        image_pixels = image_pixels / Constants.GREY_SCALE_MAX
-        """
-            Compute All the feature descriptors
-        """
-        query_matrix_1xm = []
-
-        if feature_model == 'color_moment':
-            color_moment_feature_descriptor = feature_descriptor_util.get_color_moment_feature_descriptor(image_pixels)
-            color_moment_feature_descriptor = feature_descriptor_util.get_reshaped_color_moment_vector(color_moment_feature_descriptor)
-            query_matrix_1xm = color_moment_feature_descriptor.copy()
-        elif feature_model == 'elbp':
-            elbp_feature_descriptor = feature_descriptor_util.get_elbp_feature_descriptor(image_pixels)
-            elbp_feature_descriptor = get_elbp_histogram(elbp_feature_descriptor)
-            query_matrix_1xm = elbp_feature_descriptor.copy()
-        elif feature_model == 'hog':
-            hog_feature_descriptor = feature_descriptor_util.get_hog_feature_descriptor(image_pixels)
-            query_matrix_1xm = hog_feature_descriptor.copy()
-
-        query_matrix_1xm = np.array(query_matrix_1xm)
-        query_matrix_1xk = np.matmul(query_matrix_1xm, np.array(training_latent_semantics['mxk']))
-        query_matrix_1xk = np.array(query_matrix_1xk)
-        # Find the Similarity list of query with every image in folder 1
+def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics):
+    testing_labels = []
+    adjacency_matrix = getAdjecencyMatrix(train_labels)
+    for query_matrix_1xk in testing_latent_semantics:
         similarity_list = []        # it should be 1xn of float values.
-        for each in training_latent_semantics['nxk']:
-            similarity_list.append(np.linalg.norm(np.array(each), query_matrix_1xk))
+        for each in training_latent_semantics:
+            similarity_list.append(np.linalg.norm(np.array(each)-query_matrix_1xk))
 
         # It is a nob.
         count_seeds = 3
@@ -121,41 +82,18 @@ def main():
         # Initializing adjacency matrix.
 
         # TODO not sure if considering undirected edges will work for PPR.
-        adjacency_matrix = np.empty(shape=(len(labels), len(labels)))
-        adjacency_matrix.fill(0)
-
-        # Adding edges  between same 'type' nodes.
-        for i, label_i in enumerate(labels):
-            for j, label_j in enumerate(labels):
-                if i == j:
-                    continue
-                split_curr_label = label_i.split('-')
-                type_i = split_curr_label[1]
-
-                split_curr_label = label_j.split('-')
-                type_j = split_curr_label[1]
-
-                if type_i == type_j:
-                    adjacency_matrix[i][j] = 1
-                    adjacency_matrix[j][i] = 1
 
         hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
-        seed_nodes = get_seed_nodes(seeds, len(labels))
+        seed_nodes = get_seed_nodes(seeds, len(train_labels))
         ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
-        print(ppr_matrix)
+        # print(ppr_matrix)
         highest_type_ids = np.argsort(-ppr_matrix[:, -1])
-        print(highest_type_ids)
-        print('Most Relevant Type Id w.r.t to seed nodes')
+        # print(highest_type_ids)
+        # print('Most Relevant Type Id w.r.t to seed nodes')
         # This will return the index of the image. We have to pick the type of that image as output.
-        print(highest_type_ids[:1]+1)
-
-        split_curr_label = labels[highest_type_ids[:1]+1].split('-')
-        output_type = split_curr_label[1]
-        print('\n %s', {output_type})
-
-
-
-
-
-main()
+        print(highest_type_ids[:1])
+        curr_label = train_labels[highest_type_ids[0]]
+        testing_labels.append(curr_label)
+        print('\n %s', {curr_label})
+    return testing_labels
