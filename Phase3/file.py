@@ -8,6 +8,7 @@ import math
 import vector_util
 import feature_descriptor_util
 from dimensionality_reduction.SVD import SVD
+from Phase_1.Constants import GREY_SCALE_MAX
 
 
 def color_moments(img):  # Calculate 1st, 2nd, 3rd color moments
@@ -77,30 +78,37 @@ def compute(data, k, image_types, *args):
     return latent_features.real
 
 
-def retrive_data(path,labelFunc, model_name, k_d):
+def retrive_data(path, model_name, k_d):
     all_image = []
-    all_labels = []
+    all_labels = [[], [], [], []]
     for file in os.listdir(path):
         a = vector_util.convert_image_to_matrix(os.path.join(path, file))
+        a = a / GREY_SCALE_MAX
         all_image.append(a)
-        all_labels.append(labelFunc(file))
+        all_labels[0].append(file[:-4].split('-')[1])
+        all_labels[1].append(file[:-4].split('-')[2])
+        all_labels[2].append(file[:-4].split('-')[3])
+        all_labels[3].append(file)
 
     all_feature_lbp = []
 
     if model_name == 'CM':
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util \
-            .get_reshaped_color_moment_vector(feature_descriptor_util.get_color_moment_feature_descriptor(img)))
+                                   .get_reshaped_color_moment_vector(
+                feature_descriptor_util.get_color_moment_feature_descriptor(img)))
 
     if model_name == 'ELBP':
         for img in all_image:
-            all_feature_lbp.append(feature_descriptor_util.get_elbp_feature_descriptor(img))
+            all_feature_lbp.append(
+                image_comparison_util.get_elbp_histogram(feature_descriptor_util.get_elbp_feature_descriptor(img)))
 
     if model_name == 'HOG':
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
 
-    return SVD().compute(np.array(all_feature_lbp), k_d, all_labels), all_labels
+    return SVD().compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
+    return compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
 
 # k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
 # print(l[3][:15])
