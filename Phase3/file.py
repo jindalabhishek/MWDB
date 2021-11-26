@@ -108,7 +108,5 @@ def retrive_data(path, model_name, k_d):
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
 
     return SVD().compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
-    return compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
-
 # k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
 # print(l[3][:15])

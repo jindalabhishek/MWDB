@@ -18,7 +18,7 @@ class SVD:
         self.power_val = right_eig_val
         self.latent_features = right_eig_vec
         self.input_matrix = image_vector_matrix
-        self.objects_in_k_dimensions = left_eig_val.real
+        self.objects_in_k_dimensions = left_eig_vec.real
         return self.objects_in_k_dimensions
 
     def serialize(self):
