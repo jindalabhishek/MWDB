@@ -10,7 +10,7 @@ from LSH import LSHash
 from Decision_Tree import *
 
 
-def DT_RF(X, query, k=10):
+def DT_RF(X, data_labels, query, k=10):
     # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
     # Initial query: uses LSH technique to get initial set for first classification
     # Suceeding feedbacks:
@@ -31,8 +31,19 @@ def DT_RF(X, query, k=10):
     for inp in X:
         LSH.index(inp)
 
+    X_list = X.tolist()
+
     train_set = LSH.query(query, k)
-    test_set = X
+    # train_set = train_set.tolist()
+    test_set = X.tolist()
+    if not (isinstance(data_labels, list)):
+        data_labels = data_labels.tolist()
+
+    labels_of_similar_images = []
+    for i in range(0, len(train_set)):
+        labels_of_similar_images.append(data_labels[i])
+    print(labels_of_similar_images)
+
     # for x in train_set:
     #   test_set.remove(x)
 
@@ -46,7 +57,6 @@ def DT_RF(X, query, k=10):
     feedbacks = user_ip.split(',')
     labels = [int(i) for i in feedbacks]
     labels.append(1)
-
     # iter = 2
     # while(len(np.unique(labels)) != 2):	# All samples are labeled the same
     #   train_set = LSH.query(query_point, k*iter)
@@ -61,13 +71,13 @@ def DT_RF(X, query, k=10):
     # test_set = X.tolist()
     # for x in train_set:
     #   test_set.remove(x)
-    # train_set.append(query_point.tolist())
+    # print(np.concatenate((np.array(train_set),np.array([labels]).T),axis=1))
 
-    tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=1), 1000)
+    tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=0), 1000)
 
     # Feedback iterations
 
-    while (user_ip != 'stop'):
+    while user_ip != 'stop':
         # Calculate and find k objects in test_set through DT
         test_set_dst = []
         for inp in test_set:
@@ -78,14 +88,22 @@ def DT_RF(X, query, k=10):
         X = np.array(test_set_dst)
         # inps = input array
         for inp in X:
-            LSH1.index(inp)
+            LSH.index(inp)
 
         new_train_set = LSH1.query(query, k)
-        print(new_train_set, '==============================')
+        # print(new_train_set,'==============================')
+
         new_train_set = new_train_set.tolist()
+        labels_of_similar_images = []
+        for x in new_train_set:
+            labels_of_similar_images.append(data_labels[X_list.index(x)])
+        print(labels_of_similar_images)
+
         user_ip = input(
-            "Enter feedback for corresponding sample above, separated by ',', or enter 'all' for all relevant in the train set, or 'stop' to stop training: ")
-        if (user_ip == 'stop' or user_ip == 'all'): return np.array(new_train_set)
+            "Enter feedback for corresponding sample above, separated by ',', or enter 'all' for all relevant "
+            "in the train set, or 'stop' to stop training: ")
+        if user_ip == 'stop' or user_ip == 'all':
+            return np.array(new_train_set)
         feedbacks = user_ip.split(',')
         labels.extend([int(i) for i in feedbacks])
         print("Labels = " + str(labels))
