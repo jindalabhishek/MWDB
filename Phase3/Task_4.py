@@ -51,11 +51,11 @@ def main():
     if is not(isinstance(image_vector_matrix,list)):
       image_vector_matrix = image_vector_matrix.tolist()
 
-    indexes_of_similar_images = []
+    labels_of_similar_images = []
     for x in planes:
-      indexes_of_similar_images.append(image_labels[image_vector_matrix.index(x.tolist())])
+      labels_of_similar_images.append(image_labels[image_vector_matrix.index(x.tolist())])
 
-    knn = np.array(indexes_of_similar_images)
+    knn = np.array(labels_of_similar_images)
     print("K nearest neighbors (sorted):\n" + str(knn))
 
     # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
