@@ -14,10 +14,13 @@ from Util.dao_util import *
 from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
+
 import re
 # image_path = input('Enter path to query image: ')
 # image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
-image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
+# image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
+# image_path = '/Users/dhruv/Desktop/deliverable/Code/Dataset/all/image-con-20-1.png'
+image_path = '/Users/dhruv/Desktop/deliverable/Code/Dataset/all/image-cc-26-2.png'
 
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"

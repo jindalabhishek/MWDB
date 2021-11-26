@@ -15,10 +15,11 @@ from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
 import re
-# image_path = input('Enter path to query image: ')
+image_path = input('Enter path to query image: ')
 
-#image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
-image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
+# image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
+# image_path = '/Users/dhruv/Desktop/deliverable/Code/Dataset/all/image-con-20-1.png'
+# image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
 # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
 # '/Users/dhruv/Desktop/dhruv_gray.jpeg'
 

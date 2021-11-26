@@ -46,7 +46,7 @@ def main():
 
     type_weights = numpy.array([type_weights[tt] for tt in type_weights])
     ##### Acquire parameters from user #####
-    similarity = similar_matrix(type_weights)
+    similarity = similar_matrix(type_weights, method='euclidean')
     print("Calculating Similarity Matrix")
 
     k = int(input("Enter k value: "))

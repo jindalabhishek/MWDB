@@ -18,10 +18,10 @@ import re
 
 # image_path = input('Enter path to query image: ')
 
-image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
-# input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
+# image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
+image_path = input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
 # image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-1-2.png'
-
+# image_path = '/Users/dhruv/Desktop/deliverable/Code/tests_v2/neg_6_1.png'
 input_file = input('Enter path to latent semantic file: ')
 # input_file = "/Users/dhruv/PycharmProjects/MWDB/Outputs/task_3_LDA.json"
 latentSemanticFile = LatentSemanticFile.deserialize(input_file)
