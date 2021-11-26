@@ -15,9 +15,11 @@ from constants.TaskConstants import TaskConstants
 from json_util import LatentSemanticFile
 from task567_util import *
 import re
-# image_path = input('Enter path to query image: ')
+image_path = input('Enter path to query image: ')
 
-image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
+# image_path = "/Users/dhruv/PycharmProjects/MWDB/Dataset/sample_images/jitter-image-184.png"
+# image_path = '/Users/dhruv/Desktop/deliverable/Code/Dataset/all/image-con-20-1.png'
+# image_path = '/Users/dhruv/PycharmProjects/MWDB/Dataset/all/image-cc-3-2.png'
 # input('Welcome to Task 5 Demo. Enter Full Path of the image for query: ')
 # '/Users/dhruv/Desktop/dhruv_gray.jpeg'
 
@@ -81,9 +83,10 @@ reduced_query_1xk = {feature_model_name: latentSemanticFile.dimensionReduction.t
 
 output_list = get_similar_images_based_on_model(feature_model, reduced_query_1xk, reduced_all_data_matrix_nxk)
 # print(output_list)
-
-truncated_output_list = output_list[:TaskConstants.RANK_THRESHOLD]
-print('Truncated output list using Rank_Threshold = %s' % {TaskConstants.RANK_THRESHOLD}, truncated_output_list)
+new_output_list = [(each[0], abs(each[1])) for each in output_list]
+new_output_list.sort(key=lambda x: x[1])
+truncated_output_list = new_output_list[:TaskConstants.RANK_THRESHOLD]
+# print('Truncated output list using Rank_Threshold = %s' % {TaskConstants.RANK_THRESHOLD}, truncated_output_list)
 
 dict_of_types = {}
 for i in range(len(truncated_output_list)):

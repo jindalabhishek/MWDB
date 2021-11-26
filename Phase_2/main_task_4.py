@@ -16,6 +16,8 @@ def normal_dist(x):
 
 def similar_matrix(data, method='pearson'):
     data = np.array(data)
+    data[np.isnan(data)] = 0
+
     matrix = np.ones((data.shape[0], data.shape[0]))
     if method == 'euclidean':
         for i in range(0, data.shape[0]):
@@ -35,37 +37,39 @@ def similar_matrix(data, method='pearson'):
                 matrix[i][j] = d
         return np.array(matrix)
 
-
 def main():
-    latent_semantic_file_path = input("Enter latent semantic path: ")
-    #     input_path = "2_color_moment_feature_descriptor_PCA_1.json"
-    type_weights = {i[0]:i[1] for i in get_task_output_data(latent_semantic_file_path)}
-    types = [tt for tt in type_weights]
+    input_path = input("Enter subject weight features path: ")
+    # input_path = "1_color_moment_feature_descriptor_PCA_1.json"
 
-    type_weights = numpy.array([type_weights[tt] for tt in type_weights])
+    subject_weights = {i[0]: i[1] for i in LatentSemanticFile.deserialize(input_path).task_output}
+    subjects = [str(i) for i in range(1, 41)]
+
+    subject_weights_array = numpy.array([subject_weights[key] for key in subjects])
     ##### Acquire parameters from user #####
-    similarity = similar_matrix(type_weights)
+
     print("Calculating Similarity Matrix")
 
+    similarity = similar_matrix(subject_weights_array)
     k = int(input("Enter k value: "))
-    dimension_reduction_technique = input("Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): ")
 
+    dimension_reduction_technique = input("Enter dimensionality reduction technique (1. PCA 2.SVD 3.LDA 4.k-means): ")
+    #     dimension_reduction_technique = '3'
     technique_number_vs_reduction_object = {'1': PCA(), '2': SVD(), '3': LDA(), '4': KMeans(1000)}
     dimension_reduction_object = technique_number_vs_reduction_object[dimension_reduction_technique]
 
-    #     dimension_reduction_technique = '3'
-    latent_type_features_dataset = dimension_reduction_object.compute(similarity, k, types)
-    save_task_data('task_3', dimension_reduction_object, task_output=latent_type_features_dataset.tolist())
-    # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
-    print('Entire Type latent weight matrix: \n', latent_type_features_dataset)
+    latent_subject_features_dataset = dimension_reduction_object.compute(similarity, k, subjects)
 
-    k_types = np.transpose(latent_type_features_dataset)
-    for k in range(0, len(k_types)):
-        print(k,'th Semantic in Type Weight Pairs')
-        type_weight_pairs = k_types[k]
-        indexes = np.argsort(-type_weight_pairs)
+    save_task_data('task_4', dimension_reduction_object, task_output=latent_subject_features_dataset.tolist())
+    # print('type_weight_matrix dimension', len(type_weight_matrix), len(type_weight_matrix[0]))
+    print('Entire Subject latent weight matrix: \n', latent_subject_features_dataset)
+
+    k_subjects = np.transpose(latent_subject_features_dataset)
+    for k in range(0, len(k_subjects)):
+        print(k, 'th Semantic in Subject Weight Pairs')
+        subject_weight_pairs = k_subjects[k]
+        indexes = np.argsort(-subject_weight_pairs)
         for index in indexes:
-            print(types[index], ':', type_weight_pairs[index])
+            print(subjects[index], ':', subject_weight_pairs[index])
 
 
 main()
