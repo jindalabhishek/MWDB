@@ -103,9 +103,19 @@ def main():
         for each in training_latent_semantics['nxk']:
             similarity_list.append(np.linalg.norm(np.array(each), query_matrix_1xk))
 
+        # It is a nob.
         count_seeds = 3
-        new_similarity_list = similarity_list.copy()
-        seeds = new_similarity_list.sort(reverse=True)[:count_seeds]
+        new_similarity_list = {}
+
+        for index, each in enumerate(similarity_list):
+            new_similarity_list[str(index)] = each
+
+        sorted_dict = sorted(new_similarity_list.items(), reverse=True, key=lambda kv: kv[1])
+
+        seeds = []
+        list_of_dict = list(sorted_dict)
+        for i in range(count_seeds):
+            seeds.append(list_of_dict[i][0])
 
         # TODO not considering 'n' as the limiting factor in no of relavant edges of an edge.
         # Initializing adjacency matrix.
@@ -126,18 +136,26 @@ def main():
                 type_j = split_curr_label[1]
 
                 if type_i == type_j:
-                    adjacency_matrix[]
-
+                    adjacency_matrix[i][j] = 1
+                    adjacency_matrix[j][i] = 1
 
         hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
-        seed_nodes = get_seed_nodes(subject_ids, len(similarity_matrix))
+        seed_nodes = get_seed_nodes(seeds, len(labels))
         ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
         print(ppr_matrix)
-        highest_subject_ids = np.argsort(-ppr_matrix[:, -1])
-        print(highest_subject_ids)
-        print('Most Relevant M Subjects Ids w.r.t to seed nodes')
-        print(highest_subject_ids[:m]+1)
+        highest_type_ids = np.argsort(-ppr_matrix[:, -1])
+        print(highest_type_ids)
+        print('Most Relevant Type Id w.r.t to seed nodes')
+        # This will return the index of the image. We have to pick the type of that image as output.
+        print(highest_type_ids[:1]+1)
+
+        split_curr_label = labels[highest_type_ids[:1]+1].split('-')
+        output_type = split_curr_label[1]
+        print('\n %s', {output_type})
+
+
+
 
 
 main()
