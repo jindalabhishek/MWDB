@@ -2,6 +2,7 @@ from Util.dao_util import DAOUtil
 from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
+from Feedback_SVM import *
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -15,8 +16,7 @@ def get_image_vector_matrix(feature_descriptors, feature_model):
 
 def main():
     """
-        Executes Task 5
-        Output Subject - latent semantics matrix, (subject-list of weight matrix)
+        Executes Task 7
     """
     """
         Connection to MongoDB using PyMongo
@@ -33,21 +33,10 @@ def main():
 
     feature_descriptors = dao_util.get_feature_descriptors_for_all_images()
     image_vector_matrix, image_labels = get_image_vector_matrix(feature_descriptors, feature_model)
-    approximations, partition_boundaries = VA_Approx(image_vector_matrix, number_of_bits)
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model_name, query_image_vector)
 
-    indexes_of_similar_images = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
-                                       query_image_feature_descriptor, number_of_similar_images)
-
-    knn = np.array([image_labels[int(i)] for i in indexes_of_similar_images])
-    print("K nearest neighbors (sorted):\n" + str(knn))
-
-    # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
-    # plt.scatter(query_image_feature_descriptor[0], query_image_feature_descriptor[1], color='orange', label='Query')
-    # plt.scatter(knn[:, 0], knn[:, 1], color='red', label='K NN to Q', marker='*')
-    # plt.legend()
-    # plt.show()
-
+    indexes_of_similar_images = SVM_RF(image_vector_matrix, image_labels, query_image_feature_descriptor,
+                                       number_of_bits, number_of_similar_images)
 
 main()

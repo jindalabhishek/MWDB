@@ -1,5 +1,6 @@
 import json
-
+from Phase_1.feature_descriptor_util import *
+from Phase_1.image_comparison_util import *
 from json_util import LatentSemanticFile
 
 OUTPUT_FILE_DIR = '../Outputs/'
@@ -19,7 +20,7 @@ def save_task_data(task_id, dimension_reduction_object, task_output=None, topic=
     technique_name = type(dimension_reduction_object).__name__
     output_path = get_output_file_path(task_id, feature_model, topic, technique_name)
     print(output_path)
-    LatentSemanticFile(feature_model, dimension_reduction_object, task_output,task_id).serialize(output_path)
+    LatentSemanticFile(feature_model, dimension_reduction_object, task_output, task_id).serialize(output_path)
 
 
 def get_task_output_data(input_path):
@@ -64,3 +65,19 @@ def print_k_latent_semantics_in_sorted_weight_pairs(sorted_weight_pair):
 
     print('Sorted K latent Semantic File ')
     print(latent_semantic_vs_subject_weights)
+
+
+def get_query_image_feature_descriptor(feature_model, query_image_vector):
+    query_image_feature_descriptor = None
+    if feature_model == 'color_moment':
+        color_moment_feature_descriptor = get_color_moment_feature_descriptor(query_image_vector)
+        color_moment_feature_descriptor = get_reshaped_color_moment_vector(color_moment_feature_descriptor)
+        query_image_feature_descriptor = color_moment_feature_descriptor.copy()
+    elif feature_model == 'elbp':
+        elbp_feature_descriptor = get_elbp_feature_descriptor(query_image_vector)
+        elbp_feature_descriptor = get_elbp_histogram(elbp_feature_descriptor)
+        query_image_feature_descriptor = elbp_feature_descriptor.copy()
+    elif feature_model == 'hog':
+        hog_feature_descriptor = get_hog_feature_descriptor(query_image_vector)
+        query_image_feature_descriptor = hog_feature_descriptor.copy()
+    return query_image_feature_descriptor

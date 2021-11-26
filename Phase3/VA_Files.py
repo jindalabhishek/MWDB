@@ -122,21 +122,21 @@ def VA_SSA(X, a, p, q, k):
 #############################
 # Sample driver
 
-X1 = np.array([[1, 3], [2, 2], [4, 3], [6, 1], [5, 4]])
-X2 = np.array([[13, 6], [15, 8], [16, 7], [12, 9], [17, 10]])
-X3 = np.array([[2, 7], [6, 10], [3, 8], [1, 9], [7, 8]])
-X4 = np.array([[12, 3], [13, 2], [16, 4], [15, 1], [11, 3]])
-X = np.concatenate((X1, X2, X3, X4), axis=0)
-print(X)
-print('Going to call')
-a, p = VA_Approx(X, 4)
-query = [9, 6]
-ind = VA_SSA(X, a, p, query, 7)
-kNN = np.array([X[int(i)] for i in ind])
-print("7 nearest neighbors (sorted):\n" + str(kNN))
-
-plt.scatter(X[:, 0], X[:, 1], color='blue', label='dataset')
-plt.scatter(query[0], query[1], color='orange', label='Query')
-plt.scatter(kNN[:, 0], kNN[:, 1], color='red', label='7 NN to Q', marker='*')
-plt.legend()
-plt.show()
+# X1 = np.array([[1, 3], [2, 2], [4, 3], [6, 1], [5, 4]])
+# X2 = np.array([[13, 6], [15, 8], [16, 7], [12, 9], [17, 10]])
+# X3 = np.array([[2, 7], [6, 10], [3, 8], [1, 9], [7, 8]])
+# X4 = np.array([[12, 3], [13, 2], [16, 4], [15, 1], [11, 3]])
+# X = np.concatenate((X1, X2, X3, X4), axis=0)
+# print(X)
+# print('Going to call')
+# a, p = VA_Approx(X, 4)
+# query = [9, 6]
+# ind = VA_SSA(X, a, p, query, 7)
+# kNN = np.array([X[int(i)] for i in ind])
+# print("7 nearest neighbors (sorted):\n" + str(kNN))
+#
+# plt.scatter(X[:, 0], X[:, 1], color='blue', label='dataset')
+# plt.scatter(query[0], query[1], color='orange', label='Query')
+# plt.scatter(kNN[:, 0], kNN[:, 1], color='red', label='7 NN to Q', marker='*')
+# plt.legend()
+# plt.show()
