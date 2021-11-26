@@ -2,7 +2,7 @@ from Util.dao_util import DAOUtil
 from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
-from Feedback_SVM import *
+from Feedback_DT import *
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -16,14 +16,13 @@ def get_image_vector_matrix(feature_descriptors, feature_model):
 
 def main():
     """
-        Executes Task 7
+        Executes Task 6
     """
     """
         Connection to MongoDB using PyMongo
     """
     dao_util = DAOUtil()
-    feature_model = input('Welcome to Task 7 Demo. Enter the feature model (color_moment, elbp, hog):')
-    number_of_bits = int(input('Enter the number of bits:'))
+    feature_model = input('Welcome to Task 6 Demo. Enter the feature model (color_moment, elbp, hog):')
     query_image_path = input('Enter the path for query image:')
     number_of_similar_images = int(input('Enter the t value for most similar images:'))
 
@@ -36,7 +35,7 @@ def main():
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model_name, query_image_vector)
 
-    SVM_RF(image_vector_matrix, image_labels, query_image_feature_descriptor, number_of_bits, number_of_similar_images)
+    indexes_of_similar_images = DT_RF(image_vector_matrix, query_image_feature_descriptor, number_of_similar_images)
 
 
 main()
