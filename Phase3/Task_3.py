@@ -20,6 +20,10 @@ Y_train = labels_train[1]  # subject labels
 X_test, labels_test = retrive_data(train_path, feature_model, dimensions)
 Y_test = labels_test[1]  # subject labels
 
+type2num, num2type = {}, {}
+    for i in range(1, 11):
+        type2num[str(i)] = i
+        num2type[i] = str(i)
 if classifier == 'SVM':
 
     train_set = multiclass_train(np.array(X_train), np.array(Y_train))
@@ -28,11 +32,6 @@ if classifier == 'SVM':
 elif classifier == 'DT':
 
     data = X_train.copy()
-
-    type2num, num2type = {}, {}
-    for i in range(1, 11):
-        type2num[str(i)] = i
-        num2type[i] = str(i)
 
     labels = list(map(lambda x: type2num[x], Y_train))
 

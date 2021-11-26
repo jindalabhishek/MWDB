@@ -16,8 +16,8 @@ feature_model = "CM"
 dimensions = 20
 X_train, labels_train = retrive_data(train_path, feature_model, dimensions)
 
-# classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
-classifier = "PPR"
+classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
+# classifier = "PPR"
 test_path = input("Enter the image folder path for testing: ")
 # test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Test"
 
