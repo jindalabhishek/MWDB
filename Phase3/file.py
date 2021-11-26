@@ -7,7 +7,18 @@ import skimage.feature as skf
 import math
 
 
+def image_split(img):	# Split 64x64 image into 64x8x8 image
+  # Image format - (64x64)
+  # Return format - (64x8x8)
 
+  ret_img = np.zeros((64,8,8))
+  for i in range(64):
+    for x in range(8):
+      for y in range(8):
+        xo = (i*8 + x)%64
+        yo = int(i/8)*8 + y
+        ret_img[i][x][y] = img[xo][yo]
+  return ret_img
 
 def color_moments(img):	# Calculate 1st, 2nd, 3rd color moments
   # Input image format - (64x64)
