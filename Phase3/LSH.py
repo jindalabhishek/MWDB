@@ -36,7 +36,7 @@ class LSHash(object):
 
   def query(self, query_point, num_results=None):
 
-    candidates = set()   
+    candidates = set()
     for i, table in enumerate(self.hash_tables):
       binary_hash = self._hash_projections(self.uniform_planes[i], query_point)
       
@@ -45,22 +45,11 @@ class LSHash(object):
       for i in range(len(self.hash_tables)):
         json.dump(self.hash_tables[i], file)
     
-    candidates = [(ix, np.linalg.norm(query_point-np.asarray(ix))) for ix in candidates]
+    candidates = [(list(ix), np.linalg.norm(query_point-np.asarray(ix))) for ix in candidates]
     candidates.sort(key=lambda x: x[1])
+    candidates = candidates[:num_results] if num_results else candidates
+    knn=[]
+    for i in range(len(candidates)):
+        knn.append(candidates[i][0])
+    return np.array(knn)
 
-    return candidates[:num_results] if num_results else candidates
-
-
-
-
-pp = LSHash(3,5,2)
-inps = np.random.randn(130, 3)
-for inp in inps:
-  pp.index(inp)
-
-planes = pp.query([0.3,0.6,0.9])
-
-for plane in planes:
-  print(plane)
-
-print(len(planes))
