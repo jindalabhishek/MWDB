@@ -10,7 +10,7 @@ from LSH import LSHash
 from Decision_Tree import *
 
 
-def DT_RF(X, data_labels, query, k=10):
+def DT_RF(X, data_labels, query, k_n=10):
     # Assumption: by nearest neighbors, find matches that are of the same class (relevant) as query point
     # Initial query: uses LSH technique to get initial set for first classification
     # Suceeding feedbacks:
@@ -25,7 +25,7 @@ def DT_RF(X, data_labels, query, k=10):
     test_set = []  # Set of samples to be classified and returned to user (NOT USED)
     test_set_id = []  # Indices of samples that are in test_set
     # Initial query
-    LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=2)
+    LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
     # X = np.random.randn(130, 3)
     # inps = input array
     for inp in X:
@@ -33,8 +33,8 @@ def DT_RF(X, data_labels, query, k=10):
 
     X_list = X.tolist()
 
-    train_set = LSH.query(query, k)
-    # train_set = train_set.tolist()
+    train_set = LSH.query(query, k_n)
+    train_set = train_set.tolist()
     test_set = X.tolist()
     if not (isinstance(data_labels, list)):
         data_labels = data_labels.tolist()
@@ -69,11 +69,11 @@ def DT_RF(X, data_labels, query, k=10):
     #   labels.extend([int(i) for i in feedbacks])
 
     # test_set = X.tolist()
-    # for x in train_set:
+    # for x in train_set:1,0,1,0,1,0,1,0,1,0
     #   test_set.remove(x)
-    # print(np.concatenate((np.array(train_set),np.array([labels]).T),axis=1))
+    #print(np.asarray(train_set)[0].shape)
 
-    tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=1), 1000)
+    tree = build_tree(np.concatenate((np.asarray(train_set), np.asarray([labels]).T), axis=1), 1000)
 
     # Feedback iterations
 
@@ -88,9 +88,9 @@ def DT_RF(X, data_labels, query, k=10):
         X = np.array(test_set_dst)
         # inps = input array
         for inp in X:
-            LSH.index(inp)
+            LSH1.index(inp)
 
-        new_train_set = LSH1.query(query, k)
+        new_train_set = LSH1.query(query, k_n)
         # print(new_train_set,'==============================')
 
         new_train_set = new_train_set.tolist()
@@ -112,6 +112,6 @@ def DT_RF(X, data_labels, query, k=10):
         train_set.extend(new_train_set)
         # for i in new_train_set:
         #   test_set.remove(i) 	# And remove elements from the test_set
-        tree = build_tree(np.concatenate((np.array(train_set), np.array([labels]).T), axis=1), 1000)
+        tree = build_tree(np.concatenate((np.array(train_set,dtype=object), np.array([labels],dtype=object).T), axis=1), 1000)
 
     return np.array(new_train_set)
