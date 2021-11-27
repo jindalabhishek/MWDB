@@ -4,21 +4,25 @@ from SVM import *
 from Decision_Tree import *
 import skimage.feature as skf
 from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
+import Utils
+import PPR
 
-train_path = input("Enter the image folder path for training: ")
-feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
-dimensions = int(input("Total reduced Dimensions: "))
+train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+# feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
+feature_model = "CM"
+# dimensions = int(input("Total reduced Dimensions: "))
+dimensions = 20
+dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getSubject)
+X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getSubject)
+# classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
+classifier = "PPR"
+# test_path = input("Enter the image folder path for testing: ")
+test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
 
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions, True)
+Y_train = labels_train  # types labels
 
-classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
-
-test_path = input("Enter the image folder path for testing: ")
-
-Y_train = labels_train[1]  # subject labels
-
-X_test, labels_test = retrive_data(train_path, feature_model, dimensions, True)
-Y_test = labels_test[1]  # subject labels
+X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getSubject)
+Y_test = labels_test # types labels
 
 type2num, num2type = {}, {}
 for i in range(1, 41):
@@ -46,7 +50,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    k = 1
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 1)
 
 else:
     print('wrong classifier')

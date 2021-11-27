@@ -30,7 +30,7 @@ def get_seed_nodes(subject_ids_set, k):
     remaining_subjects = k - n_subject_ids
     remaining_subjects_probability = probability * (1 / remaining_subjects)
     for i in range(0, k):
-        if i + 1 in subject_ids_set:
+        if i in subject_ids_set:
             seed_nodes[i][0] = probability
         else:
             seed_nodes[i][0] = remaining_subjects_probability

@@ -5,20 +5,22 @@ from Decision_Tree import *
 import skimage.feature as skf
 from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 
-train_path = input("Enter the image folder path for training: ")
-feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
-dimensions = int(input("Total reduced Dimensions: "))
+train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+# feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
+feature_model = "CM"
+# dimensions = int(input("Total reduced Dimensions: "))
+dimensions = 30
+X_train, labels_train, dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getSubject)
 
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions, True)
+# classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
+classifier = "PPR"
+# test_path = input("Enter the image folder path for testing: ")
+test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
 
-classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
+Y_train = labels_train  # types labels
 
-test_path = input("Enter the image folder path for testing: ")
-
-Y_train = labels_train[2]  # sample labels
-
-X_test, labels_test = retrive_data(train_path, feature_model, dimensions, True)
-Y_test = labels_test[2]  # subject labels
+X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getSubject)
+Y_test = labels_test # types labels
 
 type2num, num2type = {}, {}
 for i in range(1, 11):

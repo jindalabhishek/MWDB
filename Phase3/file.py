@@ -8,6 +8,9 @@ import math
 import vector_util
 import feature_descriptor_util
 from dimensionality_reduction.SVD import SVD
+from dimensionality_reduction.PCA import PCA
+from dimensionality_reduction.LDA import LDA
+from dimensionality_reduction.KMeans import KMeans
 from Phase_1.Constants import GREY_SCALE_MAX
 import image_comparison_util
 
@@ -91,7 +94,6 @@ def lbp_extract(img):
     hist /= (hist.sum() + eps)
     return hist
 
-
 def hog_extract(img):  # skimage.hog wrapper
     ret_out, ret_hog = skf.hog(img, orientations=9,
                                pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True,
@@ -126,17 +128,16 @@ def compute(data, k, image_types, *args):
     return latent_features.real
 
 
-def retrive_data(path, model_name, k_d, reduce):
+def getImageData(path,model_name,labelFunc):
     all_image = []
-    all_labels = [[], [], [], []]
+    all_labels = []
+    fileNames = []
     for file in os.listdir(path):
         a = vector_util.convert_image_to_matrix(os.path.join(path, file))
         a = a / GREY_SCALE_MAX
         all_image.append(a)
-        all_labels[0].append(file[:-4].split('-')[1])
-        all_labels[1].append(file[:-4].split('-')[2])
-        all_labels[2].append(file[:-4].split('-')[3])
-        all_labels[3].append(file)
+        all_labels.append(labelFunc(file))
+        fileNames.append(file)
 
     all_feature_lbp = []
 
@@ -154,10 +155,16 @@ def retrive_data(path, model_name, k_d, reduce):
     if model_name == 'HOG':
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
-    if reduce:
-        return SVD().compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
-    else:
-        return all_feature_lbp, all_labels
+    return all_feature_lbp,all_labels, fileNames
 
+def getTrainData(path, model_name, k_d,labelFunc):
+    all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
+    dimensionality_reduction = KMeans(1000)
+    objects = dimensionality_reduction.compute(np.array(all_feature_lbp), k_d, all_labels)
+    return dimensionality_reduction, fileNames
+
+def getTestData(path,model_name,dimension_reduction,labelFunc):
+    all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
+    return dimension_reduction.transform(np.array(all_feature_lbp)), all_labels, fileNames
 # k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
 # print(l[3][:15])

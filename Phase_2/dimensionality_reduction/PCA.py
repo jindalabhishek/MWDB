@@ -76,6 +76,6 @@ class PCA:
 
         try:
             matrix_nxk = np.matmul(image_vector_matrix, self.latent_features)
-            return np.matmul(matrix_nxk, linalg.inv(np.diagflat(self.power_val)))
+            return np.matmul(matrix_nxk, linalg.inv(np.diagflat(self.power_val))).real
         except:
             return None

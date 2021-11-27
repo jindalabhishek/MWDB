@@ -95,5 +95,5 @@ class KMeans:
         return self.objects_in_k_dimensions
 
     def transform(self, image_vector_matrix):
-       return KMeans.get_vectors_k_dimensions(image_vector_matrix,self.centroids)
+       return np.array(KMeans.get_vectors_k_dimensions(image_vector_matrix,self.centroids))
 
