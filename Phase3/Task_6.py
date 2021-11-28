@@ -25,7 +25,7 @@ def main():
     feature_model = input('Welcome to Task 6 Demo. Enter the feature model (color_moment, elbp, hog):')
     query_image_path = input('Enter the path for query image:')
     number_of_similar_images = int(input('Enter the t value for most similar images:'))
-    query_image_path= '/home/kirity/Downloads/4000/image-cc-7-3.png'
+    # query_image_path= '/home/kirity/Downloads/4000/image-cc-7-3.png'
     # feature_model = 'hog'1
     feature_model_name = feature_model
     feature_model += '_feature_descriptor'
