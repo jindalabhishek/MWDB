@@ -18,7 +18,7 @@ def get_hubs_authorities_from_adjacency_matrix(adjacency_matrix):
 
 def get_transition_matrix_from_hubs_authorities(hubs_vs_authorities):
     column_sum = hubs_vs_authorities.sum(axis=0)
-    print(column_sum)
+    # print(column_sum)
     transition_matrix = hubs_vs_authorities / column_sum
     return transition_matrix
 
@@ -30,7 +30,7 @@ def get_seed_nodes(subject_ids_set, k):
     remaining_subjects = k - n_subject_ids
     remaining_subjects_probability = probability * (1 / remaining_subjects)
     for i in range(0, k):
-        if i + 1 in subject_ids_set:
+        if i in subject_ids_set:
             seed_nodes[i][0] = probability
         else:
             seed_nodes[i][0] = remaining_subjects_probability

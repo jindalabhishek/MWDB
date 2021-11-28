@@ -1,2 +1,2 @@
 class TaskConstants:
-    RANK_THRESHOLD = 10
+    RANK_THRESHOLD = 5

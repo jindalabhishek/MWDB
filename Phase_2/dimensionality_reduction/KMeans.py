@@ -7,16 +7,19 @@ import numpy as np
 class KMeans:
     CENTROIDS = "centroids_kxm"
     INPUT_MATRIX = "matrix_nxm"
+    OBJECTS_IN_K_DIMENSIONS = "matrix_nxk"
 
     def serialize(self):
         return {KMeans.CENTROIDS: [lst.tolist() for lst in self.centroids],
-                KMeans.INPUT_MATRIX: self.input_matrix.tolist()}
+                KMeans.INPUT_MATRIX: self.input_matrix.tolist(),
+                KMeans.OBJECTS_IN_K_DIMENSIONS: self.objects_in_k_dimensions.tolist()}
 
     @staticmethod
     def deserialize(latent_feature_json_object):
         obj = KMeans(1000)
         obj.centroids = [np.array(lst) for lst in latent_feature_json_object[KMeans.CENTROIDS]]
         obj.input_matrix = latent_feature_json_object[KMeans.INPUT_MATRIX]
+        obj.objects_in_k_dimensions = np.array(latent_feature_json_object[KMeans.OBJECTS_IN_K_DIMENSIONS])
         return obj
 
     def __init__(self, n_iterations) -> None:
@@ -88,8 +91,9 @@ class KMeans:
         self.centroids = centroids
         self.input_matrix = image_vector_matrix
         image_vector_matrix_k_dimensions = KMeans.get_vectors_k_dimensions(image_vector_matrix, centroids)
-        return np.array(image_vector_matrix_k_dimensions).real
+        self.objects_in_k_dimensions = np.array(image_vector_matrix_k_dimensions).real
+        return self.objects_in_k_dimensions
 
     def transform(self, image_vector_matrix):
-       return KMeans.get_vectors_k_dimensions(image_vector_matrix,self.centroids);
+       return np.array(KMeans.get_vectors_k_dimensions(image_vector_matrix,self.centroids))
 
