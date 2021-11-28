@@ -8,6 +8,7 @@ class KMeans:
     CENTROIDS = "centroids_kxm"
     INPUT_MATRIX = "matrix_nxm"
     OBJECTS_IN_K_DIMENSIONS = "matrix_nxk"
+    DEFAULT_ITERATIONS = 100
 
     def serialize(self):
         return {KMeans.CENTROIDS: [lst.tolist() for lst in self.centroids],
@@ -16,7 +17,7 @@ class KMeans:
 
     @staticmethod
     def deserialize(latent_feature_json_object):
-        obj = KMeans(1000)
+        obj = KMeans(DEFAULT_ITERATIONS)
         obj.centroids = [np.array(lst) for lst in latent_feature_json_object[KMeans.CENTROIDS]]
         obj.input_matrix = latent_feature_json_object[KMeans.INPUT_MATRIX]
         obj.objects_in_k_dimensions = np.array(latent_feature_json_object[KMeans.OBJECTS_IN_K_DIMENSIONS])
@@ -24,6 +25,9 @@ class KMeans:
 
     def __init__(self, n_iterations) -> None:
         self.n_iterations = n_iterations
+
+    def __init__(self):
+        self.n_iterations = KMeans.DEFAULT_ITERATIONS
 
     @staticmethod
     def initialize_centroids(centroids, n_components, image_vector_matrix):

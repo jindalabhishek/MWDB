@@ -160,9 +160,9 @@ def getImageData(path,model_name,labelFunc):
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
     return all_feature_lbp,all_labels, fileNames
 
-def getTrainData(path, model_name, k_d,labelFunc):
+def getTrainData(path, model_name, k_d,labelFunc,dimensionality_reduction_technique=SVD):
     all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
-    dimensionality_reduction = SVD()
+    dimensionality_reduction = dimensionality_reduction_technique()
     objects = dimensionality_reduction.compute(np.array(all_feature_lbp), k_d, all_labels)
     return dimensionality_reduction, fileNames
 
@@ -263,7 +263,8 @@ def calculate_and_print_results(Y_test, Y_hat, num2type):
     elif total_classes == 10:
         relative_type += 'task3'
     import csv
-
+    if not os.path.exists("Outputs"):
+        os.mkdir("Outputs")
     with open('Outputs/' + relative_type + '_fp_rate_' + str(len(Y_test)) + '_' + str(sum(TP.values())) + '.csv', 'w') as csv_file:
         writer = csv.writer(csv_file)
         for key, value in fp_rate.items():
