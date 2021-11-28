@@ -25,15 +25,18 @@ def DT_RF(X, data_labels, query, k_n=10):
     test_set = []  # Set of samples to be classified and returned to user (NOT USED)
     test_set_id = []  # Indices of samples that are in test_set
     # Initial query
-    LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+    number_of_bits = int(input('Enter the number of hash functions in a family of hash functions: '))
+    number_of_families = int(input('Enter the number of hash families: '))
+    LSH = LSHash(n_features, k_bit_hash=number_of_bits, num_hashtables=number_of_families)
     # X = np.random.randn(130, 3)
     # inps = input array
-    for inp, label in zip(X, data_labels):
-        LSH.index(inp, label)
+    for inp,label in zip(X,data_labels):
+        LSH.index(inp,label)
+
 
     X_list = X.tolist()
 
-    train_set = LSH.query(query, k_n)
+    train_set,_ = LSH.query(query, k_n)
     train_set = train_set.tolist()
     test_set = X.tolist()
     if not (isinstance(data_labels, list)):
