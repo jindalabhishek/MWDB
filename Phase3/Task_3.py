@@ -56,26 +56,5 @@ else:
     print('wrong classifier')
     exit(0)
 
-cm = multilabel_confusion_matrix(Y_test, Y_hat, labels=list(num2type.values()))
-fp = {}
-misses = {}
-tp = {}
-tn = {}
-total_fp, total_fn, total_tp, total_tn = 0, 0, 0, 0
-total_misses = 0
-for i in range(len(num2type.values())):
-    fp[list(num2type.values())[i]] = cm[i][0][1]
-    misses[list(num2type.values())[i]] = cm[i][1][0]
-    tp[list(num2type.values())[i]] = cm[i][1][1]
-    tn[list(num2type.values())[i]] = cm[i][0][0]
-    total_fp += cm[i][0][1]
-    total_tp += cm[i][1][1]
-    total_tn += cm[i][0][0]
-    total_misses += cm[i][1][0]
+calculate_and_print_results(Y_test, Y_hat, num2type)
 
-print('Total false positives = ', total_fp)
-print(fp)
-print('Total misses = ', total_misses)
-print(misses)
-print('Total correctly classified = ', total_tp)
-print(tp)
