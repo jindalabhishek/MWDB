@@ -3,24 +3,27 @@ from file import *
 from SVM import *
 import PPR
 from Decision_Tree import *
-from dimensionality_reduction import *
 import skimage.feature as skf
 from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
+from dimensionality_reduction.KMeans import KMeans
+from dimensionality_reduction.SVD import SVD
+from dimensionality_reduction.LDA import LDA
+from dimensionality_reduction.PCA import PCA
 import Utils
 
 # train_path = input("Enter the image folder path for training: ")
-train_path = "/Users/dhruv/PycharmProjects/MWDB/images/500"
+train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/3000"
 # feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
 dimensions = 20
-dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getType)
+dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getType,dimensionality_reduction_technique=KMeans)
 X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getType)
 
 # classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 classifier = "PPR"
 # test_path = input("Enter the image folder path for testing: ")
-test_path = "/Users/dhruv/PycharmProjects/MWDB/images/100"
+test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
 
 Y_train = labels_train  # types labels
 

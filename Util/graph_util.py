@@ -39,7 +39,7 @@ def get_seed_nodes(subject_ids_set, k):
 
 def get_page_ranking(beta, transition_matrix, seed_nodes):
     identity_matrix = np.identity(len(transition_matrix))
-    print(identity_matrix)
+    # print(identity_matrix)
     transition_matrix = (1 - beta) * transition_matrix
     matrix = np.subtract(identity_matrix, transition_matrix)
     inverse_matrix = np.linalg.inv(matrix)
