@@ -52,7 +52,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test,Y_test, trainFileNames, testFileNames,1)
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test,Y_test, trainFileNames, testFileNames,13)
 
 else:
     print('wrong classifier')

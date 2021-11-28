@@ -14,6 +14,7 @@ from Util.json_util import LatentSemanticFile
 from dimensionality_reduction import LDA
 from Util.Utils import *
 
+
 # def get_image_vector_matrix(feature_descriptors, feature_model):
 #     image_vector_matrix = []
 #     for feature_descriptor in feature_descriptors:
@@ -56,45 +57,26 @@ def getAdjecencyMatrix(labels):
                 adjacency_matrix[j][i] = 1
     return adjacency_matrix
 
-
-def getLabelRepresentative(training_latent_semantics, train_labels):
-    train_labels_dict = {}
-    for idx,train_latent_semantic_data in enumerate(training_latent_semantics):
-        label = train_labels[idx]
-        if label not in train_labels_dict:
-            train_labels_dict[label] = {"val":train_latent_semantic_data,"cnt":1}
-        else:
-            train_labels_dict[label]["val"] = train_labels_dict[label]["val"]+train_latent_semantic_data
-            train_labels_dict[label]["cnt"]+=1
-    return {label:train_labels_dict[label]["val"]/train_labels_dict[label]["cnt"] for label in train_labels_dict}
-
-def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics,test_labels, trainFileNames, testFileNames, numberOfSeed):
+def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics,test_labels, trainFileNames, testFileNames, numberOfSeed, similarityDistanceFunction=getEuclideanDistance):
     testing_labels = []
-    training_labels_imgs = {}
-    for idx, label in enumerate(train_labels):
-        if label not in training_labels_imgs:
-            training_labels_imgs[label] = []
-        training_labels_imgs[label].append(idx)
-
     adjacency_matrix = getAdjecencyMatrix(train_labels)
-    representative_dict = getLabelRepresentative(training_latent_semantics,train_labels)
     for idx,query_matrix_1xk in enumerate(testing_latent_semantics):
         similarity_list = []        # it should be 1xn of float values.
-
-        for label,matrix_1xk in representative_dict.items():
-            similarity_list.append((label,np.linalg.norm(matrix_1xk-query_matrix_1xk)))
+        for each in training_latent_semantics:
+            similarity_list.append(similarityDistanceFunction(query_matrix_1xk,each))
         # It is a nob.
         count_seeds = numberOfSeed
+        new_similarity_list = {}
 
-        sorted_dict = sorted(similarity_list, key=lambda kv: kv[1])
-        print((test_labels[idx], testFileNames[idx]))
-        print(sorted_dict[:count_seeds])
+        for index, each in enumerate(similarity_list):
+            new_similarity_list[index] = each
+
+        sorted_dict = sorted(new_similarity_list.items(), key=lambda kv: kv[1])
         seeds = []
-
+        list_of_dict = list(sorted_dict)
         for i in range(count_seeds):
-            seeds+=training_labels_imgs[sorted_dict[i][0]]
-            # seeds.append(list_of_dict[i][0])
-
+            seeds.append(list_of_dict[i][0])
+        print((test_labels[idx],testFileNames[idx]))
         print([(i,train_labels[i],trainFileNames[i]) for i in seeds])
         hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)

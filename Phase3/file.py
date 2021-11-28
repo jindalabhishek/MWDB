@@ -165,6 +165,9 @@ def getTrainData(path, model_name, k_d,labelFunc):
 
 def getTestData(path,model_name,dimension_reduction,labelFunc):
     all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
+    all_vals = []
+    for i in dimension_reduction.transform(np.array(all_feature_lbp)):
+        all_vals.append(i/np.linalg.norm(i))
     return dimension_reduction.transform(np.array(all_feature_lbp)), all_labels, fileNames
 # k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
 # print(l[3][:15])

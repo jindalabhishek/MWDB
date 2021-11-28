@@ -11,7 +11,7 @@ train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
 # feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
-dimensions = 20
+dimensions = 15
 dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getSubject)
 X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getSubject)
 # classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
@@ -50,7 +50,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 1)
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 15,Utils.getChiSquareDistance)
 
 else:
     print('wrong classifier')
