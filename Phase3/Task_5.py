@@ -3,6 +3,7 @@ from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
 from file import *
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -25,16 +26,17 @@ def main():
     number_of_bits = int(input('Enter the number of bits: '))
     query_image_path = input('Enter the path for query image: ')
     number_of_similar_images = int(input('Enter the t value for most similar images: '))
-
-    reduce_flag = False
-    if dimensions > 0:
-        reduce_flag = True
-
-    image_vector_matrix, all_labels = retrive_data(train_path, feature_model, dimensions, reduce_flag)
-    image_labels = all_labels[3]
-    approximations, partition_boundaries = VA_Approx(image_vector_matrix, number_of_bits)
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model, query_image_vector)
+    if dimensions > 0:
+        dimension_reduction, image_labels = getTrainData(train_path, feature_model, dimensions, getType)
+        image_vector_matrix = dimension_reduction.objects_in_k_dimensions
+        query_image_feature_descriptor = dimension_reduction.transform(query_image_feature_descriptor)
+
+    else:
+        image_vector_matrix, all_types, image_labels = getImageData(train_path, feature_model, getType)
+
+    approximations, partition_boundaries = VA_Approx(image_vector_matrix, number_of_bits)
 
     indexes_of_similar_images, n_buckets, n_objects = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
                                                              query_image_feature_descriptor, number_of_similar_images,
@@ -45,6 +47,12 @@ def main():
     print("Number of buckets searched: " + str(n_buckets))
     print("Number of images considered: " + str(n_objects))
 
+    distances = np.zeros(len(image_vector_matrix))
+    for i in range(0, len(image_vector_matrix)):
+        distances[i] = np.linalg.norm(image_vector_matrix[i]-query_image_feature_descriptor)
+    indexes = np.argsort(distances)
+    correct_images = [image_labels[index] for index in indexes]
+    print(correct_images[:number_of_similar_images])
     # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
     # plt.scatter(query_image_feature_descriptor[0], query_image_feature_descriptor[1], color='orange', label='Query')
     # plt.scatter(knn[:, 0], knn[:, 1], color='red', label='K NN to Q', marker='*')
