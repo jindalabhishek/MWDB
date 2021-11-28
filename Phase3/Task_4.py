@@ -1,3 +1,5 @@
+import numpy as np
+
 from Util.dao_util import DAOUtil
 from LSH import *
 from vector_util import convert_image_to_matrix
@@ -34,6 +36,7 @@ def main():
     image_vector_matrix, all_labels = retrive_data(train_path, feature_model, dimensions, reduce_flag)
     image_labels = all_labels[3]
 
+    image_vector_matrix = np.array(image_vector_matrix)
     LSH = LSHash(image_vector_matrix.shape[1], number_of_bits, number_of_families)
 
     for inp in image_vector_matrix:

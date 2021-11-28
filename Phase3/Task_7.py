@@ -19,7 +19,7 @@ def main():
     """
         Executes Task 7
     """
-    train_path = input('Welcome to Task 6 Demo. Enter the training path: ')
+    train_path = input('Welcome to Task 7 Demo. Enter the training path: ')
     dimensions = int(input("Total reduced Dimensions: "))
     feature_model = input('Enter the feature model (CM, ELBP, HOG): ')
     number_of_bits = int(input('Enter the number of bits:'))
