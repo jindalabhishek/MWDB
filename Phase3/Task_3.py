@@ -9,7 +9,7 @@ train_path = input("Enter the image folder path for training: ")
 feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 dimensions = int(input("Total reduced Dimensions: "))
 
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions)
+X_train, labels_train = retrive_data(train_path, feature_model, dimensions, True)
 
 classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 
@@ -17,7 +17,7 @@ test_path = input("Enter the image folder path for testing: ")
 
 Y_train = labels_train[2]  # sample labels
 
-X_test, labels_test = retrive_data(train_path, feature_model, dimensions)
+X_test, labels_test = retrive_data(train_path, feature_model, dimensions, True)
 Y_test = labels_test[2]  # subject labels
 
 type2num, num2type = {}, {}

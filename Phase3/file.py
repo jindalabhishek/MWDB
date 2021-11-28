@@ -91,6 +91,7 @@ def lbp_extract(img):
     hist /= (hist.sum() + eps)
     return hist
 
+
 def hog_extract(img):  # skimage.hog wrapper
     ret_out, ret_hog = skf.hog(img, orientations=9,
                                pixels_per_cell=(8, 8), cells_per_block=(2, 2), visualize=True,
@@ -125,7 +126,7 @@ def compute(data, k, image_types, *args):
     return latent_features.real
 
 
-def retrive_data(path, model_name, k_d):
+def retrive_data(path, model_name, k_d, reduce):
     all_image = []
     all_labels = [[], [], [], []]
     for file in os.listdir(path):
@@ -142,7 +143,7 @@ def retrive_data(path, model_name, k_d):
     if model_name == 'CM':
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util \
-                                   .get_reshaped_color_moment_vector(
+                .get_reshaped_color_moment_vector(
                 feature_descriptor_util.get_color_moment_feature_descriptor(img)))
 
     if model_name == 'ELBP':
@@ -153,8 +154,10 @@ def retrive_data(path, model_name, k_d):
     if model_name == 'HOG':
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
-
-    return SVD().compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
+    if reduce:
+        return SVD().compute(np.array(all_feature_lbp), k_d, all_labels[3]), all_labels
+    else:
+        return all_feature_lbp, all_labels
 
 # k,l=(retrive_data('/home/zaid/Documents/ASU/1000/','lda'))
 # print(l[3][:15])

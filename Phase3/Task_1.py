@@ -14,7 +14,7 @@ train_path = input("Enter the image folder path for training: ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
 dimensions = 20
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions)
+X_train, labels_train = retrive_data(train_path, feature_model, dimensions, True)
 
 classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 # classifier = "PPR"
@@ -23,7 +23,7 @@ test_path = input("Enter the image folder path for testing: ")
 
 Y_train = labels_train[0]  # types labels
 
-X_test, labels_test = retrive_data(test_path, feature_model, dimensions)
+X_test, labels_test = retrive_data(test_path, feature_model, dimensions, True)
 Y_test = labels_test[0]  # types labels
 
 type2num = {'cc': 1, 'con': 2, 'emboss': 3, 'jitter': 4, 'neg': 5, 'noise01': 6, 'noise02': 7, 'original': 8,

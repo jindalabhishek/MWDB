@@ -69,15 +69,15 @@ def print_k_latent_semantics_in_sorted_weight_pairs(sorted_weight_pair):
 
 def get_query_image_feature_descriptor(feature_model, query_image_vector):
     query_image_feature_descriptor = None
-    if feature_model == 'color_moment':
+    if feature_model == 'CM':
         color_moment_feature_descriptor = get_color_moment_feature_descriptor(query_image_vector)
         color_moment_feature_descriptor = get_reshaped_color_moment_vector(color_moment_feature_descriptor)
         query_image_feature_descriptor = color_moment_feature_descriptor.copy()
-    elif feature_model == 'elbp':
+    elif feature_model == 'ELBP':
         elbp_feature_descriptor = get_elbp_feature_descriptor(query_image_vector)
         elbp_feature_descriptor = get_elbp_histogram(elbp_feature_descriptor)
         query_image_feature_descriptor = elbp_feature_descriptor.copy()
-    elif feature_model == 'hog':
+    elif feature_model == 'HOG':
         hog_feature_descriptor = get_hog_feature_descriptor(query_image_vector)
         query_image_feature_descriptor = hog_feature_descriptor.copy()
     return query_image_feature_descriptor

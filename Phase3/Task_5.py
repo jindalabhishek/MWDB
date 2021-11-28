@@ -2,6 +2,7 @@ from Util.dao_util import DAOUtil
 from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
+from file import *
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
@@ -18,27 +19,26 @@ def main():
         Executes Task 5
         Output Subject - latent semantics matrix, (subject-list of weight matrix)
     """
-    """
-        Connection to MongoDB using PyMongo
-    """
-    dao_util = DAOUtil()
-    feature_model = input('Welcome to Task 5 Demo. Enter the feature model (color_moment, elbp, hog):')
-    number_of_bits = int(input('Enter the number of bits:'))
-    query_image_path = input('Enter the path for query image:')
-    number_of_similar_images = int(input('Enter the t value for most similar images:'))
+    train_path = input('Welcome to Task 5 Demo. Enter the training path: ')
+    dimensions = int(input("Total reduced Dimensions: "))
+    feature_model = input('Enter the feature model (CM, ELBP, HOG): ')
+    number_of_bits = int(input('Enter the number of bits: '))
+    query_image_path = input('Enter the path for query image: ')
+    number_of_similar_images = int(input('Enter the t value for most similar images: '))
 
-    # feature_model = 'hog'
-    feature_model_name = feature_model
-    feature_model += '_feature_descriptor'
+    reduce_flag = False
+    if dimensions > 0:
+        reduce_flag = True
 
-    feature_descriptors = dao_util.get_feature_descriptors_for_all_images()
-    image_vector_matrix, image_labels = get_image_vector_matrix(feature_descriptors, feature_model)
+    image_vector_matrix, all_labels = retrive_data(train_path, feature_model, dimensions, reduce_flag)
+    image_labels = all_labels[3]
     approximations, partition_boundaries = VA_Approx(image_vector_matrix, number_of_bits)
     query_image_vector = convert_image_to_matrix(query_image_path)
-    query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model_name, query_image_vector)
+    query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model, query_image_vector)
 
-    indexes_of_similar_images,n_buckets,n_objects = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
-                                       query_image_feature_descriptor, number_of_similar_images, True Zac)
+    indexes_of_similar_images, n_buckets, n_objects = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
+                                                             query_image_feature_descriptor, number_of_similar_images,
+                                                             True)
 
     knn = np.array([image_labels[int(i)] for i in indexes_of_similar_images])
     print("K nearest neighbors (sorted):\n" + str(knn))
