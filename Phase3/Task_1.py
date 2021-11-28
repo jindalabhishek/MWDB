@@ -9,7 +9,7 @@ from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 import Utils
 
 # train_path = input("Enter the image folder path for training: ")
-train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+train_path = "/Users/dhruv/PycharmProjects/MWDB/images/500"
 # feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
@@ -20,7 +20,7 @@ X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,di
 # classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 classifier = "PPR"
 # test_path = input("Enter the image folder path for testing: ")
-test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
+test_path = "/Users/dhruv/PycharmProjects/MWDB/images/100"
 
 Y_train = labels_train  # types labels
 
@@ -58,20 +58,5 @@ else:
     print('wrong classifier')
     exit(0)
 
-print(Y_test)
-print(Y_hat)
-cm = multilabel_confusion_matrix(Y_test, Y_hat, labels=list(num2type.values()))
-fp = {}
-misses = {}
-total_fp, total_fn, total_misses = 0, 0, 0
+calculate_and_print_results(Y_test, Y_hat, num2type)
 
-for i in range(len(num2type.values())):
-    fp[list(num2type.values())[i]] = cm[i][0][1]
-    misses[list(num2type.values())[i]] = cm[i][1][0]
-    total_fp += cm[i][0][1]
-    total_misses += cm[i][1][0]
-
-print('Total false positives = ', total_fp)
-print(fp)
-print('Total misses = ', total_misses)
-print(misses)
