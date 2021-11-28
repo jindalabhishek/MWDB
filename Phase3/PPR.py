@@ -14,6 +14,7 @@ from Util.json_util import LatentSemanticFile
 from dimensionality_reduction import LDA
 from Util.Utils import *
 
+
 # def get_image_vector_matrix(feature_descriptors, feature_model):
 #     image_vector_matrix = []
 #     for feature_descriptor in feature_descriptors:
@@ -56,33 +57,27 @@ def getAdjecencyMatrix(labels):
                 adjacency_matrix[j][i] = 1
     return adjacency_matrix
 
-def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics):
+def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics,test_labels, trainFileNames, testFileNames, numberOfSeed, similarityDistanceFunction=getEuclideanDistance):
     testing_labels = []
     adjacency_matrix = getAdjecencyMatrix(train_labels)
-    for query_matrix_1xk in testing_latent_semantics:
+    for idx,query_matrix_1xk in enumerate(testing_latent_semantics):
         similarity_list = []        # it should be 1xn of float values.
         for each in training_latent_semantics:
-            similarity_list.append(np.linalg.norm(np.array(each)-query_matrix_1xk))
-
+            similarity_list.append(similarityDistanceFunction(query_matrix_1xk,each))
         # It is a nob.
-        count_seeds = 3
+        count_seeds = numberOfSeed
         new_similarity_list = {}
 
         for index, each in enumerate(similarity_list):
-            new_similarity_list[str(index)] = each
+            new_similarity_list[index] = each
 
-        sorted_dict = sorted(new_similarity_list.items(), reverse=True, key=lambda kv: kv[1])
-
+        sorted_dict = sorted(new_similarity_list.items(), key=lambda kv: kv[1])
         seeds = []
         list_of_dict = list(sorted_dict)
         for i in range(count_seeds):
             seeds.append(list_of_dict[i][0])
-
-        # TODO not considering 'n' as the limiting factor in no of relavant edges of an edge.
-        # Initializing adjacency matrix.
-
-        # TODO not sure if considering undirected edges will work for PPR.
-
+        print((test_labels[idx],testFileNames[idx]))
+        print([(i,train_labels[i],trainFileNames[i]) for i in seeds])
         hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
         seed_nodes = get_seed_nodes(seeds, len(train_labels))
@@ -92,8 +87,8 @@ def getTestingLabels(training_latent_semantics,train_labels,testing_latent_seman
         # print(highest_type_ids)
         # print('Most Relevant Type Id w.r.t to seed nodes')
         # This will return the index of the image. We have to pick the type of that image as output.
-        print(highest_type_ids[:1])
+        print(highest_type_ids[:10])
         curr_label = train_labels[highest_type_ids[0]]
         testing_labels.append(curr_label)
-        print('\n %s', {curr_label})
+        # print('\n %s', {curr_label})
     return testing_labels

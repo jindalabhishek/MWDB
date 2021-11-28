@@ -4,26 +4,31 @@ from SVM import *
 from Decision_Tree import *
 import skimage.feature as skf
 from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
+import Utils
+import PPR
 
-train_path = input("Enter the image folder path for training: ")
-feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
-dimensions = int(input("Total reduced Dimensions: "))
+train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+# feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
+feature_model = "CM"
+# dimensions = int(input("Total reduced Dimensions: "))
+dimensions = 15
+dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getSample)
+X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getSample)
+# classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
+classifier = "PPR"
+# test_path = input("Enter the image folder path for testing: ")
+test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
 
-X_train, labels_train = retrive_data(train_path, feature_model, dimensions, True)
+Y_train = labels_train  # types labels
 
-classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
-
-test_path = input("Enter the image folder path for testing: ")
-
-Y_train = labels_train[2]  # sample labels
-
-X_test, labels_test = retrive_data(train_path, feature_model, dimensions, True)
-Y_test = labels_test[2]  # subject labels
+X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getSample)
+Y_test = labels_test # types labels
 
 type2num, num2type = {}, {}
 for i in range(1, 11):
     type2num[str(i)] = i
     num2type[i] = str(i)
+
 if classifier == 'SVM':
 
     train_set = multiclass_train(np.array(X_train), np.array(Y_train))
@@ -32,7 +37,6 @@ if classifier == 'SVM':
 elif classifier == 'DT':
 
     data = X_train.copy()
-
     labels = list(map(lambda x: type2num[x], Y_train))
 
     data = np.concatenate((np.array(data), np.array([labels]).T), axis=1)
@@ -46,7 +50,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    k = 1
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 15,Utils.getPearsonDistance)
 
 else:
     print('wrong classifier')

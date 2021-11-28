@@ -31,10 +31,11 @@ class LDA:
         latent_features = lda.fit_transform(LDA.normalize_data_for_lda(data), image_types)
         self.latent_features = latent_features
         self.input_matrix = data
-        self.objects_in_k_dimensions = latent_features.real
+        self.objects_in_k_dimensions = latent_features
         return self.objects_in_k_dimensions
 
     def transform(self, image_vector_matrix):
+        image_vector_matrix = LDA.normalize_data_for_lda(image_vector_matrix)
         matrix_mxk = np.matmul(self.input_matrix.transpose(), self.latent_features)
         return np.matmul(image_vector_matrix, matrix_mxk)
 
