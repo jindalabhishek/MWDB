@@ -28,8 +28,8 @@ def DT_RF(X, data_labels, query, k_n=10):
     LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
     # X = np.random.randn(130, 3)
     # inps = input array
-    for inp in X:
-        LSH.index(inp)
+    for inp, label in zip(X, data_labels):
+        LSH.index(inp, label)
 
     X_list = X.tolist()
 
