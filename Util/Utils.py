@@ -87,3 +87,24 @@ def getType(fileName):
 
 def getSubject(fileName):
     return fileName.split("-")[2]
+
+def getSample(fileName):
+    return fileName.split("-")[3].split(".")[0]
+
+def getNormalDistance(x):
+    normal_x = (np.pi*np.std(x)) * np.exp(-0.5*((x-np.mean(x))/np.std(x))**2)
+    return normal_x
+
+def getPearsonDistance(x,y):
+    a = getNormalDistance(x)
+    b = getNormalDistance(y)
+    return np.sum(a * b) / np.sqrt(np.sum(np.square(a)) * np.sum(np.square(b)))
+
+def getEuclideanDistance(x,y):
+    return np.linalg.norm(x - y)
+
+def getIntersectionSimilarity(x,y):
+    return np.std(x/y)
+
+def getChiSquareDistance(x,y):
+    return 0.5 * np.sum(((x - y) ** 2) /(x + y + 1e-10))
