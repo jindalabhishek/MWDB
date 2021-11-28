@@ -36,7 +36,7 @@ class LSHash(object):
 
   def query(self, query_point, num_results=None):
 
-    candidates = []
+    candidates = set()
     for i, table in enumerate(self.hash_tables):
       binary_hash = self._hash_projections(self.uniform_planes[i], query_point)
       
