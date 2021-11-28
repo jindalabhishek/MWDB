@@ -37,11 +37,13 @@ def main():
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model_name, query_image_vector)
 
-    indexes_of_similar_images = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
-                                       query_image_feature_descriptor, number_of_similar_images)
+    indexes_of_similar_images,n_buckets,n_objects = VA_SSA(image_vector_matrix, approximations, partition_boundaries,
+                                       query_image_feature_descriptor, number_of_similar_images, True Zac)
 
     knn = np.array([image_labels[int(i)] for i in indexes_of_similar_images])
     print("K nearest neighbors (sorted):\n" + str(knn))
+    print("Number of buckets searched: " + str(n_buckets))
+    print("Number of images considered: " + str(n_objects))
 
     # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
     # plt.scatter(query_image_feature_descriptor[0], query_image_feature_descriptor[1], color='orange', label='Query')
