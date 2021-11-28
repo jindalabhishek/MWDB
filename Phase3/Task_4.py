@@ -60,7 +60,10 @@ def main():
 
     labels_of_similar_images = []
     for x in planes:
-        labels_of_similar_images.append(image_labels[image_vector_matrix.index(x.tolist())])
+        index_tuple = np.where(np.all(image_vector_matrix == x, axis=1))
+        for array in index_tuple:
+            for index in array:
+                labels_of_similar_images.append(image_labels[index])
 
     knn = np.array(labels_of_similar_images)
     print("K nearest neighbors (sorted):\n" + str(knn))
