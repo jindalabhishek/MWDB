@@ -29,23 +29,29 @@ def main():
     query_image_path = input('Enter the path for query image:')
     number_of_similar_images = int(input('Enter the t value for most similar images:'))
 
-    reduce_flag = False
-    if dimensions > 0:
-        reduce_flag = True
-
-    image_vector_matrix, all_labels = retrive_data(train_path, feature_model, dimensions, reduce_flag)
-    image_labels = all_labels[3]
-
-    image_vector_matrix = np.array(image_vector_matrix)
-    LSH = LSHash(image_vector_matrix.shape[1], number_of_bits, number_of_families)
-
-    for inp in image_vector_matrix:
-        LSH.index(inp)
+    q_filename = query_image_path.split('/')[-1]
+    q_labels = q_filename[:-4].split('-')[1:]
+    print(q_labels)
 
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model, query_image_vector)
 
-    planes = LSH.query(query_image_feature_descriptor, number_of_similar_images)
+    if dimensions > 0:
+        dimension_reduction, image_labels = getTrainData(train_path, feature_model, dimensions, getType)
+        image_vector_matrix = dimension_reduction.objects_in_k_dimensions
+        query_image_feature_descriptor = dimension_reduction.transform(query_image_feature_descriptor)
+    else:
+        image_vector_matrix, all_types, image_labels = getImageData(train_path, feature_model, getType)
+
+    LSH = LSHash(np.array(image_vector_matrix).shape[1], number_of_bits, number_of_families)
+
+    for inp, label in zip(image_vector_matrix, image_labels):
+        LSH.index(inp, label)
+
+    if number_of_similar_images == 0:
+        planes, dist, k = LSH.query(query_image_feature_descriptor, None)
+    else:
+        planes, k = LSH.query(query_image_feature_descriptor, number_of_similar_images)
 
     if not (isinstance(image_labels, list)):
         image_labels = image_labels.tolist()
@@ -58,6 +64,20 @@ def main():
 
     knn = np.array(labels_of_similar_images)
     print("K nearest neighbors (sorted):\n" + str(knn))
+    type_miss = 0
+    subject_miss = 0
+    id_miss = 0
+    for name in knn:
+        ll = name[:-4].split('-')[1:]
+        if ll[0] != q_labels[0]:
+            print(ll[0], q_labels[0])
+            type_miss += 1
+        if ll[1] != q_labels[1]:
+            subject_miss += 1
+        if ll[2] != q_labels[2]:
+            id_miss += 1
+    print('--type FP--' + str(k - 130) + '--subject FP--' + str(k - 400) + '--ID FP--' + str(k - (13 * 40)))
+    print('--type miss--' + str(type_miss) + '--subject miss--' + str(subject_miss) + '--ID miss--' + str(id_miss))
 
     # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
     # plt.scatter(query_image_feature_descriptor[0], query_image_feature_descriptor[1], color='orange', label='Query')
