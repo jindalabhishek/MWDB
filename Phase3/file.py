@@ -162,7 +162,7 @@ def getImageData(path,model_name,labelFunc):
 
 def getTrainData(path, model_name, k_d,labelFunc):
     all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
-    dimensionality_reduction = KMeans(1000)
+    dimensionality_reduction = SVD()
     objects = dimensionality_reduction.compute(np.array(all_feature_lbp), k_d, all_labels)
     return dimensionality_reduction, fileNames
 
@@ -177,34 +177,99 @@ def getTestData(path,model_name,dimension_reduction,labelFunc):
 
 
 def calculate_and_print_results(Y_test, Y_hat, num2type):
-    cm = multilabel_confusion_matrix(Y_test, Y_hat, labels=list(num2type.values()))
-    fp = {}
-    misses = {}
-    tp = {}
-    tn = {}
+    # cm = multilabel_confusion_matrix(Y_test, Y_hat, labels=list(num2type.values()))
+    # fp = {}
+    # misses = {}
+    # tp = {}
+    # tn = {}
+    #
+    # fp_rate = {}
+    # miss_rate = {}
+    #
+    # total_fp, total_fn, total_tp, total_tn = 0, 0, 0, 0
+    # total_misses = 0
+    # for i in range(len(num2type.values())):
+    #     fp[list(num2type.values())[i]] = cm[i][0][1]
+    #     misses[list(num2type.values())[i]] = cm[i][1][0]
+    #     tp[list(num2type.values())[i]] = cm[i][1][1]
+    #     tn[list(num2type.values())[i]] = cm[i][0][0]
+    #
+    #     fp_rate[list(num2type.values())[i]] = round(fp[list(num2type.values())[i]] / (fp[list(num2type.values())[i]] + tn[list(num2type.values())[i]]), 4)
+    #     total_fp += cm[i][0][1]
+    #     total_tp += cm[i][1][1]
+    #     total_tn += cm[i][0][0]
+    #     total_misses += cm[i][1][0]
+    #
+    # for i in range(len(num2type.values())):
+    #     miss_rate[list(num2type.values())[i]] = round(misses[list(num2type.values())[i]] / total_misses, 4)
+    #
+    # print('Total false positives = ', total_fp)
+    # print(fp_rate)
+    # print('Total misses = ', total_misses)
+    # print(miss_rate)
+    # print('Total correctly classified = ', total_tp + total_tn)
+    # print(tp)
+    # print(tn)
+    y_actual = Y_test
+    y_pred = Y_hat
+    class_id = set(y_actual).union(set(y_pred))
+    TP = {}
+    FP = {}
+    TN = {}
+    FN = {}
+
+    for each in class_id:
+        TP[each] = 0
+        FP[each] = 0
+        TN[each] = 0
+        FN[each] = 0
+    for index, _id in enumerate(class_id):
+        for i in range(len(y_pred)):
+            if y_actual[i] == y_pred[i] == _id:
+                TP[_id] += 1
+            if y_pred[i] == _id and y_actual[i] != y_pred[i]:
+                FP[_id] += 1
+            if y_actual[i] == y_pred[i] != _id:
+                TN[_id] += 1
+            if y_pred[i] != _id and y_actual[i] != y_pred[i]:
+                FN[_id] += 1
+
+    # print("\nTP", TP)
+    # print("\nFP", FP)
+    # print("\nTN", TN)
+    # print("\nFN", FN)
 
     fp_rate = {}
     miss_rate = {}
 
-    total_fp, total_fn, total_tp, total_tn = 0, 0, 0, 0
-    total_misses = 0
-    for i in range(len(num2type.values())):
-        fp[list(num2type.values())[i]] = cm[i][0][1]
-        misses[list(num2type.values())[i]] = cm[i][1][0]
-        tp[list(num2type.values())[i]] = cm[i][1][1]
-        tn[list(num2type.values())[i]] = cm[i][0][0]
+    for each in class_id:
+        fp_rate[each] = FP[each] / (FP[each] + TN[each])
+        fp_rate[each] = round(fp_rate[each], 7)
 
-        fp_rate[list(num2type.values())[i]] = fp[list(num2type.values())[i]] / (fp[list(num2type.values())[i]] + tn[list(num2type.values())[i]])
-        total_fp += cm[i][0][1]
-        total_tp += cm[i][1][1]
-        total_tn += cm[i][0][0]
-        total_misses += cm[i][1][0]
+        miss_rate[each] = FN[each] / (FN[each] + TP[each])
+        miss_rate[each] = round(miss_rate[each], 7)
 
-    for i in range(len(num2type.values())):
-        miss_rate[list(num2type.values())[i]] = misses[list(num2type.values())[i]] / total_misses
-    print('Total false positives = ', total_fp)
-    print(fp_rate)
-    print('Total misses = ', total_misses)
-    print(miss_rate)
-    print('Total correctly classified = ', total_tp)
-    print(tp)
+    print("\nFP rate", fp_rate)
+    print("\nMiss_rate", miss_rate)
+    print("\nCorrectly classified", sum(TP.values()))
+
+    total_classes = len(num2type)
+
+    relative_type = ''
+    if total_classes == 12:
+        relative_type += 'task1'
+    elif total_classes == 40:
+        relative_type += 'task2'
+    elif total_classes == 10:
+        relative_type += 'task3'
+    import csv
+
+    with open('Outputs/' + relative_type + '_fp_rate_' + str(len(Y_test)) + '_' + str(sum(TP.values())) + '.csv', 'w') as csv_file:
+        writer = csv.writer(csv_file)
+        for key, value in fp_rate.items():
+            writer.writerow([key, value])
+
+    with open('Outputs/' + relative_type + '_miss_rate_' + str(len(Y_test)) + '_' + str(sum(TP.values())) + '.csv', 'w') as csv_file:
+        writer = csv.writer(csv_file)
+        for key, value in miss_rate.items():
+            writer.writerow([key, value])

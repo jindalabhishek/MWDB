@@ -7,17 +7,17 @@ from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 import Utils
 import PPR
 
-train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+train_path = "/Users/dhruv/PycharmProjects/MWDB/images/500"
 # feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
-dimensions = 15
+dimensions = 20
 dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getSubject)
 X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getSubject)
 # classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 classifier = "PPR"
 # test_path = input("Enter the image folder path for testing: ")
-test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
+test_path = "/Users/dhruv/PycharmProjects/MWDB/images/100"
 Y_hat = None
 Y_train = labels_train  # types labels
 
@@ -50,7 +50,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 15,Utils.getChiSquareDistance)
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 15, Utils.getPearsonDistance)
 
 else:
     print('wrong classifier')

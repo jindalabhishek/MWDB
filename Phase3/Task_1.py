@@ -9,7 +9,7 @@ from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 import Utils
 
 # train_path = input("Enter the image folder path for training: ")
-train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/500"
+train_path = "/Users/dhruv/PycharmProjects/MWDB/images/500"
 # feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 feature_model = "CM"
 # dimensions = int(input("Total reduced Dimensions: "))
@@ -20,7 +20,7 @@ X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,di
 # classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 classifier = "PPR"
 # test_path = input("Enter the image folder path for testing: ")
-test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
+test_path = "/Users/dhruv/PycharmProjects/MWDB/images/100"
 
 Y_train = labels_train  # types labels
 
