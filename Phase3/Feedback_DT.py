@@ -93,7 +93,7 @@ def DT_RF(X, data_labels, query, k_n=10):
         for inp in X:
             LSH1.index(inp)
 
-        new_train_set = LSH1.query(query, k_n)
+        new_train_set,_ = LSH1.query(query, k_n)
         # print(new_train_set,'==============================')
 
         new_train_set = new_train_set.tolist()
