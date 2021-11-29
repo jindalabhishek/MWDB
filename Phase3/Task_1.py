@@ -1,34 +1,23 @@
-import numpy as np
 from file import *
 from SVM import *
 import PPR
 from Decision_Tree import *
-import skimage.feature as skf
-from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
-from dimensionality_reduction.KMeans import KMeans
-from dimensionality_reduction.SVD import SVD
-from dimensionality_reduction.LDA import LDA
-from dimensionality_reduction.PCA import PCA
 import Utils
 
-# train_path = input("Enter the image folder path for training: ")
-train_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/3000"
-# feature_model =  input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
-feature_model = "CM"
-# dimensions = int(input("Total reduced Dimensions: "))
-dimensions = 20
-dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getType,dimensionality_reduction_technique=KMeans)
-X_train, labels_train , trainFileNames = getTestData(train_path,feature_model,dimension_reduction,Utils.getType)
+train_path = input("Enter the image folder path for training: ")
+feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
+dimensions = int(input("Total reduced Dimensions: "))
+print('Wait! Calculating latent semantics!')
+dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getType)
+X_train, labels_train, trainFileNames = getTestData(train_path,feature_model,dimension_reduction, Utils.getType)
+print('Successfully Finished computing latent semantics')
+test_path = input("Enter the image folder path for testing: ")
+classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 
-# classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
-classifier = "PPR"
-# test_path = input("Enter the image folder path for testing: ")
-test_path = "/Users/swamirishi/Documents/asu/Fall_2021/MWDB/MWDB/images/Train"
-
-Y_train = labels_train  # types labels
+Y_train = labels_train
 
 X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getType)
-Y_test = labels_test # types labels
+Y_test = labels_test
 
 type2num = {'cc': 1, 'con': 2, 'emboss': 3, 'jitter': 4, 'neg': 5, 'noise01': 6, 'noise02': 7, 'original': 8,
             'poster': 9, 'rot': 10, 'smooth': 11, 'stipple': 12}
@@ -55,7 +44,7 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test,Y_test, trainFileNames, testFileNames,13)
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test,Y_test, trainFileNames, testFileNames,13, Utils.getEuclideanDistance)
 
 else:
     print('wrong classifier')
