@@ -1,0 +1,19 @@
+task_1_KMeans_color_moment_cc.json
+    Traceback (most recent call last):
+      File "/Users/dhruv/PycharmProjects/MWDB/Phase_2/main_task_5.py", line 76, in <module>
+        reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data,
+      File "/Users/dhruv/PycharmProjects/MWDB/Phase_2/task567_util.py", line 74, in get_reduced_dimension_nxk_using_latent_semantics
+        reduced_matrix_nxk.append({feature_model: dimension_reduction.transform(np.matmul(np.array(each[feature_model]),multiplier) if flag else np.array(each[feature_model])),
+    KeyError: 'color_moments_feature_descriptor
+
+/Users/dhruv/PycharmProjects/MWDB/Outputs/Task1/task_1_KMeans_hog_cc.json
+    hog takes too much time to output
+
+/Users/dhruv/PycharmProjects/MWDB/Outputs/Task1/task_1_LDA_color_moment_cc.json
+    Traceback (most recent call last):
+  File "/Users/dhruv/PycharmProjects/MWDB/Phase_2/main_task_5.py", line 76, in <module>
+    reduced_all_data_matrix_nxk = get_reduced_dimension_nxk_using_latent_semantics(all_data,
+  File "/Users/dhruv/PycharmProjects/MWDB/Phase_2/task567_util.py", line 74, in get_reduced_dimension_nxk_using_latent_semantics
+    reduced_matrix_nxk.append({feature_model: dimension_reduction.transform(np.matmul(np.array(each[feature_model]),multiplier) if flag else np.array(each[feature_model])),
+KeyError: 'color_moments_feature_descriptor'
+
