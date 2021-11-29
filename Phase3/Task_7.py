@@ -26,14 +26,16 @@ def main():
     query_image_path = input('Enter the path for query image:')
     number_of_similar_images = int(input('Enter the t value for most similar images:'))
 
-    reduce_flag = False
-    if dimensions > 0:
-        reduce_flag = True
-
-    image_vector_matrix, all_labels = retrive_data(train_path, feature_model, dimensions, reduce_flag)
-    image_labels = all_labels[3]
     query_image_vector = convert_image_to_matrix(query_image_path)
     query_image_feature_descriptor = get_query_image_feature_descriptor(feature_model, query_image_vector)
+
+    if dimensions > 0:
+        dimension_reduction, image_labels = getTrainData(train_path, feature_model, dimensions, getType)
+        image_vector_matrix = dimension_reduction.objects_in_k_dimensions
+        query_image_feature_descriptor = dimension_reduction.transform(query_image_feature_descriptor)
+
+    else:
+        image_vector_matrix, all_types, image_labels = getImageData(train_path, feature_model, getType)
 
     SVM_RF(image_vector_matrix, image_labels, query_image_feature_descriptor, number_of_bits, number_of_similar_images)
 
