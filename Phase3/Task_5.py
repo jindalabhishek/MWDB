@@ -52,7 +52,8 @@ def main():
         distances[i] = np.linalg.norm(image_vector_matrix[i]-query_image_feature_descriptor)
     indexes = np.argsort(distances)
     correct_images = [image_labels[index] for index in indexes]
-    print(correct_images[:number_of_similar_images])
+    correct_images = correct_images[:number_of_similar_images]
+    print(correct_images)
 
     fp_rate = 0
     miss_rate = 0
