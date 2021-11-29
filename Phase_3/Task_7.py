@@ -38,4 +38,4 @@ def main():
     SVM_RF(image_vector_matrix, image_labels, query_image_feature_descriptor, number_of_bits, number_of_similar_images)
 
 
-main()
+# main()

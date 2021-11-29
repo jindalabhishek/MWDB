@@ -83,7 +83,7 @@ def find_j(i, max):
     # DON'T FORGET TO PRE-PROCESS BEFORE FITTING
 
 
-def SMO(X, Y, C, eps=1e-3, max_iteration=40):  # PUT args into class member
+def SMO(X, Y, C, eps=1e-3, max_iteration=10):  # PUT args into class member
     # X, Y: np array
 
     n_samples = X.shape[0]
@@ -92,6 +92,7 @@ def SMO(X, Y, C, eps=1e-3, max_iteration=40):  # PUT args into class member
     threshold = iteration = 0
 
     while (iteration < max_iteration):
+        # print(iteration, " ", max_iteration)
         n_changed_alpha = 0
         for i in range(0, n_samples):
             E_i = compute_error(alpha, X, Y, threshold, i)
@@ -149,7 +150,7 @@ def multiclass_train(X, Y):
     n_classes = len(classes)
     n_samples = len(X)
 
-    if (n_classes <= 2):
+    if n_classes <= 2:
         print("FATAL: multiclass train has fewer than 2 classes - exiting")
         exit()
 
@@ -158,7 +159,8 @@ def multiclass_train(X, Y):
         # Binarize Y
         Y_binary = np.ones(n_samples)
         for j in range(0, n_samples):
-            if (Y[j] != classes[class_i]): Y_binary[j] = -1
+            if Y[j] != classes[class_i]:
+                Y_binary[j] = -1
 
         alpha, threshold, W = binary_train(X, Y_binary)
         # ret.append((alpha,threshold, W, Y_binary))
@@ -213,13 +215,13 @@ def multiclass_classifier(X, train_set, tie_mode=0):
 
         classified = np.where(votes == 1)[0]  # Assigned class is taken from 1st element in 'classified' array
 
-        if (len(classified) > 1):
+        if len(classified) > 1:
             print("WARNING: " + str(len(classified)) + " ties in sample " + str(i))
             closest = find_closest_point(X[i], X)
-            if (ret[closest] != 'NA'):  # Already classified
-                if (tie_mode == 0):
+            if ret[closest] != 'NA':  # Already classified
+                if tie_mode == 0:
                     classified[0] = np.where(classes == ret[closest])[0][0]
-                elif (tie_mode == 1):
+                elif tie_mode == 1:
                     for j in classified:
                         if (ret[closest] == classes[j]):
                             classified[0] = j
@@ -228,13 +230,13 @@ def multiclass_classifier(X, train_set, tie_mode=0):
                 print("ERROR: Tie cannot be resolved!")
                 classified[0] = 0
 
-        if (len(classified) == 0):
+        if len(classified) == 0:
             print("WARNING: sample " + str(i) + " is rejected by all classes")
             closest_bound = math.inf
             classified = [0]
             for class_i in range(0, n_classes):
                 dist2bound = abs(np.inner(classifiers[class_i]['W'], X[i]) + classifiers[class_i]['threshold'])
-                if (closest_bound >= dist2bound):
+                if closest_bound >= dist2bound:
                     closest_bound = dist2bound
                     classified[0] = class_i
 

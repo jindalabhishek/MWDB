@@ -9,14 +9,14 @@ feature_model = input("Enter feature model technique ('CM', 'ELBP', 'HOG') : ")
 dimensions = int(input("Total reduced Dimensions: "))
 print('Wait! Calculating latent semantics!')
 dimension_reduction, trainFileNames = getTrainData(train_path, feature_model, dimensions, Utils.getType)
-X_train, labels_train, trainFileNames = getTestData(train_path,feature_model,dimension_reduction, Utils.getType)
+X_train, labels_train, trainFileNames = getTestData(train_path, feature_model, dimension_reduction, Utils.getType)
 print('Successfully Finished computing latent semantics')
 test_path = input("Enter the image folder path for testing: ")
 classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 
 Y_train = labels_train
 
-X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getType)
+X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction, Utils.getType)
 Y_test = labels_test
 
 type2num = {'cc': 1, 'con': 2, 'emboss': 3, 'jitter': 4, 'neg': 5, 'noise01': 6, 'noise02': 7, 'original': 8,
@@ -44,11 +44,11 @@ elif classifier == 'DT':
     Y_hat = list(map(lambda x: num2type[x], la))
 
 elif classifier == 'PPR':
-    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test,Y_test, trainFileNames, testFileNames,13, Utils.getEuclideanDistance)
+    Y_hat = PPR.getTestingLabels(X_train, Y_train, X_test, Y_test, trainFileNames, testFileNames, 13,
+                                 Utils.getEuclideanDistance)
 
 else:
     print('wrong classifier')
     exit(0)
 
 calculate_and_print_results(Y_test, Y_hat, num2type)
-

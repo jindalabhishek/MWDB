@@ -39,4 +39,4 @@ def main():
                                       number_of_similar_images)
 
 
-main()
+# main()
