@@ -52,7 +52,24 @@ def main():
         distances[i] = np.linalg.norm(image_vector_matrix[i]-query_image_feature_descriptor)
     indexes = np.argsort(distances)
     correct_images = [image_labels[index] for index in indexes]
-    print(correct_images[:number_of_similar_images])
+    correct_images = correct_images[:number_of_similar_images]
+    print(correct_images)
+
+    fp_rate = 0
+    miss_rate = 0
+    for label in knn:
+        if label not in correct_images:
+            fp_rate += 1
+    fp_rate = fp_rate/len(knn)
+
+    for label in correct_images:
+        if label not in knn:
+            miss_rate += 1
+    miss_rate = miss_rate/len(correct_images)
+
+    print('False Positive Rate: ', fp_rate)
+    print('Miss Rate: ', miss_rate)
+    # types = [n_objects.split('-')[1]]
     # plt.scatter(image_vector_matrix[:, 0], image_vector_matrix[:, 1], color='blue', label='dataset')
     # plt.scatter(query_image_feature_descriptor[0], query_image_feature_descriptor[1], color='orange', label='Query')
     # plt.scatter(knn[:, 0], knn[:, 1], color='red', label='K NN to Q', marker='*')

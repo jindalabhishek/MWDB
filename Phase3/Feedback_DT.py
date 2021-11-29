@@ -25,15 +25,18 @@ def DT_RF(X, data_labels, query, k_n=10):
     test_set = []  # Set of samples to be classified and returned to user (NOT USED)
     test_set_id = []  # Indices of samples that are in test_set
     # Initial query
-    LSH = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+    number_of_bits = int(input('Enter the number of hash functions in a family of hash functions: '))
+    number_of_families = int(input('Enter the number of hash families: '))
+    LSH = LSHash(n_features, k_bit_hash=number_of_bits, num_hashtables=number_of_families)
     # X = np.random.randn(130, 3)
     # inps = input array
-    for inp in X:
-        LSH.index(inp)
+    for inp,label in zip(X,data_labels):
+        LSH.index(inp,label)
+
 
     X_list = X.tolist()
 
-    train_set = LSH.query(query, k_n)
+    train_set,_ = LSH.query(query, k_n)
     train_set = train_set.tolist()
     test_set = X.tolist()
     if not (isinstance(data_labels, list)):
@@ -80,17 +83,19 @@ def DT_RF(X, data_labels, query, k_n=10):
     while user_ip != 'stop':
         # Calculate and find k objects in test_set through DT
         test_set_dst = []
-        for inp in test_set:
-            if int(list(print_leaf(classify(inp, tree)).keys())[0]) == 1:
-                test_set_dst.append(inp)
+        train_llabel=[]
+        for i in range(len(test_set)):
+            if int(list(print_leaf(classify(test_set[i], tree)).keys())[0]) == 1:
+                test_set_dst.append(test_set[i])
+                train_llabel.append(data_labels[i])
 
-        LSH1 = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+        LSH1 = LSHash(n_features, k_bit_hash=number_of_bits, num_hashtables=number_of_families)
         X = np.array(test_set_dst)
         # inps = input array
         for inp in X:
-            LSH1.index(inp)
+            LSH1.index(inp, train_llabel)
 
-        new_train_set = LSH1.query(query, k_n)
+        new_train_set,_ = LSH1.query(query, k_n)
         # print(new_train_set,'==============================')
 
         new_train_set = new_train_set.tolist()

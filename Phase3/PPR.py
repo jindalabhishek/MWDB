@@ -85,7 +85,6 @@ def getTestingLabels(training_latent_semantics,train_labels,testing_latent_seman
         seed_nodes = get_seed_nodes(seeds, len(train_labels))
         ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
         highest_type_ids = np.argsort(-ppr_matrix[:, -1])
-
         print(highest_type_ids[:10])
         curr_label = train_labels[highest_type_ids[0]]
         testing_labels.append(curr_label)

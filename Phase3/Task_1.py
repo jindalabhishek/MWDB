@@ -14,7 +14,6 @@ print('Successfully Finished computing latent semantics')
 test_path = input("Enter the image folder path for testing: ")
 classifier = input("Enter classifier model technique ('SVM', 'DT', 'PPR') : ")
 
-
 Y_train = labels_train
 
 X_test, labels_test, testFileNames = getTestData(test_path, feature_model, dimension_reduction,Utils.getType)
