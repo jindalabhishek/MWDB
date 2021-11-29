@@ -1,6 +1,3 @@
-import numpy as np
-
-from Util.dao_util import DAOUtil
 from LSH import *
 from vector_util import convert_image_to_matrix
 from Utils import *

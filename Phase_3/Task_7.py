@@ -1,5 +1,3 @@
-from Util.dao_util import DAOUtil
-from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
 from Feedback_SVM import *

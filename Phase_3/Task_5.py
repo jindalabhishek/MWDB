@@ -1,9 +1,7 @@
-from Util.dao_util import DAOUtil
 from VA_Files import *
 from vector_util import convert_image_to_matrix
 from Utils import *
 from file import *
-from sklearn.neighbors import KNeighborsClassifier
 
 
 def get_image_vector_matrix(feature_descriptors, feature_model):
