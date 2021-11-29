@@ -78,14 +78,14 @@ def getTestingLabels(training_latent_semantics,train_labels,testing_latent_seman
         list_of_dict = list(sorted_dict)
         for i in range(count_seeds):
             seeds.append(list_of_dict[i][0])
-        print((test_labels[idx],testFileNames[idx]))
-        print([(i,train_labels[i],trainFileNames[i]) for i in seeds])
+        # print((test_labels[idx],testFileNames[idx]))
+        # print([(i,train_labels[i],trainFileNames[i]) for i in seeds])
         hubs_vs_authorities = get_hubs_authorities_from_adjacency_matrix(adjacency_matrix)
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
         seed_nodes = get_seed_nodes(seeds, len(train_labels))
         ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
         highest_type_ids = np.argsort(-ppr_matrix[:, -1])
-        print(highest_type_ids[:10])
+        # print(highest_type_ids[:10])
         curr_label = train_labels[highest_type_ids[0]]
         testing_labels.append(curr_label)
     return testing_labels
