@@ -83,15 +83,17 @@ def DT_RF(X, data_labels, query, k_n=10):
     while user_ip != 'stop':
         # Calculate and find k objects in test_set through DT
         test_set_dst = []
-        for inp in test_set:
-            if int(list(print_leaf(classify(inp, tree)).keys())[0]) == 1:
-                test_set_dst.append(inp)
+        train_llabel=[]
+        for i in range(len(test_set)):
+            if int(list(print_leaf(classify(test_set[i], tree)).keys())[0]) == 1:
+                test_set_dst.append(test_set[i])
+                train_llabel.append(data_labels[i])
 
-        LSH1 = LSHash(n_features, k_bit_hash=4, num_hashtables=4)
+        LSH1 = LSHash(n_features, k_bit_hash=number_of_bits, num_hashtables=number_of_families)
         X = np.array(test_set_dst)
         # inps = input array
         for inp in X:
-            LSH1.index(inp)
+            LSH1.index(inp, train_llabel)
 
         new_train_set,_ = LSH1.query(query, k_n)
         # print(new_train_set,'==============================')
