@@ -44,6 +44,7 @@ from Util.Utils import *
 #     return normalized_data
 from image_comparison_util import get_elbp_histogram
 
+
 def getAdjecencyMatrix(labels):
     adjacency_matrix = np.empty(shape=(len(labels), len(labels)))
     adjacency_matrix.fill(0)
@@ -56,6 +57,7 @@ def getAdjecencyMatrix(labels):
                 adjacency_matrix[i][j] = 1
                 adjacency_matrix[j][i] = 1
     return adjacency_matrix
+
 
 def getTestingLabels(training_latent_semantics,train_labels,testing_latent_semantics,test_labels, trainFileNames, testFileNames, numberOfSeed, similarityDistanceFunction=getEuclideanDistance):
     testing_labels = []
@@ -82,13 +84,9 @@ def getTestingLabels(training_latent_semantics,train_labels,testing_latent_seman
         transition_matrix = get_transition_matrix_from_hubs_authorities(hubs_vs_authorities)
         seed_nodes = get_seed_nodes(seeds, len(train_labels))
         ppr_matrix = get_page_ranking(0.4, transition_matrix, seed_nodes)
-        # print(ppr_matrix)
         highest_type_ids = np.argsort(-ppr_matrix[:, -1])
-        # print(highest_type_ids)
-        # print('Most Relevant Type Id w.r.t to seed nodes')
-        # This will return the index of the image. We have to pick the type of that image as output.
+
         print(highest_type_ids[:10])
         curr_label = train_labels[highest_type_ids[0]]
         testing_labels.append(curr_label)
-        # print('\n %s', {curr_label})
     return testing_labels

@@ -1,19 +1,11 @@
 import numpy as np
-import cv2
-import glob
 import os
 import sklearn.decomposition as sk_decomp
 import skimage.feature as skf
 import math
-
-from sklearn.metrics import multilabel_confusion_matrix
-
 import vector_util
 import feature_descriptor_util
 from dimensionality_reduction.SVD import SVD
-from dimensionality_reduction.PCA import PCA
-from dimensionality_reduction.LDA import LDA
-from dimensionality_reduction.KMeans import KMeans
 from Phase_1.Constants import GREY_SCALE_MAX
 import image_comparison_util
 
@@ -177,39 +169,6 @@ def getTestData(path,model_name,dimension_reduction,labelFunc):
 
 
 def calculate_and_print_results(Y_test, Y_hat, num2type):
-    # cm = multilabel_confusion_matrix(Y_test, Y_hat, labels=list(num2type.values()))
-    # fp = {}
-    # misses = {}
-    # tp = {}
-    # tn = {}
-    #
-    # fp_rate = {}
-    # miss_rate = {}
-    #
-    # total_fp, total_fn, total_tp, total_tn = 0, 0, 0, 0
-    # total_misses = 0
-    # for i in range(len(num2type.values())):
-    #     fp[list(num2type.values())[i]] = cm[i][0][1]
-    #     misses[list(num2type.values())[i]] = cm[i][1][0]
-    #     tp[list(num2type.values())[i]] = cm[i][1][1]
-    #     tn[list(num2type.values())[i]] = cm[i][0][0]
-    #
-    #     fp_rate[list(num2type.values())[i]] = round(fp[list(num2type.values())[i]] / (fp[list(num2type.values())[i]] + tn[list(num2type.values())[i]]), 4)
-    #     total_fp += cm[i][0][1]
-    #     total_tp += cm[i][1][1]
-    #     total_tn += cm[i][0][0]
-    #     total_misses += cm[i][1][0]
-    #
-    # for i in range(len(num2type.values())):
-    #     miss_rate[list(num2type.values())[i]] = round(misses[list(num2type.values())[i]] / total_misses, 4)
-    #
-    # print('Total false positives = ', total_fp)
-    # print(fp_rate)
-    # print('Total misses = ', total_misses)
-    # print(miss_rate)
-    # print('Total correctly classified = ', total_tp + total_tn)
-    # print(tp)
-    # print(tn)
     y_actual = Y_test
     y_pred = Y_hat
     class_id = set(y_actual).union(set(y_pred))
@@ -233,11 +192,6 @@ def calculate_and_print_results(Y_test, Y_hat, num2type):
                 TN[_id] += 1
             if y_pred[i] != _id and y_actual[i] != y_pred[i]:
                 FN[_id] += 1
-
-    # print("\nTP", TP)
-    # print("\nFP", FP)
-    # print("\nTN", TN)
-    # print("\nFN", FN)
 
     fp_rate = {}
     miss_rate = {}
