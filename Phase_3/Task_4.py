@@ -63,6 +63,10 @@ def main():
                 labels_of_similar_images.append(image_labels[index])
 
     knn = np.array(labels_of_similar_images)
+    bps = len(image_vector_matrix[0]) * number_of_bits  # bits per sample
+    total_bits = bps * len(image_vector_matrix)
+    print("Total LSH bytes = " + str(total_bits / 8))
+
     print("K nearest neighbors (sorted):\n" + str(knn))
     type_miss = 0
     subject_miss = 0
