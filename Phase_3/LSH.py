@@ -45,8 +45,14 @@ class LSHash(object):
       binary_hash = self._hash_projections(self.uniform_planes[i], query_point)
       
       candidates.update(table.get(binary_hash,[]))
+    print('total buckets searched:')
     with open('hash_tables.json','w') as file:
         json.dump(self.hash_tables_dump, file)
+
+    for i in range(len(self.hash_tables)):
+        print(len(self.hash_tables[i]))
+
+    print('-----------------------------')
     
     candidates = [(list(ix), np.linalg.norm(query_point-np.asarray(ix))) for ix in candidates]
     candidates.sort(key=lambda x: x[1])
