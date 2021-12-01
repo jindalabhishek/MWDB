@@ -151,7 +151,7 @@ def getImageData(path,model_name,labelFunc):
         for img in all_image:
             all_feature_lbp.append(feature_descriptor_util.get_hog_feature_descriptor(img))
     return all_feature_lbp,all_labels, fileNames
-i = 0
+
 def getTrainData(path, model_name, k_d,labelFunc,dimensionality_reduction_technique=SVD):
     all_feature_lbp, all_labels, fileNames = getImageData(path,model_name,labelFunc)
     dimensionality_reduction = dimensionality_reduction_technique()
