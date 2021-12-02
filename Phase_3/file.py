@@ -206,7 +206,8 @@ def calculate_and_print_results(Y_test, Y_hat, num2type):
     print("\nFP rate", fp_rate)
     print("\nMiss_rate", miss_rate)
     print("\nCorrectly classified", sum(TP.values()))
-
+    print("\nGroundTruth: ", y_actual)
+    print("\nPrediction: ", y_pred)
     total_classes = len(num2type)
 
     relative_type = ''
